@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bollettino Criticità Basilicata</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <style>
+        body { margin: 0; font-family: 'Roboto', sans-serif; background: #f4f4f9; display: flex; flex-direction: column; height: 100vh; }
+        #header {
+            background: #003366; color: white; padding: 15px; text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2); z-index: 1000;
+        }
+        #info-box {
+            padding: 10px; text-align: center; background: white;
+            border-bottom: 1px solid #ddd;
+        }
+        #map { flex-grow: 1; width: 100%; z-index: 1; }
+        .legend {
+            background: white; padding: 10px; line-height: 18px;
+            color: #555; box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px;
+        }
+        .legend i {
+            width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; border:1px solid #999;
+        }
+        .last-update { font-size: 0.8em; color: #666; margin-top: 5px; }
+        /* Popup Custom */
+        .leaflet-popup-content-wrapper { border-radius: 4px; }
+        .popup-zone { font-weight: bold; color: #003366; }
+        .popup-risk { text-transform: uppercase; font-size: 0.9em; }
+    </style>
+</head>
+<body>
+
+    <div id="header">
+        <h2 style="margin:0;">Allerta Protezione Civile Basilicata</h2>
+    </div>
+
+    <div id="info-box">
+        <h3 id="bulletin-date" style="margin: 5px 0;">Caricamento dati...</h3>
+        <div class="last-update" id="validity"></div>
+    </div>
+
+    <div id="map"></div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // --- 1. CONFIGURAZIONE ---
+        const GEOJSON_FILE = 'limits_R_17_municipalities.geojson'; // Il tuo file
+        
+        // Mappatura Comuni -> Zone (Basata sul Bollettino Ufficiale)
+        // Serve perché il GeoJSON ha i comuni, ma l'allerta è per Zone.
+        const municipalityMap = {
+            "Abriola": "BASI B", "Accettura": "BASI B", "Acerenza": "BASI B", "Albano di Lucania": "BASI B", "Aliano": "BASI C", "Anzi": "BASI B", "Armento": "BASI C", "Atella": "BASI A1", "Avigliano": "BASI B", 
+            "Balvano": "BASI A2", "Banzi": "BASI B", "Baragiano": "BASI A2", "Barile": "BASI A1", "Bella": "BASI A2", "Bernalda": "BASI E2", "Brienza": "BASI A2", "Brindisi Montagna": "BASI B", 
+            "Calciano": "BASI B", "Calvello": "BASI B", "Calvera": "BASI C", "Campomaggiore": "BASI B", "Cancellara": "BASI B", "Carbone": "BASI C", "Castelgrande": "BASI A2", "Castelluccio Inferiore": "BASI D", "Castelluccio Superiore": "BASI D", "Castelmezzano": "BASI B", "Castelsaraceno": "BASI D", "Castronuovo di Sant' Andrea": "BASI C", "Cersosimo": "BASI C", "Chiaromonte": "BASI C", "Cirigliano": "BASI C", "Colobraro": "BASI C", "Corleto Perticara": "BASI C", "Craco": "BASI E1", 
+            "Episcopia": "BASI C", "Fardella": "BASI C", "Ferrandina": "BASI B", "Filiano": "BASI A1", "Forenza": "BASI A1", "Francavilla in Sinni": "BASI C", 
+            "Gallicchio": "BASI C", "Garaguso": "BASI B", "Genzano di Lucania": "BASI B", "Ginestra": "BASI A1", "Gorgoglione": "BASI C", "Grassano": "BASI B", "Grottole": "BASI B", "Grumento Nova": "BASI C", "Guardia Perticara": "BASI C", 
+            "Irsina": "BASI B", "Lagonegro": "BASI D", "Latronico": "BASI D", "Laurenzana": "BASI B", "Lauria": "BASI D", "Lavello": "BASI A1", 
+            "Maratea": "BASI D", "Marsico Nuovo": "BASI C", "Marsicovetere": "BASI C", "Maschito": "BASI A1", "Matera": "BASI B", "Melfi": "BASI A1", "Miglionico": "BASI B", "Missanello": "BASI C", "Moliterno": "BASI C", "Montalbano Jonico": "BASI E1", "Montemilone": "BASI A1", "Montemurro": "BASI C", "Montescaglioso": "BASI E2", "Muro Lucano": "BASI A2", 
+            "Nemoli": "BASI D", "Noepoli": "BASI C", "Nova Siri": "BASI E1", 
+            "Oliveto Lucano": "BASI B", "Oppido Lucano": "BASI B", 
+            "Palazzo San Gervasio": "BASI A1", "Paterno": "BASI C", "Pescopagano": "BASI A1", "Picerno": "BASI A2", "Pietragalla": "BASI B", "Pietrapertosa": "BASI B", "Pignola": "BASI B", "Pisticci": "BASI E2", "Policoro": "BASI E1", "Pomarico": "BASI B", "Potenza": "BASI B", 
+            "Rapolla": "BASI A1", "Rapone": "BASI A1", "Rionero in Vulture": "BASI A1", "Ripacandida": "BASI A1", "Rivello": "BASI D", "Roccanova": "BASI C", "Rotonda": "BASI D", "Rotondella": "BASI E1", "Ruoti": "BASI A2", "Ruvo del Monte": "BASI A1", 
+            "Salandra": "BASI B", "San Chirico Nuovo": "BASI B", "San Chirico Raparo": "BASI C", "San Costantino A.": "BASI C", "San Fele": "BASI A1", "San Giorgio Lucano": "BASI C", "San Martino d'Agri": "BASI C", "San Mauro Forte": "BASI B", "San Paolo Albanese": "BASI C", "San Severino Lucano": "BASI C", "Sant' Angelo Le Fratte": "BASI A2", "Sant' Arcangelo": "BASI C", "Sarconi": "BASI C", "Sasso di Castalda": "BASI A2", "Satriano di Lucania": "BASI A2", "Savoia di Lucania": "BASI A2", "Scanzano Jonico": "BASI E1", "Senise": "BASI C", "Spinoso": "BASI C", "Stigliano": "BASI C", 
+            "Teana": "BASI C", "Terranova di Pollino": "BASI C", "Tito": "BASI A2", "Tolve": "BASI B", "Tramutola": "BASI C", "Trecchina": "BASI D", "Tricarico": "BASI B", "Trivigno": "BASI B", "Tursi": "BASI C", 
+            "Vaglio Basilicata": "BASI B", "Valsinni": "BASI C", "Venosa": "BASI A1", "Vietri di Potenza": "BASI A2", "Viggianello": "BASI D", "Viggiano": "BASI C"
+        };
+        // Nota: Alcuni comuni potrebbero essere a cavallo di due zone (es. Tito A2-B). Qui ho semplificato assegnando la zona principale o peggiore come da standard visuale.
+
+        const colorMap = {
+            "green": "#50C878",   // Verde Smeraldo
+            "yellow": "#FFD700",  // Giallo standard
+            "orange": "#FF8C00",  // Arancione scuro
+            "red": "#DC143C"      // Rosso Cremisi
+        };
+
+        const map = L.map('map').setView([40.5, 16.1], 9);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(map);
+
+        async function loadData() {
+            try {
+                // 1. Carica il Bollettino (JSON)
+                const responseData = await fetch('dati_bollettino.json?nocache=' + new Date().getTime());
+                const data = await responseData.json();
+
+                // Aggiorna Intestazione
+                document.getElementById('bulletin-date').innerText = `Bollettino del ${data.data_bollettino}`;
+                document.getElementById('validity').innerHTML = 
+                    `Validità: ${data.validita_inizio} - ${data.validita_fine}`;
+
+                // 2. Carica i Comuni (GeoJSON)
+                const responseGeo = await fetch(GEOJSON_FILE);
+                const geoJsonData = await responseGeo.json();
+
+                // 3. Unisci e Disegna
+                L.geoJSON(geoJsonData, {
+                    style: function(feature) {
+                        // Cerca il nome del comune nel GeoJSON
+                        // ATTENZIONE: Controlla se nel tuo GeoJSON la proprietà si chiama "comune", "nome", "NAME", etc.
+                        // Qui provo le varianti più comuni.
+                        let comuneName = feature.properties.comune || feature.properties.nome || feature.properties.NAME || feature.properties.COMUNE; 
+                        
+                        // Trova la Zona corrispondente nella nostra mappa manuale
+                        let zoneName = municipalityMap[comuneName]; 
+                        
+                        // Default verde se non trova nulla
+                        let alertColor = "green"; 
+
+                        // Se abbiamo trovato la zona (es. BASI A1), cerchiamo il colore nel bollettino di oggi
+                        if (zoneName) {
+                            // Cerca nel JSON del bollettino se esiste la chiave (es. "BASI A1")
+                            // Usiamo includes per gestire eventuali spazi extra
+                            for (const [key, value] of Object.entries(data.zone)) {
+                                if (zoneName.toUpperCase().includes(key.toUpperCase())) {
+                                    alertColor = value;
+                                    break;
+                                }
+                            }
+                        }
+
+                        return {
+                            color: "white", // Bordo bianco
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.7,
+                            fillColor: colorMap[alertColor] || "#ccc"
+                        };
+                    },
+                    onEachFeature: function(feature, layer) {
+                        let comuneName = feature.properties.comune || feature.properties.nome || feature.properties.NAME;
+                        let zone = municipalityMap[comuneName] || "Zona Non Definita";
+                        
+                        layer.bindPopup(`
+                            <div style="text-align:center">
+                                <strong>${comuneName}</strong><br>
+                                <span class="popup-zone">${zone}</span>
+                            </div>
+                        `);
+                    }
+                }).addTo(map);
+
+            } catch (error) {
+                console.error("Errore:", error);
+                document.getElementById('bulletin-date').innerText = "Errore caricamento. Controlla console.";
+            }
+        }
+
+        // Legenda
+        const legend = L.control({position: 'bottomright'});
+        legend.onAdd = function (map) {
+            const div = L.DomUtil.create('div', 'legend');
+            div.innerHTML += '<i style="background: #50C878"></i> Assente<br>';
+            div.innerHTML += '<i style="background: #FFD700"></i> Ordinaria<br>';
+            div.innerHTML += '<i style="background: #FF8C00"></i> Moderata<br>';
+            div.innerHTML += '<i style="background: #DC143C"></i> Elevata<br>';
+            return div;
+        };
+        legend.addTo(map);
+
+        loadData();
+    </script>
+</body>
+</html>
