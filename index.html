@@ -14,7 +14,7 @@
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6f8; margin: 0; padding-bottom: 80px; color: #333; }
         
-        /* HEADER CON LOGO VISIBILE */
+        /* HEADER */
         .app-header { background: #003366; color: white; padding: 25px 20px; border-radius: 0 0 25px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); text-align: center; }
         .logo-container { background: white; width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 3px solid #fff; }
         .logo-container img { max-width: 60px; max-height: 60px; }
@@ -106,6 +106,11 @@
                 <button class="btn-add" onclick="aggiungiPreferito()"><i class="fas fa-plus"></i></button>
             </div>
         </div>
+        
+        <div id="ios-install-prompt" style="display:none; background:#fff; padding:15px; border-radius:10px; margin-bottom:20px; border:1px solid #ddd; text-align:center;">
+            <p style="margin:0 0 10px 0; font-size:0.9rem;">📲 <strong>Installa su iPhone:</strong></p>
+            <p style="margin:0; font-size:0.8rem; color:#666;">Premi <i class="fas fa-share-square"></i> in basso e poi <strong>"Aggiungi alla schermata Home"</strong>.</p>
+        </div>
 
     </div>
 
@@ -125,17 +130,19 @@
     </div>
 
     <script>
-        // CONFIGURAZIONE URL DATI
-        // Se ospiti su FTP esterno, inserisci qui l'URL completo di GitHub Pages per il JSON
-        // Es: "https://tuonome.github.io/repo/dati_bollettino.json"
-        // Se ospiti su GitHub Pages, lascia solo il nome del file.
-        const DATA_JSON_URL = "dati_bollettino.json";
+        // 🔴🔴🔴 MODIFICA QUI: INSERISCI L'URL DEL TUO GITHUB PAGES 🔴🔴🔴
+        // Esempio: "https://eatapples15.github.io/allerte_bollettino_basilicata" (SENZA slash finale)
+        // Se sei su GitHub Pages, puoi lasciare stringa vuota ""
+        const BASE_GITHUB_URL = "https://eatapples15.github.io/allerte_bollettino_basilicata"; 
+        
+        // Costruzione URL dinamica
+        const DATA_JSON_URL = BASE_GITHUB_URL ? BASE_GITHUB_URL + "/dati_bollettino.json" : "dati_bollettino.json";
         const DATA_GEOJSON_URL = "limits_R_17_municipalities.geojson";
         
-        // MAPPING ZONE
+        // MAPPING ZONE (Con correzione San Costantino Albanese)
         const municipalityMap = {
             "Abriola": "BASI B", "Accettura": "BASI B", "Acerenza": "BASI B", "Albano di Lucania": "BASI B", "Aliano": "BASI C", "Anzi": "BASI B", "Armento": "BASI C", "Atella": "BASI A1", "Avigliano": "BASI B", 
-            "Balvano": "BASI A2", "Banzi": "BASI B", "Baragiano": "BASI A2", "Barile": "BASI A1", "Bella": "BASI A2", "Bernalda": "BASI E2", "Brienza": "BASI A2", "Brindisi Montagna": "BASI B", "Calciano": "BASI B", "Calvello": "BASI B", "Calvera": "BASI C", "Campomaggiore": "BASI B", "Cancellara": "BASI B", "Carbone": "BASI C", "Castelgrande": "BASI A2", "Castelluccio Inferiore": "BASI D", "Castelluccio Superiore": "BASI D", "Castelmezzano": "BASI B", "Castelsaraceno": "BASI D", "Castronuovo di Sant' Andrea": "BASI C", "Cersosimo": "BASI C", "Chiaromonte": "BASI C", "Cirigliano": "BASI C", "Colobraro": "BASI C", "Corleto Perticara": "BASI C", "Craco": "BASI E1", "Episcopia": "BASI C", "Fardella": "BASI C", "Ferrandina": "BASI B", "Filiano": "BASI A1", "Forenza": "BASI A1", "Francavilla in Sinni": "BASI C", "Gallicchio": "BASI C", "Garaguso": "BASI B", "Genzano di Lucania": "BASI B", "Ginestra": "BASI A1", "Gorgoglione": "BASI C", "Grassano": "BASI B", "Grottole": "BASI B", "Grumento Nova": "BASI C", "Guardia Perticara": "BASI C", "Irsina": "BASI B", "Lagonegro": "BASI D", "Latronico": "BASI D", "Laurenzana": "BASI B", "Lauria": "BASI D", "Lavello": "BASI A1", "Maratea": "BASI D", "Marsico Nuovo": "BASI C", "Marsicovetere": "BASI C", "Maschito": "BASI A1", "Matera": "BASI B", "Melfi": "BASI A1", "Miglionico": "BASI B", "Missanello": "BASI C", "Moliterno": "BASI C", "Montalbano Jonico": "BASI E1", "Montemilone": "BASI A1", "Montemurro": "BASI C", "Montescaglioso": "BASI E2", "Muro Lucano": "BASI A2", "Nemoli": "BASI D", "Noepoli": "BASI C", "Nova Siri": "BASI E1", "Oliveto Lucano": "BASI B", "Oppido Lucano": "BASI B", "Palazzo San Gervasio": "BASI A1", "Paterno": "BASI C", "Pescopagano": "BASI A1", "Picerno": "BASI A2", "Pietragalla": "BASI B", "Pietrapertosa": "BASI B", "Pignola": "BASI B", "Pisticci": "BASI E2", "Policoro": "BASI E1", "Pomarico": "BASI B", "Potenza": "BASI B", "Rapolla": "BASI A1", "Rapone": "BASI A1", "Rionero in Vulture": "BASI A1", "Ripacandida": "BASI A1", "Rivello": "BASI D", "Roccanova": "BASI C", "Rotonda": "BASI D", "Rotondella": "BASI E1", "Ruoti": "BASI A2", "Ruvo del Monte": "BASI A1", "Salandra": "BASI B", "San Chirico Nuovo": "BASI B", "San Chirico Raparo": "BASI C", "San Costantino A.": "BASI C", "San Fele": "BASI A1", "San Giorgio Lucano": "BASI C", "San Martino d'Agri": "BASI C", "San Mauro Forte": "BASI B", "San Paolo Albanese": "BASI C", "San Severino Lucano": "BASI C", "Sant' Angelo Le Fratte": "BASI A2", "Sant' Arcangelo": "BASI C", "Sarconi": "BASI C", "Sasso di Castalda": "BASI A2", "Satriano di Lucania": "BASI A2", "Savoia di Lucania": "BASI A2", "Scanzano Jonico": "BASI E1", "Senise": "BASI C", "Spinoso": "BASI C", "Stigliano": "BASI C", "Teana": "BASI C", "Terranova di Pollino": "BASI C", "Tito": "BASI A2", "Tolve": "BASI B", "Tramutola": "BASI C", "Trecchina": "BASI D", "Tricarico": "BASI B", "Trivigno": "BASI B", "Tursi": "BASI C", "Vaglio Basilicata": "BASI B", "Valsinni": "BASI C", "Venosa": "BASI A1", "Vietri di Potenza": "BASI A2", "Viggianello": "BASI D", "Viggiano": "BASI C"
+            "Balvano": "BASI A2", "Banzi": "BASI B", "Baragiano": "BASI A2", "Barile": "BASI A1", "Bella": "BASI A2", "Bernalda": "BASI E2", "Brienza": "BASI A2", "Brindisi Montagna": "BASI B", "Calciano": "BASI B", "Calvello": "BASI B", "Calvera": "BASI C", "Campomaggiore": "BASI B", "Cancellara": "BASI B", "Carbone": "BASI C", "Castelgrande": "BASI A2", "Castelluccio Inferiore": "BASI D", "Castelluccio Superiore": "BASI D", "Castelmezzano": "BASI B", "Castelsaraceno": "BASI D", "Castronuovo di Sant' Andrea": "BASI C", "Cersosimo": "BASI C", "Chiaromonte": "BASI C", "Cirigliano": "BASI C", "Colobraro": "BASI C", "Corleto Perticara": "BASI C", "Craco": "BASI E1", "Episcopia": "BASI C", "Fardella": "BASI C", "Ferrandina": "BASI B", "Filiano": "BASI A1", "Forenza": "BASI A1", "Francavilla in Sinni": "BASI C", "Gallicchio": "BASI C", "Garaguso": "BASI B", "Genzano di Lucania": "BASI B", "Ginestra": "BASI A1", "Gorgoglione": "BASI C", "Grassano": "BASI B", "Grottole": "BASI B", "Grumento Nova": "BASI C", "Guardia Perticara": "BASI C", "Irsina": "BASI B", "Lagonegro": "BASI D", "Latronico": "BASI D", "Laurenzana": "BASI B", "Lauria": "BASI D", "Lavello": "BASI A1", "Maratea": "BASI D", "Marsico Nuovo": "BASI C", "Marsicovetere": "BASI C", "Maschito": "BASI A1", "Matera": "BASI B", "Melfi": "BASI A1", "Miglionico": "BASI B", "Missanello": "BASI C", "Moliterno": "BASI C", "Montalbano Jonico": "BASI E1", "Montemilone": "BASI A1", "Montemurro": "BASI C", "Montescaglioso": "BASI E2", "Muro Lucano": "BASI A2", "Nemoli": "BASI D", "Noepoli": "BASI C", "Nova Siri": "BASI E1", "Oliveto Lucano": "BASI B", "Oppido Lucano": "BASI B", "Palazzo San Gervasio": "BASI A1", "Paterno": "BASI C", "Pescopagano": "BASI A1", "Picerno": "BASI A2", "Pietragalla": "BASI B", "Pietrapertosa": "BASI B", "Pignola": "BASI B", "Pisticci": "BASI E2", "Policoro": "BASI E1", "Pomarico": "BASI B", "Potenza": "BASI B", "Rapolla": "BASI A1", "Rapone": "BASI A1", "Rionero in Vulture": "BASI A1", "Ripacandida": "BASI A1", "Rivello": "BASI D", "Roccanova": "BASI C", "Rotonda": "BASI D", "Rotondella": "BASI E1", "Ruoti": "BASI A2", "Ruvo del Monte": "BASI A1", "Salandra": "BASI B", "San Chirico Nuovo": "BASI B", "San Chirico Raparo": "BASI C", "San Costantino A.": "BASI C", "San Costantino Albanese": "BASI C", "S. Costantino Albanese": "BASI C", "San Fele": "BASI A1", "San Giorgio Lucano": "BASI C", "San Martino d'Agri": "BASI C", "San Mauro Forte": "BASI B", "San Paolo Albanese": "BASI C", "San Severino Lucano": "BASI C", "Sant' Angelo Le Fratte": "BASI A2", "Sant' Arcangelo": "BASI C", "Sarconi": "BASI C", "Sasso di Castalda": "BASI A2", "Satriano di Lucania": "BASI A2", "Savoia di Lucania": "BASI A2", "Scanzano Jonico": "BASI E1", "Senise": "BASI C", "Spinoso": "BASI C", "Stigliano": "BASI C", "Teana": "BASI C", "Terranova di Pollino": "BASI C", "Tito": "BASI A2", "Tolve": "BASI B", "Tramutola": "BASI C", "Trecchina": "BASI D", "Tricarico": "BASI B", "Trivigno": "BASI B", "Tursi": "BASI C", "Vaglio Basilicata": "BASI B", "Valsinni": "BASI C", "Venosa": "BASI A1", "Vietri di Potenza": "BASI A2", "Viggianello": "BASI D", "Viggiano": "BASI C"
         };
 
         const colorsUI = { "green": "bg-green", "yellow": "bg-yellow", "orange": "bg-orange", "red": "bg-red", "default": "bg-gray" };
@@ -146,7 +153,6 @@
 
         async function initApp() {
             try {
-                // Cache busting per scaricare sempre l'ultima versione
                 const res = await fetch(DATA_JSON_URL + '?t=' + Date.now());
                 if(!res.ok) throw new Error("File JSON non trovato");
                 
@@ -166,7 +172,6 @@
             } catch(e) { console.error("Errore GeoJSON", e); }
         }
 
-        // --- FUNZIONI PREFERITI (LocalStorage) ---
         function getSavedComuni() {
             const saved = localStorage.getItem('pc_preferiti');
             return saved ? JSON.parse(saved) : [];
@@ -232,7 +237,6 @@
             });
         }
 
-        // --- MOTORE DATI ---
         function getDatiComune(nomeComune) {
             if(!bollettinoData) return { colorKey: "default", label: "Caricamento...", zona: "?" };
             
@@ -249,14 +253,13 @@
             return { colorKey: colorKey, label: labelsUI[colorKey], zona: zona };
         }
 
-        // --- GEOLOCALIZZAZIONE ---
         function trovaPosizione() {
             const btn = document.querySelector('.gps-btn');
             const resultBox = document.getElementById('gps-result');
             
             if(!geoJsonData) { alert("Attendi il caricamento della mappa..."); return; }
 
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ricerca GPS in corso...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ricerca GPS...';
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -268,17 +271,14 @@
                     
                     for(const feature of geoJsonData.features) {
                         if (turf.booleanPointInPolygon(userPoint, feature)) {
-                            // Cerca tra le proprietà più comuni del GeoJSON
+                            // Cerca le proprietà più comuni nel GeoJSON
                             comuneTrovato = feature.properties.comune || feature.properties.nome || feature.properties.NAME_3 || feature.properties.COMUNE || feature.properties.name;
                             break;
                         }
                     }
 
                     if(comuneTrovato) {
-                        // Normalizzazione nome se necessario (es. maiuscolo/minuscolo) per trovare match nella mappa
-                        // Qui facciamo un check semplice, potremmo dover aggiungere normalizzazione se fallisce
                         const dati = getDatiComune(comuneTrovato);
-                        
                         document.getElementById('gps-comune').innerText = comuneTrovato;
                         document.getElementById('gps-zona').innerText = "Zona: " + dati.zona;
                         const badge = document.getElementById('gps-badge');
@@ -288,20 +288,39 @@
                         btn.style.display = 'none';
                         resultBox.style.display = 'block';
                     } else {
-                        btn.innerHTML = '❌ Fuori zona mappata';
+                        btn.innerHTML = '❌ Fuori zona';
                         alert("Non ti trovi all'interno dei confini della Basilicata caricati.");
                     }
                 },
                 (err) => {
                     console.error(err);
-                    btn.innerHTML = '❌ Errore o Permesso Negato';
-                    alert("Impossibile accedere alla posizione. Verifica di aver dato i permessi GPS al browser.");
+                    btn.innerHTML = '❌ Errore GPS';
+                    alert("Impossibile accedere alla posizione. Verifica i permessi.");
                 },
                 { enableHighAccuracy: true }
             );
         }
 
+        // Script iOS Detection
+        const isIos = /iphone|ipad|ipod/.test( window.navigator.userAgent.toLowerCase() );
+        const isInStandaloneMode = ('standalone' in window.navigator) && (window.navigator.standalone);
+        if (isIos && !isInStandaloneMode) {
+            document.getElementById('ios-install-prompt').style.display = 'block';
+        }
+
         initApp();
+    </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('sw.js').then(function(registration) {
+                    console.log('SW registrato: ', registration.scope);
+                }, function(err) {
+                    console.log('SW fallito: ', err);
+                });
+            });
+        }
     </script>
 </body>
 </html>
