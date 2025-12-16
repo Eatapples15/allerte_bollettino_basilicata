@@ -1,0 +1,41 @@
+name: Aggiorna Bollettino
+
+on:
+  schedule:
+    # Esegue ogni ora al minuto 15 (es. 14:15, 15:15...)
+    - cron: '15 * * * *'
+  workflow_dispatch: # Permette di lanciarlo a mano per test
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout del codice
+      uses: actions/checkout@v3
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Installa dipendenze
+      run: |
+        pip install -r requirements.txt
+
+    - name: Esegui script
+      env:
+        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: python main.py
+
+    - name: Salva e Committa i risultati (JSON)
+      run: |
+        git config --global user.name 'Bot Allerta'
+        git config --global user.email 'bot@noreply.github.com'
+        git add dati_bollettino.json
+        # Committa solo se ci sono cambiamenti
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento bollettino" && git push)
