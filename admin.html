@@ -35,7 +35,7 @@
     </div>
 
     <div class="form-group">
-        <label>Nome Utente GitHub (Proprietario Repo)</label>
+        <label>Nome Utente GitHub</label>
         <input type="text" id="gh-user" value="Eatapples15">
     </div>
     <div class="form-group">
@@ -61,7 +61,7 @@
 </div>
 
 <script>
-    let currentSha = null; // Serve a GitHub per sovrascrivere il file
+    let currentSha = null;
     let currentData = null;
 
     async function caricaDati() {
@@ -75,7 +75,6 @@
         status.innerText = "Caricamento in corso...";
         status.style.color = "blue";
 
-        // GitHub API per leggere il contenuto
         const url = `https://api.github.com/repos/${user}/${repo}/contents/dati_bollettino.json`;
 
         try {
@@ -89,13 +88,11 @@
             if (!response.ok) throw new Error("Errore login o repo non trovato");
 
             const data = await response.json();
-            currentSha = data.sha; // Importante per il salvataggio
+            currentSha = data.sha;
             
-            // Decodifica Base64 del contenuto
-            const content = atob(data.content); // atob decodifica da base64
-            // Decodifica caratteri speciali utf-8
+            // Decodifica Contenuto (base64 -> utf8)
+            const content = atob(data.content);
             const decodedContent = decodeURIComponent(escape(content));
-            
             currentData = JSON.parse(decodedContent);
 
             renderForm(currentData);
@@ -117,16 +114,18 @@
         const container = document.getElementById('zones-container');
         container.innerHTML = "";
 
-        // Ordina le zone
         const sortedZones = Object.keys(data.zone).sort();
 
         sortedZones.forEach(zone => {
             const color = data.zone[zone];
+            // Crea un ID sicuro per la select rimuovendo spazi
+            const safeId = zone.replace(/\s+/g, '_');
+            
             const div = document.createElement('div');
             div.className = 'zone-row';
             div.innerHTML = `
                 <span class="zone-name">${zone}</span>
-                <select id="sel-${zone.replace(/\s+/g, '_')}">
+                <select id="sel-${safeId}" data-original-zone="${zone}">
                     <option value="green" ${color === 'green' ? 'selected' : ''}>🟢 Verde</option>
                     <option value="yellow" ${color === 'yellow' ? 'selected' : ''}>🟡 Giallo</option>
                     <option value="orange" ${color === 'orange' ? 'selected' : ''}>🟠 Arancione</option>
@@ -147,36 +146,56 @@
 
         status.innerText = "Salvataggio in corso...";
 
-        // Aggiorna l'oggetto dati
-        currentData.manual_override = true; // ATTIVA IL BLOCCO PER IL BOT
+        // Aggiorna dati in memoria
+        currentData.manual_override = true;
         currentData.ultimo_aggiornamento = new Date().toLocaleString('it-IT');
         currentData.validita_inizio = document.getElementById('val-start').value;
         currentData.validita_fine = document.getElementById('val-end').value;
 
-        const selects = document.querySelectorAll('select');
+        // Recupera i valori dalle select
+        const selects = document.querySelectorAll('select[data-original-zone]');
         selects.forEach(sel => {
-            const zoneName = sel.id.replace('sel-', '').replace(/_/g, ' '); // Ricostruisce il nome zona approssimativo (non perfetto ma...)
-            // Migliore approccio: iterare le chiavi originali
-        });
-        
-        // Rileggiamo le chiavi originali per essere precisi
-        Object.keys(currentData.zone).forEach(zone => {
-            const selId = "sel-" + zone.replace(/\s+/g, '_');
-            const val = document.getElementById(selId).value;
-            currentData.zone[zone] = val;
+            const originalZone = sel.getAttribute('data-original-zone');
+            currentData.zone[originalZone] = sel.value;
         });
 
-        // Codifica in Base64 per GitHub
-        // Trick per caratteri UTF-8 in base64
+        // Codifica in Base64
         const contentStr = JSON.stringify(currentData, null, 4);
         const contentBase64 = btoa(unescape(encodeURIComponent(contentStr)));
 
         const body = {
             message: "Aggiornamento manuale operatore",
             content: contentBase64,
-            sha: currentSha // Obbligatorio per dire "sto aggiornando questa versione"
+            sha: currentSha
         };
 
         const url = `https://api.github.com/repos/${user}/${repo}/contents/dati_bollettino.json`;
 
         try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: { 
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            });
+
+            if (!response.ok) throw new Error("Errore durante il salvataggio.");
+
+            const resJson = await response.json();
+            currentSha = resJson.content.sha; // Aggiorna SHA per futuri salvataggi
+            
+            status.innerText = "✅ SALVATAGGIO RIUSCITO! Il sito si aggiornerà in 1-2 minuti.";
+            status.style.color = "green";
+
+        } catch (e) {
+            console.error(e);
+            status.innerText = "Errore Salvataggio: " + e.message;
+            status.style.color = "red";
+        }
+    }
+</script>
+</body>
+</html>
