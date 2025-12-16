@@ -6,6 +6,7 @@
     <title>Allerta Basilicata App</title>
     <meta name="theme-color" content="#003366">
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="manifest" href="manifest.json">
     
     <script src="https://unpkg.com/@turf/turf@6/turf.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -13,39 +14,42 @@
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f4f6f8; margin: 0; padding-bottom: 80px; color: #333; }
         
-        /* HEADER */
-        .app-header { background: #003366; color: white; padding: 20px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
-        .app-title { margin: 0; font-size: 1.2rem; font-weight: 700; }
-        .app-subtitle { font-size: 0.8rem; opacity: 0.8; margin-top: 5px; }
+        /* HEADER CON LOGO VISIBILE */
+        .app-header { background: #003366; color: white; padding: 25px 20px; border-radius: 0 0 25px 25px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); text-align: center; }
+        .logo-container { background: white; width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 3px solid #fff; }
+        .logo-container img { max-width: 60px; max-height: 60px; }
+        .app-title { margin: 0; font-size: 1.4rem; font-weight: 800; letter-spacing: 0.5px; text-transform: uppercase; }
+        .app-subtitle { font-size: 0.85rem; opacity: 0.9; margin-top: 5px; font-weight: 300; }
 
         /* CONTAINER */
         .container { padding: 20px; max-width: 600px; margin: 0 auto; }
 
         /* CARDS */
         .card { background: white; border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-        .card-title { font-weight: bold; margin-bottom: 10px; color: #555; display: flex; justify-content: space-between; align-items: center; }
+        .card-title { font-weight: bold; margin-bottom: 15px; color: #555; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #f0f0f0; padding-bottom: 10px; }
         
         /* GPS SECTION */
-        .gps-btn { background: #3498db; color: white; border: none; padding: 12px; width: 100%; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .gps-result { margin-top: 15px; text-align: center; display: none; }
+        .gps-btn { background: #3498db; color: white; border: none; padding: 15px; width: 100%; border-radius: 12px; font-size: 1rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background 0.2s; }
+        .gps-btn:active { transform: scale(0.98); }
+        .gps-result { margin-top: 15px; text-align: center; display: none; animation: fadeIn 0.5s; }
         
         /* FAVORITES */
         .fav-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee; }
         .fav-item:last-child { border-bottom: none; }
         .fav-name { font-weight: 600; font-size: 1.1rem; }
         .fav-zone { font-size: 0.8rem; color: #888; }
-        .risk-badge { padding: 5px 12px; border-radius: 20px; color: white; font-weight: bold; font-size: 0.9rem; text-transform: uppercase; }
+        .risk-badge { padding: 5px 12px; border-radius: 20px; color: white; font-weight: bold; font-size: 0.85rem; text-transform: uppercase; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
         
         /* ADD FAV BUTTON */
-        .add-fav-wrapper { display: flex; gap: 10px; margin-top: 10px; }
-        select { flex-grow: 1; padding: 10px; border-radius: 8px; border: 1px solid #ddd; background: #fff; }
-        .btn-add { background: #2ecc71; color: white; border: none; padding: 10px 15px; border-radius: 8px; cursor: pointer; }
+        .add-fav-wrapper { display: flex; gap: 10px; margin-top: 15px; }
+        select { flex-grow: 1; padding: 12px; border-radius: 8px; border: 1px solid #ddd; background: #fff; font-size: 16px; }
+        .btn-add { background: #2ecc71; color: white; border: none; padding: 0 20px; border-radius: 8px; cursor: pointer; font-size: 1.2rem; }
 
         /* BOTTOM NAV */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 15px 0; border-top: 1px solid #eee; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; }
-        .nav-item { text-align: center; color: #999; text-decoration: none; font-size: 0.8rem; }
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 1000; }
+        .nav-item { text-align: center; color: #999; text-decoration: none; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; }
         .nav-item.active { color: #003366; font-weight: bold; }
-        .nav-item i { font-size: 1.2rem; display: block; margin-bottom: 5px; }
+        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
 
         /* COLORS */
         .bg-green { background-color: #2ecc71; }
@@ -53,39 +57,51 @@
         .bg-orange { background-color: #e67e22; }
         .bg-red { background-color: #e74c3c; }
         .bg-gray { background-color: #ccc; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div class="app-header">
-        <h1 class="app-title">Protezione Civile Basilicata</h1>
-        <div class="app-subtitle" id="data-aggiornamento">Caricamento dati...</div>
+        <div class="logo-container">
+            <img src="logo.png" alt="Logo PC" onerror="this.style.display='none'">
+        </div>
+        <h1 class="app-title">Protezione Civile</h1>
+        <div style="font-size:0.9rem; font-weight:300;">Regione Basilicata</div>
+        <div class="app-subtitle" id="data-aggiornamento" style="margin-top:10px; background:rgba(255,255,255,0.2); display:inline-block; padding:5px 15px; border-radius:15px;">
+            Caricamento dati...
+        </div>
     </div>
 
     <div class="container">
         
         <div class="card">
-            <div class="card-title">📍 LA TUA POSIZIONE</div>
+            <div class="card-title">
+                <span>📍 LA TUA POSIZIONE</span>
+            </div>
             <button class="gps-btn" onclick="trovaPosizione()">
-                <i class="fas fa-location-arrow"></i> Dove mi trovo?
+                <i class="fas fa-location-arrow"></i> Localizzami ora
             </button>
             <div id="gps-result" class="gps-result">
                 <div style="font-size:0.9rem; color:#777; margin-bottom:5px;">Ti trovi a:</div>
-                <div id="gps-comune" style="font-size:1.4rem; font-weight:800; color:#003366;">...</div>
+                <div id="gps-comune" style="font-size:1.5rem; font-weight:800; color:#003366;">...</div>
                 <div id="gps-zona" style="font-size:0.8rem; color:#999; margin-bottom:10px;">...</div>
                 <div id="gps-badge" class="risk-badge bg-gray">...</div>
             </div>
         </div>
 
         <div class="card">
-            <div class="card-title">⭐ I MIEI COMUNI</div>
+            <div class="card-title">
+                <span>⭐ I MIEI COMUNI</span>
+            </div>
             <div id="fav-list">
                 <div style="text-align:center; padding:20px; color:#999;">Nessun comune salvato.</div>
             </div>
             
             <div class="add-fav-wrapper">
                 <select id="comuneSelect">
-                    <option value="">Aggiungi comune...</option>
+                    <option value="">Seleziona comune...</option>
                 </select>
                 <button class="btn-add" onclick="aggiungiPreferito()"><i class="fas fa-plus"></i></button>
             </div>
@@ -95,22 +111,28 @@
 
     <div class="bottom-nav">
         <a href="#" class="nav-item active">
-            <i class="fas fa-home"></i> Home
+            <i class="fas fa-home"></i>
+            Home
         </a>
         <a href="mappa.html" class="nav-item">
-            <i class="fas fa-map"></i> Mappa
+            <i class="fas fa-map-marked-alt"></i>
+            Mappa
         </a>
         <a href="https://t.me/bollettinipcbot" target="_blank" class="nav-item">
-            <i class="fab fa-telegram"></i> Bot
+            <i class="fab fa-telegram-plane"></i>
+            Telegram
         </a>
     </div>
 
     <script>
-        // CONFIGURAZIONE
-        const JSON_URL = "dati_bollettino.json";
-        const GEOJSON_URL = "limits_R_17_municipalities.geojson";
+        // CONFIGURAZIONE URL DATI
+        // Se ospiti su FTP esterno, inserisci qui l'URL completo di GitHub Pages per il JSON
+        // Es: "https://tuonome.github.io/repo/dati_bollettino.json"
+        // Se ospiti su GitHub Pages, lascia solo il nome del file.
+        const DATA_JSON_URL = "dati_bollettino.json";
+        const DATA_GEOJSON_URL = "limits_R_17_municipalities.geojson";
         
-        // MAPPING (Lo stesso della mappa)
+        // MAPPING ZONE
         const municipalityMap = {
             "Abriola": "BASI B", "Accettura": "BASI B", "Acerenza": "BASI B", "Albano di Lucania": "BASI B", "Aliano": "BASI C", "Anzi": "BASI B", "Armento": "BASI C", "Atella": "BASI A1", "Avigliano": "BASI B", 
             "Balvano": "BASI A2", "Banzi": "BASI B", "Baragiano": "BASI A2", "Barile": "BASI A1", "Bella": "BASI A2", "Bernalda": "BASI E2", "Brienza": "BASI A2", "Brindisi Montagna": "BASI B", "Calciano": "BASI B", "Calvello": "BASI B", "Calvera": "BASI C", "Campomaggiore": "BASI B", "Cancellara": "BASI B", "Carbone": "BASI C", "Castelgrande": "BASI A2", "Castelluccio Inferiore": "BASI D", "Castelluccio Superiore": "BASI D", "Castelmezzano": "BASI B", "Castelsaraceno": "BASI D", "Castronuovo di Sant' Andrea": "BASI C", "Cersosimo": "BASI C", "Chiaromonte": "BASI C", "Cirigliano": "BASI C", "Colobraro": "BASI C", "Corleto Perticara": "BASI C", "Craco": "BASI E1", "Episcopia": "BASI C", "Fardella": "BASI C", "Ferrandina": "BASI B", "Filiano": "BASI A1", "Forenza": "BASI A1", "Francavilla in Sinni": "BASI C", "Gallicchio": "BASI C", "Garaguso": "BASI B", "Genzano di Lucania": "BASI B", "Ginestra": "BASI A1", "Gorgoglione": "BASI C", "Grassano": "BASI B", "Grottole": "BASI B", "Grumento Nova": "BASI C", "Guardia Perticara": "BASI C", "Irsina": "BASI B", "Lagonegro": "BASI D", "Latronico": "BASI D", "Laurenzana": "BASI B", "Lauria": "BASI D", "Lavello": "BASI A1", "Maratea": "BASI D", "Marsico Nuovo": "BASI C", "Marsicovetere": "BASI C", "Maschito": "BASI A1", "Matera": "BASI B", "Melfi": "BASI A1", "Miglionico": "BASI B", "Missanello": "BASI C", "Moliterno": "BASI C", "Montalbano Jonico": "BASI E1", "Montemilone": "BASI A1", "Montemurro": "BASI C", "Montescaglioso": "BASI E2", "Muro Lucano": "BASI A2", "Nemoli": "BASI D", "Noepoli": "BASI C", "Nova Siri": "BASI E1", "Oliveto Lucano": "BASI B", "Oppido Lucano": "BASI B", "Palazzo San Gervasio": "BASI A1", "Paterno": "BASI C", "Pescopagano": "BASI A1", "Picerno": "BASI A2", "Pietragalla": "BASI B", "Pietrapertosa": "BASI B", "Pignola": "BASI B", "Pisticci": "BASI E2", "Policoro": "BASI E1", "Pomarico": "BASI B", "Potenza": "BASI B", "Rapolla": "BASI A1", "Rapone": "BASI A1", "Rionero in Vulture": "BASI A1", "Ripacandida": "BASI A1", "Rivello": "BASI D", "Roccanova": "BASI C", "Rotonda": "BASI D", "Rotondella": "BASI E1", "Ruoti": "BASI A2", "Ruvo del Monte": "BASI A1", "Salandra": "BASI B", "San Chirico Nuovo": "BASI B", "San Chirico Raparo": "BASI C", "San Costantino A.": "BASI C", "San Fele": "BASI A1", "San Giorgio Lucano": "BASI C", "San Martino d'Agri": "BASI C", "San Mauro Forte": "BASI B", "San Paolo Albanese": "BASI C", "San Severino Lucano": "BASI C", "Sant' Angelo Le Fratte": "BASI A2", "Sant' Arcangelo": "BASI C", "Sarconi": "BASI C", "Sasso di Castalda": "BASI A2", "Satriano di Lucania": "BASI A2", "Savoia di Lucania": "BASI A2", "Scanzano Jonico": "BASI E1", "Senise": "BASI C", "Spinoso": "BASI C", "Stigliano": "BASI C", "Teana": "BASI C", "Terranova di Pollino": "BASI C", "Tito": "BASI A2", "Tolve": "BASI B", "Tramutola": "BASI C", "Trecchina": "BASI D", "Tricarico": "BASI B", "Trivigno": "BASI B", "Tursi": "BASI C", "Vaglio Basilicata": "BASI B", "Valsinni": "BASI C", "Venosa": "BASI A1", "Vietri di Potenza": "BASI A2", "Viggianello": "BASI D", "Viggiano": "BASI C"
@@ -122,30 +144,29 @@
         let bollettinoData = null;
         let geoJsonData = null;
 
-        // INIZIALIZZAZIONE
         async function initApp() {
-            // 1. Carica il Bollettino
             try {
-                const res = await fetch(JSON_URL + '?t=' + Date.now());
+                // Cache busting per scaricare sempre l'ultima versione
+                const res = await fetch(DATA_JSON_URL + '?t=' + Date.now());
+                if(!res.ok) throw new Error("File JSON non trovato");
+                
                 bollettinoData = await res.json();
                 document.getElementById('data-aggiornamento').innerText = `Validità: ${bollettinoData.validita_inizio} - ${bollettinoData.validita_fine}`;
                 
-                // Popola select preferiti
                 popolaSelectComuni();
-                
-                // Renderizza preferiti salvati
                 renderPreferiti();
+            } catch(e) { 
+                console.error("Errore Dati", e); 
+                document.getElementById('data-aggiornamento').innerText = "Errore caricamento dati";
+            }
 
-            } catch(e) { console.error("Errore Dati", e); }
-
-            // 2. Carica GeoJSON (In background per il GPS)
             try {
-                const resGeo = await fetch(GEOJSON_URL);
+                const resGeo = await fetch(DATA_GEOJSON_URL);
                 geoJsonData = await resGeo.json();
             } catch(e) { console.error("Errore GeoJSON", e); }
         }
 
-        // --- FUNZIONI PREFERITI ---
+        // --- FUNZIONI PREFERITI (LocalStorage) ---
         function getSavedComuni() {
             const saved = localStorage.getItem('pc_preferiti');
             return saved ? JSON.parse(saved) : [];
@@ -211,7 +232,7 @@
             });
         }
 
-        // --- MOTORE DATI (Uguale alla mappa) ---
+        // --- MOTORE DATI ---
         function getDatiComune(nomeComune) {
             if(!bollettinoData) return { colorKey: "default", label: "Caricamento...", zona: "?" };
             
@@ -228,35 +249,36 @@
             return { colorKey: colorKey, label: labelsUI[colorKey], zona: zona };
         }
 
-        // --- GEOLOCALIZZAZIONE AVANZATA (TURF.JS) ---
+        // --- GEOLOCALIZZAZIONE ---
         function trovaPosizione() {
             const btn = document.querySelector('.gps-btn');
             const resultBox = document.getElementById('gps-result');
             
             if(!geoJsonData) { alert("Attendi il caricamento della mappa..."); return; }
 
-            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ricerca satellite...';
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ricerca GPS in corso...';
 
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
-                    const userPoint = turf.point([lon, lat]); // Turf usa Longitudine, Latitudine
+                    const userPoint = turf.point([lon, lat]);
 
-                    // Cerca in quale poligono cade il punto
                     let comuneTrovato = null;
                     
-                    // Turf loop
                     for(const feature of geoJsonData.features) {
                         if (turf.booleanPointInPolygon(userPoint, feature)) {
-                            // Trovato! Recupera il nome
-                            comuneTrovato = feature.properties.comune || feature.properties.nome || feature.properties.NAME_3 || feature.properties.COMUNE;
+                            // Cerca tra le proprietà più comuni del GeoJSON
+                            comuneTrovato = feature.properties.comune || feature.properties.nome || feature.properties.NAME_3 || feature.properties.COMUNE || feature.properties.name;
                             break;
                         }
                     }
 
                     if(comuneTrovato) {
+                        // Normalizzazione nome se necessario (es. maiuscolo/minuscolo) per trovare match nella mappa
+                        // Qui facciamo un check semplice, potremmo dover aggiungere normalizzazione se fallisce
                         const dati = getDatiComune(comuneTrovato);
+                        
                         document.getElementById('gps-comune').innerText = comuneTrovato;
                         document.getElementById('gps-zona').innerText = "Zona: " + dati.zona;
                         const badge = document.getElementById('gps-badge');
@@ -266,14 +288,14 @@
                         btn.style.display = 'none';
                         resultBox.style.display = 'block';
                     } else {
-                        btn.innerHTML = '❌ Fuori dalla Basilicata';
-                        alert("Non ti trovi all'interno di un comune della mappa caricata.");
+                        btn.innerHTML = '❌ Fuori zona mappata';
+                        alert("Non ti trovi all'interno dei confini della Basilicata caricati.");
                     }
                 },
                 (err) => {
                     console.error(err);
-                    btn.innerHTML = '❌ Errore GPS';
-                    alert("Impossibile accedere alla posizione. Verifica i permessi.");
+                    btn.innerHTML = '❌ Errore o Permesso Negato';
+                    alert("Impossibile accedere alla posizione. Verifica di aver dato i permessi GPS al browser.");
                 },
                 { enableHighAccuracy: true }
             );
