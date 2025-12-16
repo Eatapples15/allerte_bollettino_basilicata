@@ -2,65 +2,201 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Widget Allerta</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generatore Widget Allerta Meteo - Regione Basilicata</title>
     <style>
-        body { font-family: sans-serif; margin: 0; padding: 10px; background: #fff; }
-        .widget-container { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; max-width: 300px; margin: 0 auto;}
-        .widget-header { background: #003366; color: white; padding: 10px; text-align: center; font-size: 14px; font-weight: bold; }
-        .zone-list { list-style: none; padding: 0; margin: 0; }
-        .zone-item { 
-            padding: 8px 15px; border-bottom: 1px solid #eee; display: flex; 
-            justify-content: space-between; align-items: center; font-size: 13px;
-        }
-        .status-dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
-        .green { background-color: #28a745; }
-        .yellow { background-color: #ffc107; }
-        .orange { background-color: #fd7e14; }
-        .red { background-color: #dc3545; }
-        .footer { font-size: 10px; text-align: center; padding: 5px; color: #777; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f6f8; color: #333; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 900px; width: 100%; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; margin-bottom: 10px; }
+        p.subtitle { text-align: center; color: #7f8c8d; margin-bottom: 30px; }
+        .step-box { background: #eef2f5; padding: 20px; border-radius: 8px; margin-bottom: 30px; border-left: 5px solid #3498db; }
+        label { font-weight: bold; display: block; margin-bottom: 8px; }
+        select { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; background: white; cursor: pointer; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        @media (max-width: 768px) { .grid { grid-template-columns: 1fr; } }
+        .preview-area { display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+        .preview-label { font-weight: bold; margin-bottom: 10px; color: #2ecc71; text-transform: uppercase; font-size: 0.9em; }
+        textarea { width: 100%; height: 380px; padding: 10px; font-family: monospace; font-size: 12px; border: 1px solid #ccc; border-radius: 4px; background: #2c3e50; color: #ecf0f1; resize: none; }
+        .btn-copy { background-color: #3498db; color: white; border: none; padding: 12px 20px; font-size: 16px; border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px; transition: background 0.3s; font-weight: bold; }
+        .btn-copy:hover { background-color: #2980b9; }
+        .footer { margin-top: 40px; text-align: center; font-size: 0.9em; color: #95a5a6; border-top: 1px solid #eee; padding-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="widget-container">
-        <div class="widget-header" id="w-title">ALLERTA BASILICATA</div>
-        <ul class="zone-list" id="zone-list">
-            <li class="zone-item" style="justify-content:center;">Caricamento...</li>
-        </ul>
+    <div class="container">
+        <h1>Portale Integrazione Allerta Meteo</h1>
+        <p class="subtitle">Seleziona il tuo Comune per generare il codice ufficiale da inserire nel sito istituzionale.</p>
+
+        <div class="step-box">
+            <label for="comuneSelect">1. Seleziona il Comune:</label>
+            <select id="comuneSelect" onchange="generaCodice()">
+                <option value="" disabled selected>-- Cerca il tuo Comune --</option>
+            </select>
+        </div>
+
+        <div class="grid" id="outputArea" style="opacity: 0.5; pointer-events: none; transition: opacity 0.3s;">
+            <div class="preview-area">
+                <div class="preview-label">Anteprima Live</div>
+                <div id="widget-container"></div>
+            </div>
+            <div>
+                <div class="preview-label" style="color:#3498db;">Codice HTML da Copiare</div>
+                <textarea id="codeOutput" readonly onclick="this.select()">Seleziona un comune per vedere il codice.</textarea>
+                <button class="btn-copy" onclick="copiaCodice()">📋 Copia Codice negli Appunti</button>
+                <p id="copyMsg" style="text-align:center; color:#2ecc71; font-size:0.9em; margin-top:5px; display:none;">Copiato!</p>
+            </div>
+        </div>
+
         <div class="footer">
-            Fonte: Protezione Civile Regione Basilicata<br>
-            <span id="w-date"></span>
+            Servizio a cura della Protezione Civile Regione Basilicata.<br>
+            Il codice si aggiorna automaticamente in base al Bollettino Ufficiale.
         </div>
     </div>
 
     <script>
-        const translateColor = {
-            "green": "Verde", "yellow": "Gialla", "orange": "Arancione", "red": "Rossa"
+        // =========================================================
+        // 🔴 CONFIGURAZIONE - MODIFICA QUI IL TUO URL GITHUB PAGES
+        // =========================================================
+        
+        // Esempio: "https://eatapples15.github.io/allerta_basilicata"
+        // NON mettere lo slash finale
+        const BASE_URL = "https://eatapples15.github.io/allerte_bollettino_basilicata"; 
+        
+        const LOGO_URL = "https://raw.githubusercontent.com/Eatapples15/portalesoup/f6781290cd557b884a904c4869326972a044f78a/logo.png";
+
+        // Tabella di conversione Comune -> Zona (Necessaria per assegnare la zona giusta)
+        const municipalityMap = {
+            "Abriola": "BASI B", "Accettura": "BASI B", "Acerenza": "BASI B", "Albano di Lucania": "BASI B", "Aliano": "BASI C", "Anzi": "BASI B", "Armento": "BASI C", "Atella": "BASI A1", "Avigliano": "BASI B", 
+            "Balvano": "BASI A2", "Banzi": "BASI B", "Baragiano": "BASI A2", "Barile": "BASI A1", "Bella": "BASI A2", "Bernalda": "BASI E2", "Brienza": "BASI A2", "Brindisi Montagna": "BASI B", 
+            "Calciano": "BASI B", "Calvello": "BASI B", "Calvera": "BASI C", "Campomaggiore": "BASI B", "Cancellara": "BASI B", "Carbone": "BASI C", "Castelgrande": "BASI A2", "Castelluccio Inferiore": "BASI D", "Castelluccio Superiore": "BASI D", "Castelmezzano": "BASI B", "Castelsaraceno": "BASI D", "Castronuovo di Sant' Andrea": "BASI C", "Cersosimo": "BASI C", "Chiaromonte": "BASI C", "Cirigliano": "BASI C", "Colobraro": "BASI C", "Corleto Perticara": "BASI C", "Craco": "BASI E1", 
+            "Episcopia": "BASI C", "Fardella": "BASI C", "Ferrandina": "BASI B", "Filiano": "BASI A1", "Forenza": "BASI A1", "Francavilla in Sinni": "BASI C", 
+            "Gallicchio": "BASI C", "Garaguso": "BASI B", "Genzano di Lucania": "BASI B", "Ginestra": "BASI A1", "Gorgoglione": "BASI C", "Grassano": "BASI B", "Grottole": "BASI B", "Grumento Nova": "BASI C", "Guardia Perticara": "BASI C", 
+            "Irsina": "BASI B", "Lagonegro": "BASI D", "Latronico": "BASI D", "Laurenzana": "BASI B", "Lauria": "BASI D", "Lavello": "BASI A1", 
+            "Maratea": "BASI D", "Marsico Nuovo": "BASI C", "Marsicovetere": "BASI C", "Maschito": "BASI A1", "Matera": "BASI B", "Melfi": "BASI A1", "Miglionico": "BASI B", "Missanello": "BASI C", "Moliterno": "BASI C", "Montalbano Jonico": "BASI E1", "Montemilone": "BASI A1", "Montemurro": "BASI C", "Montescaglioso": "BASI E2", "Muro Lucano": "BASI A2", 
+            "Nemoli": "BASI D", "Noepoli": "BASI C", "Nova Siri": "BASI E1", 
+            "Oliveto Lucano": "BASI B", "Oppido Lucano": "BASI B", 
+            "Palazzo San Gervasio": "BASI A1", "Paterno": "BASI C", "Pescopagano": "BASI A1", "Picerno": "BASI A2", "Pietragalla": "BASI B", "Pietrapertosa": "BASI B", "Pignola": "BASI B", "Pisticci": "BASI E2", "Policoro": "BASI E1", "Pomarico": "BASI B", "Potenza": "BASI B", 
+            "Rapolla": "BASI A1", "Rapone": "BASI A1", "Rionero in Vulture": "BASI A1", "Ripacandida": "BASI A1", "Rivello": "BASI D", "Roccanova": "BASI C", "Rotonda": "BASI D", "Rotondella": "BASI E1", "Ruoti": "BASI A2", "Ruvo del Monte": "BASI A1", 
+            "Salandra": "BASI B", "San Chirico Nuovo": "BASI B", "San Chirico Raparo": "BASI C", "San Costantino A.": "BASI C", "San Fele": "BASI A1", "San Giorgio Lucano": "BASI C", "San Martino d'Agri": "BASI C", "San Mauro Forte": "BASI B", "San Paolo Albanese": "BASI C", "San Severino Lucano": "BASI C", "Sant' Angelo Le Fratte": "BASI A2", "Sant' Arcangelo": "BASI C", "Sarconi": "BASI C", "Sasso di Castalda": "BASI A2", "Satriano di Lucania": "BASI A2", "Savoia di Lucania": "BASI A2", "Scanzano Jonico": "BASI E1", "Senise": "BASI C", "Spinoso": "BASI C", "Stigliano": "BASI C", 
+            "Teana": "BASI C", "Terranova di Pollino": "BASI C", "Tito": "BASI A2", "Tolve": "BASI B", "Tramutola": "BASI C", "Trecchina": "BASI D", "Tricarico": "BASI B", "Trivigno": "BASI B", "Tursi": "BASI C", 
+            "Vaglio Basilicata": "BASI B", "Valsinni": "BASI C", "Venosa": "BASI A1", "Vietri di Potenza": "BASI A2", "Viggianello": "BASI D", "Viggiano": "BASI C"
         };
 
-        async function loadWidget() {
-            try {
-                const response = await fetch('dati_bollettino.json');
-                const data = await response.json();
+        // Popola la select ordinando i comuni A-Z
+        const select = document.getElementById('comuneSelect');
+        const sortedComuni = Object.keys(municipalityMap).sort();
+        sortedComuni.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c; // Il valore è il nome del comune
+            opt.innerText = c;
+            select.appendChild(opt);
+        });
 
-                document.getElementById('w-date').innerText = `Aggiornato al: ${data.data_bollettino}`;
-                const list = document.getElementById('zone-list');
-                list.innerHTML = '';
+        // Funzione Principale
+        function generaCodice() {
+            const comune = select.value;
+            if (!comune) return;
 
-                for (const [zone, color] of Object.entries(data.zone)) {
-                    const li = document.createElement('li');
-                    li.className = 'zone-item';
-                    li.innerHTML = `
-                        <span>${zone}</span>
-                        <span class="status-dot ${color}" title="${translateColor[color]}"></span>
-                    `;
-                    list.appendChild(li);
+            // Troviamo la zona associata per inserirla nel codice generato
+            const zonaAssociata = municipalityMap[comune] || "Zona Non Definita";
+            const jsonUrlFinale = BASE_URL + "/dati_bollettino.json";
+
+            // Attiva output
+            const outputArea = document.getElementById('outputArea');
+            outputArea.style.opacity = "1";
+            outputArea.style.pointerEvents = "auto";
+
+            // COSTRUZIONE DEL CODICE DA COPIARE
+            // Nota: Qui dentro costruiamo un piccolo script autosufficiente che andrà sul sito del comune.
+            // Non serve che il sito del comune abbia la mappa dei comuni, perché noi gli diciamo già:
+            // "Tu sei Melfi e devi guardare la zona BASI A1".
+            
+            const templateCodice = `<div id="widget-allerta-pc" style="font-family:'Segoe UI',Arial,sans-serif;border:1px solid #e0e0e0;border-radius:12px;width:280px;background:#fff;padding:20px;box-shadow:0 4px 15px rgba(0,0,0,0.08);text-align:center;display:flex;flex-direction:column;align-items:center;margin:0 auto;">
+    <img src="${LOGO_URL}" alt="Logo PC" style="height:50px;width:auto;margin-bottom:10px;">
+    <div style="font-size:10px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:5px;">Protezione Civile Basilicata</div>
+    <div style="font-size:16px;font-weight:bold;margin-bottom:15px;color:#333;line-height:1.2;">COMUNE DI <br><span style="color:#0056b3;">${comune.toUpperCase()}</span></div>
+    
+    <div id="pc-semaforo" style="width:70px;height:70px;border-radius:50%;background-color:#eee;margin:0 auto;border:4px solid #f9f9f9;transition:all 0.5s ease;"></div>
+    
+    <div id="pc-livello-testo" style="font-size:18px;font-weight:800;margin-top:15px;color:#ccc;text-transform:uppercase;">Caricamento...</div>
+    
+    <hr style="border:0;border-top:1px solid #f0f0f0;margin:15px 0;width:100%;">
+    
+    <div id="pc-data" style="font-size:10px;color:#aaa;">Sincronizzazione...</div>
+</div>
+
+<script>
+(function() {
+    const JSON_URL = "${jsonUrlFinale}";
+    const MY_ZONE = "${zonaAssociata}"; // La zona è pre-calcolata dal generatore
+    
+    const colors = { "green": "#2ecc71", "yellow": "#f1c40f", "orange": "#e67e22", "red": "#e74c3c" };
+    const labels = { "green": "ORDINARIA (Verde)", "yellow": "ATTENZIONE (Gialla)", "orange": "PREALLARME (Arancione)", "red": "ALLARME (Rossa)" };
+    const textColors = { "green": "#27ae60", "yellow": "#d4ac0d", "orange": "#d35400", "red": "#c0392b" };
+
+    fetch(JSON_URL + '?t=' + new Date().getTime())
+        .then(res => res.json())
+        .then(data => {
+            let colorKey = "green"; // Default
+            
+            // Cerca la zona nel JSON
+            // Il JSON ha chiavi come "BASI A1", "BASI B". Usiamo includes.
+            for (const [key, value] of Object.entries(data.zone)) {
+                if (MY_ZONE.toUpperCase().includes(key.toUpperCase())) {
+                    colorKey = value;
+                    break;
                 }
-            } catch (e) {
-                document.getElementById('zone-list').innerHTML = '<li class="zone-item">Dati non disponibili</li>';
             }
+
+            // Aggiorna UI
+            const sem = document.getElementById('pc-semaforo');
+            const txt = document.getElementById('pc-livello-testo');
+            
+            sem.style.backgroundColor = colors[colorKey];
+            sem.style.boxShadow = "0 0 20px " + colors[colorKey] + "66";
+            
+            txt.innerText = labels[colorKey];
+            txt.style.color = textColors[colorKey];
+            
+            document.getElementById('pc-data').innerText = "Validità: " + data.validita_inizio;
+        })
+        .catch(e => { 
+            console.error(e); 
+            document.getElementById('pc-livello-testo').innerText = "Dati non disp."; 
+        });
+})();
+<\/script>`;
+
+            document.getElementById('codeOutput').value = templateCodice;
+
+            // Renderizza anteprima (Iframe sicuro)
+            const container = document.getElementById('widget-container');
+            container.innerHTML = ""; 
+            
+            const iframe = document.createElement('iframe');
+            iframe.style.width = "320px";
+            iframe.style.height = "480px"; 
+            iframe.style.border = "none";
+            iframe.style.background = "transparent";
+            container.appendChild(iframe);
+            
+            const doc = iframe.contentWindow.document;
+            doc.open();
+            doc.write('<html><body style="display:flex;justify-content:center;padding-top:10px;background:transparent;">' + templateCodice + '</body></html>');
+            doc.close();
         }
-        loadWidget();
+
+        function copiaCodice() {
+            const copyText = document.getElementById("codeOutput");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); 
+            navigator.clipboard.writeText(copyText.value);
+            
+            const msg = document.getElementById('copyMsg');
+            msg.style.display = 'block';
+            setTimeout(() => msg.style.display = 'none', 2000);
+        }
     </script>
 </body>
 </html>
