@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Widget Allerta</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 10px; background: #fff; }
+        .widget-container { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; max-width: 300px; margin: 0 auto;}
+        .widget-header { background: #003366; color: white; padding: 10px; text-align: center; font-size: 14px; font-weight: bold; }
+        .zone-list { list-style: none; padding: 0; margin: 0; }
+        .zone-item { 
+            padding: 8px 15px; border-bottom: 1px solid #eee; display: flex; 
+            justify-content: space-between; align-items: center; font-size: 13px;
+        }
+        .status-dot { height: 12px; width: 12px; border-radius: 50%; display: inline-block; }
+        .green { background-color: #28a745; }
+        .yellow { background-color: #ffc107; }
+        .orange { background-color: #fd7e14; }
+        .red { background-color: #dc3545; }
+        .footer { font-size: 10px; text-align: center; padding: 5px; color: #777; }
+    </style>
+</head>
+<body>
+
+    <div class="widget-container">
+        <div class="widget-header" id="w-title">ALLERTA BASILICATA</div>
+        <ul class="zone-list" id="zone-list">
+            <li class="zone-item" style="justify-content:center;">Caricamento...</li>
+        </ul>
+        <div class="footer">
+            Fonte: Protezione Civile Regione Basilicata<br>
+            <span id="w-date"></span>
+        </div>
+    </div>
+
+    <script>
+        const translateColor = {
+            "green": "Verde", "yellow": "Gialla", "orange": "Arancione", "red": "Rossa"
+        };
+
+        async function loadWidget() {
+            try {
+                const response = await fetch('dati_bollettino.json');
+                const data = await response.json();
+
+                document.getElementById('w-date').innerText = `Aggiornato al: ${data.data_bollettino}`;
+                const list = document.getElementById('zone-list');
+                list.innerHTML = '';
+
+                for (const [zone, color] of Object.entries(data.zone)) {
+                    const li = document.createElement('li');
+                    li.className = 'zone-item';
+                    li.innerHTML = `
+                        <span>${zone}</span>
+                        <span class="status-dot ${color}" title="${translateColor[color]}"></span>
+                    `;
+                    list.appendChild(li);
+                }
+            } catch (e) {
+                document.getElementById('zone-list').innerHTML = '<li class="zone-item">Dati non disponibili</li>';
+            }
+        }
+        loadWidget();
+    </script>
+</body>
+</html>
