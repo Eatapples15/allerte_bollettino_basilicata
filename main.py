@@ -7,7 +7,6 @@ import re
 import sys
 
 # --- CONFIGURAZIONE ---
-# Ora riprendiamo i dati dai SEGRETI di GitHub per sicurezza
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 
@@ -37,7 +36,7 @@ def send_telegram_message(message, file_path=None):
         print(f"❌ Errore invio Telegram: {e}")
 
 def parse_alert_color(text):
-    """Converte il testo del PDF in codice colore standard"""
+    """Converte il testo del PDF in codice colore standard (inglese per il JSON)"""
     if not text: return "green"
     text = str(text).upper()
     if "ROSS" in text: return "red"
@@ -50,13 +49,26 @@ def get_risk_level(color):
     levels = {"green": 0, "yellow": 1, "orange": 2, "red": 3}
     return levels.get(color, 0)
 
+def extract_validity_info(text):
+    """Cerca le date di validità nel testo della prima pagina"""
+    start_validity = "N/D"
+    end_validity = "N/D"
+    
+    # Cerca pattern tipo "Inizio validità: ore 14:00 del 16/12/2025"
+    start_match = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
+    end_match = re.search(r"Fine validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
+    
+    if start_match: start_validity = start_match.group(1).strip()
+    if end_match: end_validity = end_match.group(1).strip()
+    
+    return start_validity, end_validity
+
 def get_pdf_url():
     """Trova il link del bollettino odierno"""
     try:
         r = requests.get(LIST_URL)
         from bs4 import BeautifulSoup
         soup = BeautifulSoup(r.text, 'html.parser')
-        # Cerca il primo link che contiene "Bollettino_Criticita"
         for a in soup.find_all('a', href=True):
             if "Bollettino_Criticita" in a['href']:
                 full_url = BASE_URL + a['href'] if not a['href'].startswith('http') else a['href']
@@ -86,46 +98,47 @@ def main():
     # 2. Parsing del PDF
     extracted_data = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "data_bollettino": datetime.date.today().strftime("%d/%m/%Y"), # Fallback
+        "validita_inizio": "",
+        "validita_fine": "",
         "url_bollettino": pdf_url,
         "zone": {}
     }
 
     try:
         with pdfplumber.open(PDF_FILENAME) as pdf:
-            # Di solito la tabella è a pagina 1
             page = pdf.pages[0]
+            text = page.extract_text()
             tables = page.extract_tables()
             
+            # Estrazione Date Validità
+            v_start, v_end = extract_validity_info(text)
+            extracted_data["validita_inizio"] = v_start
+            extracted_data["validita_fine"] = v_end
+            
+            # Cerca di estrarre la data del bollettino dal testo se possibile
+            date_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", text)
+            if date_match:
+                extracted_data["data_bollettino"] = date_match.group(1)
+
             if tables:
-                # Prendiamo la prima tabella trovata
                 table = tables[0]
-                
-                # Iteriamo le righe
                 for row in table:
-                    # Pulizia della riga
                     cleaned_row = [str(cell).replace("\n", " ").strip() if cell else "" for cell in row]
-                    
-                    # Cerchiamo le righe che iniziano con "BASI"
                     if len(cleaned_row) >= 2 and "BASI" in cleaned_row[0]:
-                        zone_name = cleaned_row[0] # Es: BASI A1
-                        
-                        # Estraggo i colori dalle colonne (Idrogeologico, Temporali, Idraulico)
-                        # Nota: le colonne potrebbero variare leggermente, prendiamo le prime 3 dopo il nome
+                        zone_name = cleaned_row[0]
                         c1 = parse_alert_color(cleaned_row[1]) if len(cleaned_row) > 1 else "green"
                         c2 = parse_alert_color(cleaned_row[2]) if len(cleaned_row) > 2 else "green"
                         c3 = parse_alert_color(cleaned_row[3]) if len(cleaned_row) > 3 else "green"
                         
-                        # Calcolo il rischio massimo per colorare la mappa
                         colors = [c1, c2, c3]
                         max_risk = 0
                         final_color = "green"
-                        
                         for c in colors:
                             lvl = get_risk_level(c)
                             if lvl > max_risk:
                                 max_risk = lvl
                                 final_color = c
-                        
                         extracted_data["zone"][zone_name] = final_color
             else:
                 print("⚠️ Nessuna tabella trovata nel PDF.")
@@ -133,27 +146,35 @@ def main():
     except Exception as e:
         print(f"❌ Errore parsing PDF: {e}")
 
-    # 3. Controllo se i dati sono validi
     if not extracted_data["zone"]:
-        print("⚠️ Attenzione: Nessuna zona estratta. Forse il formato del PDF è cambiato.")
-        # Inviamo comunque il PDF ma con un avviso
-        send_telegram_message("⚠️ *Attenzione*: Bollettino pubblicato, ma impossibile leggere i dati automatici. Controllare il PDF.", PDF_FILENAME)
+        send_telegram_message("⚠️ *Attenzione*: Impossibile leggere i dati automatici dal PDF.", PDF_FILENAME)
         return
 
-    # 4. Salvataggio JSON (Fondamentale per la Mappa)
+    # 3. Salvataggio JSON (Mantiene i colori in inglese per compatibilità codice futuro)
     with open(JSON_FILENAME, 'w') as f:
         json.dump(extracted_data, f, indent=4)
     print("✅ File JSON aggiornato.")
 
-    # 5. Invio Notifica Telegram Formattata
+    # 4. Invio Notifica Telegram (Traduzione colori in Italiano QUI)
+    
+    # Dizionario traduzione visuale
+    color_map_it = {
+        "green": "VERDE",
+        "yellow": "GIALLO",
+        "orange": "ARANCIONE",
+        "red": "ROSSO"
+    }
     emoji_map = {"green": "🟢", "yellow": "🟡", "orange": "🟠", "red": "🔴"}
     
-    msg = f"🚨 *Bollettino Criticità Basilicata*\n"
-    msg += f"📅 {extracted_data['ultimo_aggiornamento']}\n\n"
+    # Costruzione Messaggio
+    msg = f"🚨 *Bollettino criticità regionale del {extracted_data['data_bollettino']}*\n\n"
+    msg += f"⬇️ _Inizio validità:_ {extracted_data['validita_inizio']}\n"
+    msg += f"End _Fine validità:_ {extracted_data['validita_fine']}\n\n"
     
-    for zona, colore in extracted_data["zone"].items():
-        icon = emoji_map.get(colore, "⚪")
-        msg += f"{icon} *{zona}*: {colore.upper()}\n"
+    for zona, colore_eng in extracted_data["zone"].items():
+        icon = emoji_map.get(colore_eng, "⚪")
+        colore_ita = color_map_it.get(colore_eng, colore_eng.upper())
+        msg += f"{icon} *{zona}*: {colore_ita}\n"
     
     msg += "\n📍 _Mappa aggiornata sul sito_"
     
