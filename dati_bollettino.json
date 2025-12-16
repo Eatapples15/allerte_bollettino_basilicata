@@ -1,33 +1,13 @@
 {
-    "data_bollettino": "16/12/2025",
-    "zone": [
-        {
-            "nome": "BASI A1",
-            "colore": "green"
-        },
-        {
-            "nome": "BASI A2",
-            "colore": "green"
-        },
-        {
-            "nome": "BASI B",
-            "colore": "green"
-        },
-        {
-            "nome": "BASI C",
-            "colore": "green"
-        },
-        {
-            "nome": "BASI D",
-            "colore": "green"
-        },
-        {
-            "nome": "BASI E1",
-            "colore": "green"
-        },
-        {
-            "nome": "BASI E2",
-            "colore": "green"
-        }
-    ]
+    "ultimo_aggiornamento": "16/12/2025 16:07",
+    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_16_12_2025.pdf",
+    "zone": {
+        "BASI A1": "green",
+        "BASI A2": "green",
+        "BASI B": "green",
+        "BASI C": "green",
+        "BASI D": "green",
+        "BASI E1": "green",
+        "BASI E2": "green"
+    }
 }
