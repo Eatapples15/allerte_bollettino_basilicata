@@ -2,95 +2,85 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mappa Rischio Idrogeologico Basilicata</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mappa Allerta</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; display: flex; flex-direction: column; height: 100vh; }
-        #map-container { flex-grow: 1; position: relative; }
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; display: flex; flex-direction: column; height: 100vh; }
+        #map-container { flex-grow: 1; position: relative; padding-bottom: 60px; /* Spazio per bottom nav */ }
         #map { height: 100%; width: 100%; background: #f0f0f0; }
-        #footer-info { background-color: #2c3e50; color: white; padding: 12px; text-align: center; font-size: 1rem; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); z-index: 2000; }
-        #last-update-time { font-weight: bold; color: #f1c40f; }
-
-        #logo-box { position: absolute; top: 15px; right: 15px; z-index: 1000; background: rgba(255, 255, 255, 0.9); padding: 10px; border-radius: 8px; box-shadow: 0 0 15px rgba(0,0,0,0.2); }
-        #logo-box img { height: 70px; width: auto; display: block; }
-
-        .info-panel { padding: 15px; background: rgba(255, 255, 255, 0.95); position: absolute; bottom: 30px; left: 20px; z-index: 1000; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); min-width: 180px; }
-        .legenda-item { display: flex; align-items: center; margin-bottom: 5px; font-size: 14px; }
-        .color-box { width: 18px; height: 18px; border-radius: 50%; margin-right: 10px; border: 1px solid #999; }
         
-        #loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.3); font-weight: bold; }
+        /* INFO PANEL */
+        .info-panel { padding: 10px; background: rgba(255, 255, 255, 0.95); position: absolute; top: 10px; left: 10px; z-index: 1000; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .legenda-item { display: flex; align-items: center; margin-bottom: 5px; font-size: 12px; }
+        .color-box { width: 15px; height: 15px; border-radius: 50%; margin-right: 8px; border: 1px solid #999; }
+        
+        #loader { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 2000; background: white; padding: 15px 25px; border-radius: 20px; box-shadow: 0 5px 20px rgba(0,0,0,0.2); font-weight: bold; }
 
-        @media (max-width: 600px) { #logo-box img { height: 50px; } .info-panel { bottom: 20px; left: 10px; } }
+        /* BOTTOM NAV (Identica a index.html) */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; background: white; display: flex; justify-content: space-around; padding: 12px 0; border-top: 1px solid #eee; box-shadow: 0 -5px 15px rgba(0,0,0,0.05); z-index: 3000; }
+        .nav-item { text-align: center; color: #999; text-decoration: none; font-size: 0.75rem; display: flex; flex-direction: column; align-items: center; }
+        .nav-item.active { color: #003366; font-weight: bold; }
+        .nav-item i { font-size: 1.4rem; margin-bottom: 4px; }
     </style>
 </head>
 <body>
     <div id="map-container">
-        <div id="logo-box"><img src="logo.png" alt="Protezione Civile Basilicata" onerror="this.style.display='none'"></div>
-        
-        <div id="loader">🔄 Caricamento dati...</div>
+        <div id="loader">🔄 Caricamento mappa...</div>
         
         <div class="info-panel">
-            <h4 style="margin:0 0 10px 0;">Legenda Allerta</h4>
-            <div class="legenda-item"><div class="color-box" style="background:#2ecc71"></div> Verde (Ordinaria)</div>
-            <div class="legenda-item"><div class="color-box" style="background:#f1c40f"></div> Gialla (Attenzione)</div>
-            <div class="legenda-item"><div class="color-box" style="background:#e67e22"></div> Arancione (Preallarme)</div>
-            <div class="legenda-item"><div class="color-box" style="background:#e74c3c"></div> Rossa (Allarme)</div>
+            <h4 style="margin:0 0 5px 0; font-size:14px;">Legenda</h4>
+            <div class="legenda-item"><div class="color-box" style="background:#2ecc71"></div> Verde</div>
+            <div class="legenda-item"><div class="color-box" style="background:#f1c40f"></div> Gialla</div>
+            <div class="legenda-item"><div class="color-box" style="background:#e67e22"></div> Arancione</div>
+            <div class="legenda-item"><div class="color-box" style="background:#e74c3c"></div> Rossa</div>
         </div>
         <div id="map"></div>
     </div>
-    <div id="footer-info">Validità: <span id="last-update-time">--/--/----</span></div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <div class="bottom-nav">
+        <a href="index.html" class="nav-item">
+            <i class="fas fa-home"></i> Home
+        </a>
+        <a href="#" class="nav-item active">
+            <i class="fas fa-map-marked-alt"></i> Mappa
+        </a>
+        <a href="https://t.me/bollettinipcbot" target="_blank" class="nav-item">
+            <i class="fab fa-telegram-plane"></i> Telegram
+        </a>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        const JSON_URL = "dati_bollettino.json"; 
-        const GEOJSON_URL = "limits_R_17_municipalities.geojson"; 
+        // CONFIGURAZIONE URL
+        const DATA_JSON_URL = "dati_bollettino.json";
+        const DATA_GEOJSON_URL = "limits_R_17_municipalities.geojson";
 
-        const colors = {
-            "green": "#2ecc71", "yellow": "#f1c40f", "orange": "#e67e22", "red": "#e74c3c", "default": "#cccccc"
-        };
-        const labels = {
-            "green": "ORDINARIA", "yellow": "ATTENZIONE", "orange": "PREALLARME", "red": "ALLARME", "default": "N/D"
-        };
+        const colors = { "green": "#2ecc71", "yellow": "#f1c40f", "orange": "#e67e22", "red": "#e74c3c", "default": "#cccccc" };
+        const labels = { "green": "ORDINARIA", "yellow": "ATTENZIONE", "orange": "PREALLARME", "red": "ALLARME", "default": "N/D" };
 
-        // --- MAPPATURA UFFICIALE (Zone) ---
-        // Ho esteso la mappa con nomi comuni completi per facilitare il match
         const municipalityMap = {
             "Abriola": "BASI B", "Accettura": "BASI B", "Acerenza": "BASI B", "Albano di Lucania": "BASI B", "Aliano": "BASI C", "Anzi": "BASI B", "Armento": "BASI C", "Atella": "BASI A1", "Avigliano": "BASI B", 
-            "Balvano": "BASI A2", "Banzi": "BASI B", "Baragiano": "BASI A2", "Barile": "BASI A1", "Bella": "BASI A2", "Bernalda": "BASI E2", "Brienza": "BASI A2", "Brindisi Montagna": "BASI B", 
-            "Calciano": "BASI B", "Calvello": "BASI B", "Calvera": "BASI C", "Campomaggiore": "BASI B", "Cancellara": "BASI B", "Carbone": "BASI C", "Castelgrande": "BASI A2", "Castelluccio Inferiore": "BASI D", "Castelluccio Superiore": "BASI D", "Castelmezzano": "BASI B", "Castelsaraceno": "BASI D", "Castronuovo di Sant' Andrea": "BASI C", "Cersosimo": "BASI C", "Chiaromonte": "BASI C", "Cirigliano": "BASI C", "Colobraro": "BASI C", "Corleto Perticara": "BASI C", "Craco": "BASI E1", 
-            "Episcopia": "BASI C", "Fardella": "BASI C", "Ferrandina": "BASI B", "Filiano": "BASI A1", "Forenza": "BASI A1", "Francavilla in Sinni": "BASI C", 
-            "Gallicchio": "BASI C", "Garaguso": "BASI B", "Genzano di Lucania": "BASI B", "Ginestra": "BASI A1", "Gorgoglione": "BASI C", "Grassano": "BASI B", "Grottole": "BASI B", "Grumento Nova": "BASI C", "Guardia Perticara": "BASI C", 
-            "Irsina": "BASI B", "Lagonegro": "BASI D", "Latronico": "BASI D", "Laurenzana": "BASI B", "Lauria": "BASI D", "Lavello": "BASI A1", 
-            "Maratea": "BASI D", "Marsico Nuovo": "BASI C", "Marsicovetere": "BASI C", "Maschito": "BASI A1", "Matera": "BASI B", "Melfi": "BASI A1", "Miglionico": "BASI B", "Missanello": "BASI C", "Moliterno": "BASI C", "Montalbano Jonico": "BASI E1", "Montemilone": "BASI A1", "Montemurro": "BASI C", "Montescaglioso": "BASI E2", "Muro Lucano": "BASI A2", 
-            "Nemoli": "BASI D", "Noepoli": "BASI C", "Nova Siri": "BASI E1", 
-            "Oliveto Lucano": "BASI B", "Oppido Lucano": "BASI B", 
-            "Palazzo San Gervasio": "BASI A1", "Paterno": "BASI C", "Pescopagano": "BASI A1", "Picerno": "BASI A2", "Pietragalla": "BASI B", "Pietrapertosa": "BASI B", "Pignola": "BASI B", "Pisticci": "BASI E2", "Policoro": "BASI E1", "Pomarico": "BASI B", "Potenza": "BASI B", 
-            "Rapolla": "BASI A1", "Rapone": "BASI A1", "Rionero in Vulture": "BASI A1", "Ripacandida": "BASI A1", "Rivello": "BASI D", "Roccanova": "BASI C", "Rotonda": "BASI D", "Rotondella": "BASI E1", "Ruoti": "BASI A2", "Ruvo del Monte": "BASI A1", 
-            "Salandra": "BASI B", "San Chirico Nuovo": "BASI B", "San Chirico Raparo": "BASI C", "San Costantino Albanese": "BASI C", "San Fele": "BASI A1", "San Giorgio Lucano": "BASI C", "San Martino d'Agri": "BASI C", "San Mauro Forte": "BASI B", "San Paolo Albanese": "BASI C", "San Severino Lucano": "BASI C", "Sant' Angelo Le Fratte": "BASI A2", "Sant' Arcangelo": "BASI C", "Sarconi": "BASI C", "Sasso di Castalda": "BASI A2", "Satriano di Lucania": "BASI A2", "Savoia di Lucania": "BASI A2", "Scanzano Jonico": "BASI E1", "Senise": "BASI C", "Spinoso": "BASI C", "Stigliano": "BASI C", 
-            "Teana": "BASI C", "Terranova di Pollino": "BASI C", "Tito": "BASI A2", "Tolve": "BASI B", "Tramutola": "BASI C", "Trecchina": "BASI D", "Tricarico": "BASI B", "Trivigno": "BASI B", "Tursi": "BASI C", 
-            "Vaglio Basilicata": "BASI B", "Valsinni": "BASI C", "Venosa": "BASI A1", "Vietri di Potenza": "BASI A2", "Viggianello": "BASI D", "Viggiano": "BASI C"
+            "Balvano": "BASI A2", "Banzi": "BASI B", "Baragiano": "BASI A2", "Barile": "BASI A1", "Bella": "BASI A2", "Bernalda": "BASI E2", "Brienza": "BASI A2", "Brindisi Montagna": "BASI B", "Calciano": "BASI B", "Calvello": "BASI B", "Calvera": "BASI C", "Campomaggiore": "BASI B", "Cancellara": "BASI B", "Carbone": "BASI C", "Castelgrande": "BASI A2", "Castelluccio Inferiore": "BASI D", "Castelluccio Superiore": "BASI D", "Castelmezzano": "BASI B", "Castelsaraceno": "BASI D", "Castronuovo di Sant' Andrea": "BASI C", "Cersosimo": "BASI C", "Chiaromonte": "BASI C", "Cirigliano": "BASI C", "Colobraro": "BASI C", "Corleto Perticara": "BASI C", "Craco": "BASI E1", "Episcopia": "BASI C", "Fardella": "BASI C", "Ferrandina": "BASI B", "Filiano": "BASI A1", "Forenza": "BASI A1", "Francavilla in Sinni": "BASI C", "Gallicchio": "BASI C", "Garaguso": "BASI B", "Genzano di Lucania": "BASI B", "Ginestra": "BASI A1", "Gorgoglione": "BASI C", "Grassano": "BASI B", "Grottole": "BASI B", "Grumento Nova": "BASI C", "Guardia Perticara": "BASI C", "Irsina": "BASI B", "Lagonegro": "BASI D", "Latronico": "BASI D", "Laurenzana": "BASI B", "Lauria": "BASI D", "Lavello": "BASI A1", "Maratea": "BASI D", "Marsico Nuovo": "BASI C", "Marsicovetere": "BASI C", "Maschito": "BASI A1", "Matera": "BASI B", "Melfi": "BASI A1", "Miglionico": "BASI B", "Missanello": "BASI C", "Moliterno": "BASI C", "Montalbano Jonico": "BASI E1", "Montemilone": "BASI A1", "Montemurro": "BASI C", "Montescaglioso": "BASI E2", "Muro Lucano": "BASI A2", "Nemoli": "BASI D", "Noepoli": "BASI C", "Nova Siri": "BASI E1", "Oliveto Lucano": "BASI B", "Oppido Lucano": "BASI B", "Palazzo San Gervasio": "BASI A1", "Paterno": "BASI C", "Pescopagano": "BASI A1", "Picerno": "BASI A2", "Pietragalla": "BASI B", "Pietrapertosa": "BASI B", "Pignola": "BASI B", "Pisticci": "BASI E2", "Policoro": "BASI E1", "Pomarico": "BASI B", "Potenza": "BASI B", "Rapolla": "BASI A1", "Rapone": "BASI A1", "Rionero in Vulture": "BASI A1", "Ripacandida": "BASI A1", "Rivello": "BASI D", "Roccanova": "BASI C", "Rotonda": "BASI D", "Rotondella": "BASI E1", "Ruoti": "BASI A2", "Ruvo del Monte": "BASI A1", "Salandra": "BASI B", "San Chirico Nuovo": "BASI B", "San Chirico Raparo": "BASI C", "San Costantino A.": "BASI C", "San Fele": "BASI A1", "San Giorgio Lucano": "BASI C", "San Martino d'Agri": "BASI C", "San Mauro Forte": "BASI B", "San Paolo Albanese": "BASI C", "San Severino Lucano": "BASI C", "Sant' Angelo Le Fratte": "BASI A2", "Sant' Arcangelo": "BASI C", "Sarconi": "BASI C", "Sasso di Castalda": "BASI A2", "Satriano di Lucania": "BASI A2", "Savoia di Lucania": "BASI A2", "Scanzano Jonico": "BASI E1", "Senise": "BASI C", "Spinoso": "BASI C", "Stigliano": "BASI C", "Teana": "BASI C", "Terranova di Pollino": "BASI C", "Tito": "BASI A2", "Tolve": "BASI B", "Tramutola": "BASI C", "Trecchina": "BASI D", "Tricarico": "BASI B", "Trivigno": "BASI B", "Tursi": "BASI C", "Vaglio Basilicata": "BASI B", "Valsinni": "BASI C", "Venosa": "BASI A1", "Vietri di Potenza": "BASI A2", "Viggianello": "BASI D", "Viggiano": "BASI C"
         };
 
         let bollettinoData = null;
 
-        const map = L.map('map').setView([40.5, 16.1], 9);
+        const map = L.map('map', { zoomControl: false }).setView([40.5, 16.1], 9);
         L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '© OpenStreetMap' }).addTo(map);
 
         async function init() {
             try {
-                const response = await fetch(JSON_URL + '?t=' + new Date().getTime());
-                if (!response.ok) throw new Error("Errore lettura dati bollettino");
-                bollettinoData = await response.json();
-                
-                document.getElementById('last-update-time').innerText = 
-                    `${bollettinoData.validita_inizio} - ${bollettinoData.validita_fine}`;
+                const res = await fetch(DATA_JSON_URL + '?t=' + Date.now());
+                if(!res.ok) throw new Error("File JSON non trovato");
+                bollettinoData = await res.json();
                 document.getElementById('loader').style.display = 'none';
 
-                const geoResponse = await fetch(GEOJSON_URL);
-                if(!geoResponse.ok) throw new Error("Manca GeoJSON");
-                const geoData = await geoResponse.json();
+                const resGeo = await fetch(DATA_GEOJSON_URL);
+                const geoData = await resGeo.json();
 
                 L.geoJSON(geoData, {
                     style: styleFunction,
@@ -99,51 +89,37 @@
 
             } catch (error) {
                 console.error(error);
-                document.getElementById('loader').innerHTML = "❌ Errore sistema.";
+                document.getElementById('loader').innerHTML = "❌ Errore sistema";
                 document.getElementById('loader').style.color = "red";
             }
         }
 
-        // --- FUNZIONE DI NORMALIZZAZIONE (INTELLIGENZA) ---
+        // Funzione di Normalizzazione "Smart" (copiata da index per coerenza)
         function normalizeName(name) {
             if (!name) return "";
-            return name.toUpperCase()
-                .replace(/[^A-Z0-9]/g, '') // Rimuove spazi, apostrofi, accenti, punti
-                .replace("SAN", "S")       // Normalizza San/S.
-                .replace("SANT", "S");     // Normalizza Sant/S.
+            return name.toUpperCase().replace(/[^A-Z0-9]/g, '').replace("SAN", "S").replace("SANT", "S");
         }
 
         function getDatiComune(nomeComune) {
             if (!nomeComune || !bollettinoData) return { colore: colors.default, livello: labels.default, zona: "?" };
             
-            // 1. Puliamo il nome che arriva dal GeoJSON
             const cleanGeoName = normalizeName(nomeComune);
-            
-            // 2. Cerchiamo il match nella nostra lista ufficiale
             let zonaTrovata = null;
             
-            // Prima prova match diretto
             if (municipalityMap[nomeComune]) {
                 zonaTrovata = municipalityMap[nomeComune];
             } else {
-                // Se fallisce, prova il match "Fuzzy" (Normalizzato)
-                // Cerchiamo quale chiave della mappa, una volta pulita, è uguale al nome pulito del GeoJSON
                 const mapKeys = Object.keys(municipalityMap);
                 for (let key of mapKeys) {
                     if (normalizeName(key) === cleanGeoName) {
                         zonaTrovata = municipalityMap[key];
-                        // console.log(`Match Intelligente: ${nomeComune} -> ${key}`); // Debug
                         break;
                     }
                 }
             }
 
-            if (!zonaTrovata) {
-                console.warn("Comune non trovato nel mapping:", nomeComune); // Ti dice in console chi manca
-                return { colore: colors.default, livello: "Non mappato", zona: "?" };
-            }
+            if (!zonaTrovata) return { colore: colors.default, livello: "Non mappato", zona: "?" };
 
-            // 3. Troviamo il colore della Zona
             let coloreInglese = "green";
             for (const [key, value] of Object.entries(bollettinoData.zone)) {
                 if (zonaTrovata.toUpperCase().includes(key.toUpperCase())) {
@@ -151,22 +127,17 @@
                     break;
                 }
             }
-
-            return { 
-                colore: colors[coloreInglese] || colors.default, 
-                livello: labels[coloreInglese] || labels.default,
-                zona: zonaTrovata
-            };
+            return { colore: colors[coloreInglese] || colors.default, livello: labels[coloreInglese] || labels.default, zona: zonaTrovata };
         }
 
         function styleFunction(feature) {
-            const nome = feature.properties.name || feature.properties.com_name || feature.properties.NAME_3 || feature.properties.comune || feature.properties.COMUNE;
+            const nome = feature.properties.comune || feature.properties.nome || feature.properties.NAME_3 || feature.properties.name;
             const dati = getDatiComune(nome);
             return { fillColor: dati.colore, weight: 1, opacity: 1, color: 'white', dashArray: '3', fillOpacity: 0.7 };
         }
 
         function onEachFeatureFunction(feature, layer) {
-            const nome = feature.properties.name || feature.properties.com_name || feature.properties.NAME_3 || feature.properties.comune;
+            const nome = feature.properties.comune || feature.properties.nome || feature.properties.NAME_3 || feature.properties.name;
             layer.bindPopup(() => {
                 const dati = getDatiComune(nome);
                 return `<div style="text-align:center;">
@@ -176,8 +147,6 @@
                             <b style="color:${dati.colore}; font-size:1.1em">${dati.livello}</b>
                         </div>`;
             });
-            layer.on('mouseover', function() { this.setStyle({ weight: 3, color: '#666', fillOpacity: 0.9 }); this.bringToFront(); });
-            layer.on('mouseout', function() { this.setStyle({ weight: 1, color: 'white', fillOpacity: 0.7 }); });
         }
 
         init();
