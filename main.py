@@ -5,6 +5,7 @@ import os
 import datetime
 import re
 import sys
+import urllib.parse # Serve per creare il link WhatsApp
 
 # --- CONFIGURAZIONE ---
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
@@ -17,11 +18,22 @@ JSON_FILENAME = "dati_bollettino.json"
 
 def send_telegram_message(message, file_path=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
-        print("ERRORE: Token o Chat ID mancanti nei Secrets.")
+        print("ERRORE: Token o Chat ID mancanti.")
         return
 
+    # Prepariamo il link magico per WhatsApp
+    # Codifichiamo il testo in modo che possa stare in un link (spazi diventano %20 ecc)
+    # Nota: WhatsApp non supporta il grassetto con *, ma proviamo a lasciarlo
+    whatsapp_text = urllib.parse.quote(message)
+    whatsapp_link = f"https://wa.me/?text={whatsapp_text}"
+    
+    # Aggiungiamo il bottone al messaggio Telegram usando la formattazione Markdown
+    # [Testo Bottone](Link)
+    full_message = message + f"\n\n📲 [Clicca qui per inoltrare su WhatsApp]({whatsapp_link})"
+
     url_msg = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    data = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "Markdown"}
+    # Disabilitiamo l'anteprima link per evitare confusione
+    data = {"chat_id": TELEGRAM_CHAT_ID, "text": full_message, "parse_mode": "Markdown", "disable_web_page_preview": True}
     
     try:
         requests.post(url_msg, data=data)
@@ -36,7 +48,6 @@ def send_telegram_message(message, file_path=None):
         print(f"❌ Errore invio Telegram: {e}")
 
 def parse_alert_color(text):
-    """Converte il testo del PDF in codice colore standard"""
     if not text: return "green"
     text = str(text).upper()
     if "ROSS" in text: return "red"
@@ -45,25 +56,19 @@ def parse_alert_color(text):
     return "green"
 
 def get_risk_level(color):
-    """Peso numerico del colore"""
     levels = {"green": 0, "yellow": 1, "orange": 2, "red": 3}
     return levels.get(color, 0)
 
 def extract_validity_info(text):
-    """Estrae orari di validità"""
     start_validity = "N/D"
     end_validity = "N/D"
-    
     start_match = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
     end_match = re.search(r"Fine validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
-    
     if start_match: start_validity = start_match.group(1).strip()
     if end_match: end_validity = end_match.group(1).strip()
-    
     return start_validity, end_validity
 
 def get_pdf_url():
-    """Trova il link del bollettino odierno"""
     try:
         r = requests.get(LIST_URL)
         from bs4 import BeautifulSoup
@@ -79,13 +84,11 @@ def get_pdf_url():
 def main():
     print("--- INIZIO ELABORAZIONE ---")
     
-    # 1. Trova l'URL
     pdf_url = get_pdf_url()
     if not pdf_url:
-        print("Nessun bollettino trovato online.")
+        print("Nessun bollettino trovato.")
         return
 
-    # 2. Scarica il PDF (Sovrascrittura locale temporanea)
     try:
         r = requests.get(pdf_url)
         with open(PDF_FILENAME, 'wb') as f:
@@ -94,55 +97,39 @@ def main():
         print(f"Errore download: {e}")
         return
 
-    # 3. Estrai la DATA dal PDF appena scaricato
-    # Questo è il cuore del controllo anti-duplicati
-    pdf_date_str = datetime.date.today().strftime("%d/%m/%Y") # Default fallback
+    # Estrazione Data preliminare
+    pdf_date_str = datetime.date.today().strftime("%d/%m/%Y")
     try:
         with pdfplumber.open(PDF_FILENAME) as pdf:
             text = pdf.pages[0].extract_text()
-            # Cerca data nel formato GG/MM/AAAA dopo la parola "DEL"
-            # Es: PROT. ... DEL 16/12/2025
             date_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", text)
             if date_match:
                 pdf_date_str = date_match.group(1)
     except Exception as e:
-        print(f"Errore lettura preliminare PDF: {e}")
+        print(f"Errore lettura data PDF: {e}")
 
-    print(f"Data rilevata nel PDF online: {pdf_date_str}")
+    print(f"Data rilevata: {pdf_date_str}")
 
-    # 4. CONTROLLO DUPLICATI & HUMAN OVERRIDE
-    # Confrontiamo la data del PDF appena scaricato con quella salvata nel JSON su GitHub
+    # Controllo Duplicati
     if os.path.exists(JSON_FILENAME):
         try:
             with open(JSON_FILENAME, 'r') as f:
                 old_data = json.load(f)
-                last_saved_date = old_data.get("data_bollettino")
-                
-                # CASO A: Le date coincidono -> ABBIAMO GIÀ FATTO QUESTO BOLLETTINO
-                if last_saved_date == pdf_date_str:
-                    print(f"✅ STOP: Il bollettino del {pdf_date_str} è già stato processato e inviato.")
-                    
-                    # Controllo extra: se c'era un override manuale, a maggior ragione non tocchiamo nulla
-                    if old_data.get("manual_override") is True:
-                        print("Nota: È attivo anche un blocco manuale operatore.")
-                    
-                    # Uscita pulita senza errori
+                if old_data.get("data_bollettino") == pdf_date_str and not old_data.get("manual_override"):
+                    print(f"✅ STOP: Bollettino {pdf_date_str} già inviato.")
                     return
+        except:
+            pass
 
-        except Exception as e:
-            print(f"Errore lettura JSON precedente (procedo come se fosse nuovo): {e}")
+    print(f"🆕 Elaborazione bollettino del {pdf_date_str}...")
 
-    # Se siamo qui, significa che la data è NUOVA. Procediamo.
-    print(f"🆕 Trovato NUOVO bollettino ({pdf_date_str}). Inizio elaborazione...")
-
-    # 5. Parsing Completo
     extracted_data = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "data_bollettino": pdf_date_str,
         "validita_inizio": "",
         "validita_fine": "",
         "url_bollettino": pdf_url,
-        "manual_override": False, # Reset su nuovo file
+        "manual_override": False,
         "zone": {}
     }
 
@@ -151,7 +138,6 @@ def main():
             page = pdf.pages[0]
             text = page.extract_text()
             tables = page.extract_tables()
-            
             v_start, v_end = extract_validity_info(text)
             extracted_data["validita_inizio"] = v_start
             extracted_data["validita_fine"] = v_end
@@ -175,23 +161,18 @@ def main():
                                 max_risk = lvl
                                 final_color = c
                         extracted_data["zone"][zone_name] = final_color
-            else:
-                print("⚠️ Nessuna tabella trovata nel PDF.")
-
     except Exception as e:
-        print(f"❌ Errore parsing PDF: {e}")
+        print(f"❌ Errore parsing: {e}")
 
-    # Validazione
     if not extracted_data["zone"]:
-        send_telegram_message("⚠️ *Attenzione*: Impossibile leggere i dati automatici. Verificare PDF.", PDF_FILENAME)
+        send_telegram_message("⚠️ *Attenzione*: Dati illeggibili.", PDF_FILENAME)
         return
 
-    # 6. Salvataggio JSON (Committa su GitHub)
     with open(JSON_FILENAME, 'w') as f:
         json.dump(extracted_data, f, indent=4)
-    print("✅ File JSON aggiornato.")
+    print("✅ JSON aggiornato.")
 
-    # 7. Invio Telegram (Solo ora!)
+    # Creazione Messaggio
     color_map_it = { "green": "VERDE", "yellow": "GIALLO", "orange": "ARANCIONE", "red": "ROSSO" }
     emoji_map = {"green": "🟢", "yellow": "🟡", "orange": "🟠", "red": "🔴"}
     
@@ -204,7 +185,8 @@ def main():
         colore_ita = color_map_it.get(colore_eng, colore_eng.upper())
         msg += f"{icon} *{zona}*: {colore_ita}\n"
     
-    msg += "\n📍 _Mappa aggiornata sul sito_"
+    # 🔴🔴 MODIFICA QUI IL LINK DEL TUO SITO PWA 🔴🔴
+    msg += "\n📍 _Mappa: https://eatapples15.github.io/allerte_bollettino_basilicata/index.html_"
     
     send_telegram_message(msg, PDF_FILENAME)
 
