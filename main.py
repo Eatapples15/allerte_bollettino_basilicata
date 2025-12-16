@@ -86,7 +86,7 @@ def main():
         print("Nessun bollettino trovato.")
         return
 
-    print(f"Scaricamento: {pdf_url}")
+    print(f"Scaricamento in corso: {pdf_url}")
     try:
         r = requests.get(pdf_url)
         with open(PDF_FILENAME, 'wb') as f:
@@ -95,13 +95,45 @@ def main():
         print(f"Errore download: {e}")
         return
 
-    # 2. Parsing del PDF
+    # 2. Estrai la data dal PDF appena scaricato
+    pdf_date_str = datetime.date.today().strftime("%d/%m/%Y") # Fallback
+    try:
+        with pdfplumber.open(PDF_FILENAME) as pdf:
+            text = pdf.pages[0].extract_text()
+            # Cerca data nel formato GG/MM/AAAA dopo la parola "DEL"
+            date_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", text)
+            if date_match:
+                pdf_date_str = date_match.group(1)
+    except Exception as e:
+        print(f"Errore lettura preliminare PDF: {e}")
+
+    print(f"Data rilevata nel PDF: {pdf_date_str}")
+
+    # --- CONTROLLO HUMAN IN THE LOOP ---
+    # Se esiste già un JSON, controlliamo se l'operatore ha messo il blocco
+    if os.path.exists(JSON_FILENAME):
+        try:
+            with open(JSON_FILENAME, 'r') as f:
+                old_data = json.load(f)
+                
+                # Se la data del bollettino è la stessa di quello online
+                # E l'operatore ha impostato manual_override = True
+                if old_data.get("data_bollettino") == pdf_date_str and old_data.get("manual_override") is True:
+                    print(f"⛔ STOP: Trovato override manuale per il {pdf_date_str}.")
+                    print("L'automazione si ferma per non sovrascrivere le correzioni dell'operatore.")
+                    return
+        except Exception as e:
+            print(f"Errore lettura JSON esistente (procedo comunque): {e}")
+    # -----------------------------------
+
+    # 3. Parsing Completo del PDF
     extracted_data = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "data_bollettino": datetime.date.today().strftime("%d/%m/%Y"), # Fallback
+        "data_bollettino": pdf_date_str,
         "validita_inizio": "",
         "validita_fine": "",
         "url_bollettino": pdf_url,
+        "manual_override": False, # Reset del blocco quando il bot gira su un nuovo file
         "zone": {}
     }
 
@@ -111,26 +143,25 @@ def main():
             text = page.extract_text()
             tables = page.extract_tables()
             
-            # Estrazione Date Validità
+            # Estrazione Validità
             v_start, v_end = extract_validity_info(text)
             extracted_data["validita_inizio"] = v_start
             extracted_data["validita_fine"] = v_end
             
-            # Cerca di estrarre la data del bollettino dal testo se possibile
-            date_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", text)
-            if date_match:
-                extracted_data["data_bollettino"] = date_match.group(1)
-
+            # Estrazione Tabella Colori
             if tables:
                 table = tables[0]
                 for row in table:
                     cleaned_row = [str(cell).replace("\n", " ").strip() if cell else "" for cell in row]
                     if len(cleaned_row) >= 2 and "BASI" in cleaned_row[0]:
                         zone_name = cleaned_row[0]
+                        
+                        # Parsing colori
                         c1 = parse_alert_color(cleaned_row[1]) if len(cleaned_row) > 1 else "green"
                         c2 = parse_alert_color(cleaned_row[2]) if len(cleaned_row) > 2 else "green"
                         c3 = parse_alert_color(cleaned_row[3]) if len(cleaned_row) > 3 else "green"
                         
+                        # Calcolo Massimo Rischio
                         colors = [c1, c2, c3]
                         max_risk = 0
                         final_color = "green"
@@ -146,27 +177,20 @@ def main():
     except Exception as e:
         print(f"❌ Errore parsing PDF: {e}")
 
+    # Controllo validità dati estratti
     if not extracted_data["zone"]:
-        send_telegram_message("⚠️ *Attenzione*: Impossibile leggere i dati automatici dal PDF.", PDF_FILENAME)
+        send_telegram_message("⚠️ *Attenzione*: Impossibile leggere i dati dal PDF. Verificare il file.", PDF_FILENAME)
         return
 
-    # 3. Salvataggio JSON (Mantiene i colori in inglese per compatibilità codice futuro)
+    # 4. Salvataggio JSON
     with open(JSON_FILENAME, 'w') as f:
         json.dump(extracted_data, f, indent=4)
-    print("✅ File JSON aggiornato.")
+    print("✅ File JSON aggiornato con i nuovi dati.")
 
-    # 4. Invio Notifica Telegram (Traduzione colori in Italiano QUI)
-    
-    # Dizionario traduzione visuale
-    color_map_it = {
-        "green": "VERDE",
-        "yellow": "GIALLO",
-        "orange": "ARANCIONE",
-        "red": "ROSSO"
-    }
+    # 5. Invio Notifica Telegram
+    color_map_it = { "green": "VERDE", "yellow": "GIALLO", "orange": "ARANCIONE", "red": "ROSSO" }
     emoji_map = {"green": "🟢", "yellow": "🟡", "orange": "🟠", "red": "🔴"}
     
-    # Costruzione Messaggio
     msg = f"🚨 *Bollettino criticità regionale del {extracted_data['data_bollettino']}*\n\n"
     msg += f"⬇️ _Inizio validità:_ {extracted_data['validita_inizio']}\n"
     msg += f"End _Fine validità:_ {extracted_data['validita_fine']}\n\n"
