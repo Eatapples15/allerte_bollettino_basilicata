@@ -22,8 +22,7 @@ JSON_FILENAME = "dati_bollettino.json"
 # --- NOTIFICHE PUSH (OneSignal) ---
 def send_push_notification(title, message):
     if not ONESIGNAL_APP_ID or not ONESIGNAL_API_KEY:
-        print("⚠️ OneSignal non configurato.")
-        return
+        return "OneSignal non configurato"
 
     header = {
         "Content-Type": "application/json; charset=utf-8",
@@ -35,41 +34,42 @@ def send_push_notification(title, message):
         "included_segments": ["Total Subscriptions"],
         "headings": {"en": title, "it": title},
         "contents": {"en": message, "it": message},
-        # Nota: La push apre l'app (index), il link telegram apre la mappa specifica
         "url": "https://www.formazionesicurezza.org/protezionecivile/bollettino/index.html"
     }
 
     try:
         req = requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
         if req.status_code == 200:
-            print("✅ Notifica PUSH inviata.")
+            return "OK"
         else:
-            print(f"❌ Errore Push: {req.text}")
+            return f"Errore API: {req.text}"
     except Exception as e:
-        print(f"❌ Errore connessione OneSignal: {e}")
+        return f"Errore Connessione: {str(e)}"
 
 # --- TELEGRAM ---
 def send_telegram_message(message, file_path=None):
-    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID: return
+    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID: return "Telegram non configurato"
     
-    # Codifica il messaggio per l'URL
-    # Nota: Non usiamo quote per tutto il body se inviamo via POST data, ma qui prepariamo il link whatsapp
-    whatsapp_text = urllib.parse.quote(message.replace('*', '').replace('_', '')) # Rimuovi markdown per whatsapp
+    whatsapp_text = urllib.parse.quote(message.replace('*', '').replace('_', ''))
     whatsapp_link = f"https://wa.me/?text={whatsapp_text}"
-    
     full_message = message + f"\n\n📲 [Inoltra su WhatsApp]({whatsapp_link})"
     
     url_msg = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     data = {"chat_id": TELEGRAM_CHAT_ID, "text": full_message, "parse_mode": "Markdown", "disable_web_page_preview": True}
     
     try:
-        requests.post(url_msg, data=data)
+        r = requests.post(url_msg, data=data)
+        if r.status_code != 200: return f"Err Msg: {r.text}"
+
         if file_path and os.path.exists(file_path):
             url_doc = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"
             with open(file_path, 'rb') as f:
                 files = {'document': f}
-                requests.post(url_doc, data={"chat_id": TELEGRAM_CHAT_ID}, files=files)
-    except Exception as e: print(f"Errore Telegram: {e}")
+                r2 = requests.post(url_doc, data={"chat_id": TELEGRAM_CHAT_ID}, files=files)
+                if r2.status_code != 200: return f"Err Doc: {r2.text}"
+        
+        return "OK"
+    except Exception as e: return f"Err Conn: {str(e)}"
 
 # --- PARSING ---
 def parse_alert_color(text):
@@ -104,12 +104,9 @@ def get_pdf_url():
     return None
 
 def main():
-    print("--- INIZIO ELABORAZIONE BOLLETTINO ---")
-
-    # 1. CONTROLLO MODALITÀ FORZATA
+    print("--- INIZIO ELABORAZIONE ---")
+    
     force_send_active = os.environ.get("FORCE_SEND") == "true"
-    if force_send_active:
-        print("⚠️ MODALITÀ FORZATA ATTIVA: Le notifiche verranno inviate comunque.")
     
     pdf_url = get_pdf_url()
     if not pdf_url: return
@@ -127,13 +124,14 @@ def main():
             if date_match: pdf_date_str = date_match.group(1)
     except: pass
 
-    # 2. LOGICA DI CONTROLLO (Salta se forzato)
+    # Recupera dati vecchi per mantenere lo storico del log se non facciamo nulla
+    old_data = {}
     if os.path.exists(JSON_FILENAME):
         try:
             with open(JSON_FILENAME, 'r') as f:
                 old_data = json.load(f)
                 if old_data.get("data_bollettino") == pdf_date_str and not old_data.get("manual_override") and not force_send_active:
-                    print("✅ Bollettino già processato. Nessuna azione.")
+                    print("✅ Bollettino già processato.")
                     return
         except: pass
 
@@ -141,7 +139,10 @@ def main():
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "data_bollettino": pdf_date_str,
         "validita_inizio": "", "validita_fine": "", "url_bollettino": pdf_url,
-        "manual_override": False, "zone": {}
+        "manual_override": False, 
+        "zone": {},
+        # Manteniamo log precedente finché non ne generiamo uno nuovo
+        "log_sistema": old_data.get("log_sistema", {"stato": "Attesa", "msg": "Nessuna operazione recente"})
     }
 
     try:
@@ -163,35 +164,34 @@ def main():
     except: pass
 
     if extracted_data["zone"]:
-        with open(JSON_FILENAME, 'w') as f: json.dump(extracted_data, f, indent=4)
         
-        # Dizionario traduzione colori
-        color_labels = {
-            "green": "VERDE",
-            "yellow": "GIALLO",
-            "orange": "ARANCIONE",
-            "red": "ROSSO"
-        }
-
-        # Costruzione Messaggio Telegram
-        msg = f"🚨 *Bollettino {extracted_data['data_bollettino']}*\n"
-        msg += f"Validità: {extracted_data['validita_inizio']}\n\n"
+        # --- INVIO NOTIFICHE E REGISTRAZIONE LOG ---
+        log_res = {"data": datetime.datetime.now().strftime("%d/%m %H:%M"), "telegram": "N/D", "push": "N/D"}
         
+        color_labels = {"green": "VERDE", "yellow": "GIALLO", "orange": "ARANCIONE", "red": "ROSSO"}
+        msg = f"🚨 *Bollettino {extracted_data['data_bollettino']}*\nValidità: {extracted_data['validita_inizio']}\n\n"
         for z, c in extracted_data["zone"].items():
             icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c,"⚪")
-            # Usa il nome italiano (fallback su inglese UPPER se manca)
             label_ita = color_labels.get(c, c.upper())
             msg += f"{icon} *{z}*: {label_ita}\n"
-            
-        # Link aggiornato richiesto
         msg += "\n📍 [Apri Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
         
-        send_telegram_message(msg, PDF_FILENAME)
+        # Invio Telegram
+        res_tg = send_telegram_message(msg, PDF_FILENAME)
+        log_res["telegram"] = res_tg
         
-        # Push Notification
+        # Invio Push
         push_title = f"Bollettino {extracted_data['data_bollettino']}"
-        push_msg = f"Validità: {extracted_data['validita_inizio']}. Colori aggiornati in mappa."
-        send_push_notification(push_title, push_msg)
+        push_msg = f"Validità: {extracted_data['validita_inizio']}. Colori aggiornati."
+        res_push = send_push_notification(push_title, push_msg)
+        log_res["push"] = res_push
+
+        # Aggiorna il log nel JSON
+        extracted_data["log_sistema"] = log_res
+
+        # Salvataggio
+        with open(JSON_FILENAME, 'w') as f: json.dump(extracted_data, f, indent=4)
+        print("✅ Dati e Log salvati.")
 
 if __name__ == "__main__":
     main()
