@@ -5,48 +5,67 @@ import os
 import datetime
 import re
 import sys
-import urllib.parse # Serve per creare il link WhatsApp
+import urllib.parse
+from bs4 import BeautifulSoup
 
 # --- CONFIGURAZIONE ---
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
+# NUOVI SECRET
+ONESIGNAL_APP_ID = os.environ.get("ONESIGNAL_APP_ID")
+ONESIGNAL_API_KEY = os.environ.get("ONESIGNAL_API_KEY")
 
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/"
 LIST_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.php?lt=A"
 PDF_FILENAME = "bollettino.pdf"
 JSON_FILENAME = "dati_bollettino.json"
 
-def send_telegram_message(message, file_path=None):
-    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID:
-        print("ERRORE: Token o Chat ID mancanti.")
+# --- NOTIFICHE PUSH ---
+def send_push_notification(title, message):
+    if not ONESIGNAL_APP_ID or not ONESIGNAL_API_KEY:
+        print("⚠️ OneSignal non configurato.")
         return
 
-    # Prepariamo il link magico per WhatsApp
-    # Codifichiamo il testo in modo che possa stare in un link (spazi diventano %20 ecc)
-    # Nota: WhatsApp non supporta il grassetto con *, ma proviamo a lasciarlo
+    header = {
+        "Content-Type": "application/json; charset=utf-8",
+        "Authorization": f"Basic {ONESIGNAL_API_KEY}"
+    }
+
+    payload = {
+        "app_id": ONESIGNAL_APP_ID,
+        "included_segments": ["Total Subscriptions"],
+        "headings": {"en": title, "it": title},
+        "contents": {"en": message, "it": message},
+        "url": "https://eatapples15.github.io/allerte_bollettino_basilicata/index.html"
+    }
+
+    try:
+        req = requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
+        if req.status_code == 200:
+            print("✅ Notifica PUSH inviata.")
+        else:
+            print(f"❌ Errore Push: {req.text}")
+    except Exception as e:
+        print(f"❌ Errore connessione OneSignal: {e}")
+
+# --- TELEGRAM ---
+def send_telegram_message(message, file_path=None):
+    if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID: return
     whatsapp_text = urllib.parse.quote(message)
     whatsapp_link = f"https://wa.me/?text={whatsapp_text}"
-    
-    # Aggiungiamo il bottone al messaggio Telegram usando la formattazione Markdown
-    # [Testo Bottone](Link)
-    full_message = message + f"\n\n📲 [Clicca qui per inoltrare su WhatsApp]({whatsapp_link})"
-
+    full_message = message + f"\n\n📲 [Inoltra su WhatsApp]({whatsapp_link})"
     url_msg = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    # Disabilitiamo l'anteprima link per evitare confusione
     data = {"chat_id": TELEGRAM_CHAT_ID, "text": full_message, "parse_mode": "Markdown", "disable_web_page_preview": True}
-    
     try:
         requests.post(url_msg, data=data)
-        
         if file_path and os.path.exists(file_path):
             url_doc = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"
             with open(file_path, 'rb') as f:
                 files = {'document': f}
                 requests.post(url_doc, data={"chat_id": TELEGRAM_CHAT_ID}, files=files)
-        print("✅ Notifica Telegram inviata.")
-    except Exception as e:
-        print(f"❌ Errore invio Telegram: {e}")
+    except Exception as e: print(f"Errore Telegram: {e}")
 
+# --- PARSING ---
 def parse_alert_color(text):
     if not text: return "green"
     text = str(text).upper()
@@ -60,8 +79,7 @@ def get_risk_level(color):
     return levels.get(color, 0)
 
 def extract_validity_info(text):
-    start_validity = "N/D"
-    end_validity = "N/D"
+    start_validity, end_validity = "N/D", "N/D"
     start_match = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
     end_match = re.search(r"Fine validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
     if start_match: start_validity = start_match.group(1).strip()
@@ -71,124 +89,82 @@ def extract_validity_info(text):
 def get_pdf_url():
     try:
         r = requests.get(LIST_URL)
-        from bs4 import BeautifulSoup
         soup = BeautifulSoup(r.text, 'html.parser')
         for a in soup.find_all('a', href=True):
             if "Bollettino_Criticita" in a['href']:
                 full_url = BASE_URL + a['href'] if not a['href'].startswith('http') else a['href']
                 return full_url
-    except Exception as e:
-        print(f"Errore scraping: {e}")
+    except Exception as e: print(f"Errore scraping PDF: {e}")
     return None
 
 def main():
-    print("--- INIZIO ELABORAZIONE ---")
+    print("--- INIZIO ELABORAZIONE BOLLETTINO ---")
     
     pdf_url = get_pdf_url()
-    if not pdf_url:
-        print("Nessun bollettino trovato.")
-        return
+    if not pdf_url: return
 
     try:
         r = requests.get(pdf_url)
-        with open(PDF_FILENAME, 'wb') as f:
-            f.write(r.content)
-    except Exception as e:
-        print(f"Errore download: {e}")
-        return
+        with open(PDF_FILENAME, 'wb') as f: f.write(r.content)
+    except: return
 
-    # Estrazione Data preliminare
     pdf_date_str = datetime.date.today().strftime("%d/%m/%Y")
     try:
         with pdfplumber.open(PDF_FILENAME) as pdf:
             text = pdf.pages[0].extract_text()
             date_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", text)
-            if date_match:
-                pdf_date_str = date_match.group(1)
-    except Exception as e:
-        print(f"Errore lettura data PDF: {e}")
+            if date_match: pdf_date_str = date_match.group(1)
+    except: pass
 
-    print(f"Data rilevata: {pdf_date_str}")
-
-    # Controllo Duplicati
     if os.path.exists(JSON_FILENAME):
         try:
             with open(JSON_FILENAME, 'r') as f:
                 old_data = json.load(f)
                 if old_data.get("data_bollettino") == pdf_date_str and not old_data.get("manual_override"):
-                    print(f"✅ STOP: Bollettino {pdf_date_str} già inviato.")
+                    print("✅ Bollettino già processato.")
                     return
-        except:
-            pass
-
-    print(f"🆕 Elaborazione bollettino del {pdf_date_str}...")
+        except: pass
 
     extracted_data = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "data_bollettino": pdf_date_str,
-        "validita_inizio": "",
-        "validita_fine": "",
-        "url_bollettino": pdf_url,
-        "manual_override": False,
-        "zone": {}
+        "validita_inizio": "", "validita_fine": "", "url_bollettino": pdf_url,
+        "manual_override": False, "zone": {}
     }
 
     try:
         with pdfplumber.open(PDF_FILENAME) as pdf:
-            page = pdf.pages[0]
-            text = page.extract_text()
-            tables = page.extract_tables()
-            v_start, v_end = extract_validity_info(text)
-            extracted_data["validita_inizio"] = v_start
-            extracted_data["validita_fine"] = v_end
+            text = pdf.pages[0].extract_text()
+            tables = pdf.pages[0].extract_tables()
+            v_s, v_e = extract_validity_info(text)
+            extracted_data["validita_inizio"], extracted_data["validita_fine"] = v_s, v_e
             
             if tables:
-                table = tables[0]
-                for row in table:
-                    cleaned_row = [str(cell).replace("\n", " ").strip() if cell else "" for cell in row]
-                    if len(cleaned_row) >= 2 and "BASI" in cleaned_row[0]:
-                        zone_name = cleaned_row[0]
-                        c1 = parse_alert_color(cleaned_row[1]) if len(cleaned_row) > 1 else "green"
-                        c2 = parse_alert_color(cleaned_row[2]) if len(cleaned_row) > 2 else "green"
-                        c3 = parse_alert_color(cleaned_row[3]) if len(cleaned_row) > 3 else "green"
-                        
-                        colors = [c1, c2, c3]
-                        max_risk = 0
-                        final_color = "green"
+                for row in tables[0]:
+                    cleaned = [str(c).replace("\n", " ").strip() if c else "" for c in row]
+                    if len(cleaned) >= 2 and "BASI" in cleaned[0]:
+                        zone, colors = cleaned[0], [parse_alert_color(c) for c in cleaned[1:4]]
+                        max_risk, final = 0, "green"
                         for c in colors:
-                            lvl = get_risk_level(c)
-                            if lvl > max_risk:
-                                max_risk = lvl
-                                final_color = c
-                        extracted_data["zone"][zone_name] = final_color
-    except Exception as e:
-        print(f"❌ Errore parsing: {e}")
+                            if get_risk_level(c) > max_risk: max_risk, final = get_risk_level(c), c
+                        extracted_data["zone"][zone] = final
+    except: pass
 
-    if not extracted_data["zone"]:
-        send_telegram_message("⚠️ *Attenzione*: Dati illeggibili.", PDF_FILENAME)
-        return
-
-    with open(JSON_FILENAME, 'w') as f:
-        json.dump(extracted_data, f, indent=4)
-    print("✅ JSON aggiornato.")
-
-    # Creazione Messaggio
-    color_map_it = { "green": "VERDE", "yellow": "GIALLO", "orange": "ARANCIONE", "red": "ROSSO" }
-    emoji_map = {"green": "🟢", "yellow": "🟡", "orange": "🟠", "red": "🔴"}
-    
-    msg = f"🚨 *Bollettino criticità regionale del {extracted_data['data_bollettino']}*\n\n"
-    msg += f"⬇️ _Inizio:_ {extracted_data['validita_inizio']}\n"
-    msg += f"End _Fine:_ {extracted_data['validita_fine']}\n\n"
-    
-    for zona, colore_eng in extracted_data["zone"].items():
-        icon = emoji_map.get(colore_eng, "⚪")
-        colore_ita = color_map_it.get(colore_eng, colore_eng.upper())
-        msg += f"{icon} *{zona}*: {colore_ita}\n"
-    
-    # 🔴🔴 MODIFICA QUI IL LINK DEL TUO SITO PWA 🔴🔴
-    msg += "\n📍 _Mappa: https://eatapples15.github.io/allerte_bollettino_basilicata/index.html_"
-    
-    send_telegram_message(msg, PDF_FILENAME)
+    if extracted_data["zone"]:
+        with open(JSON_FILENAME, 'w') as f: json.dump(extracted_data, f, indent=4)
+        
+        # Telegram
+        msg = f"🚨 *Bollettino {extracted_data['data_bollettino']}*\nValidità: {extracted_data['validita_inizio']}\n\n"
+        for z, c in extracted_data["zone"].items():
+            icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c,"⚪")
+            msg += f"{icon} *{z}*: {c.upper()}\n"
+        msg += "\n📍 _Mappa: https://eatapples15.github.io/allerte_bollettino_basilicata/index.html_"
+        send_telegram_message(msg, PDF_FILENAME)
+        
+        # PUSH NOTIFICATION (OneSignal)
+        push_title = f"Bollettino {extracted_data['data_bollettino']}"
+        push_msg = f"Validità: {extracted_data['validita_inizio']}. Controlla la mappa."
+        send_push_notification(push_title, push_msg)
 
 if __name__ == "__main__":
     main()
