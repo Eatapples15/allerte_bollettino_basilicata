@@ -2,8 +2,17 @@ name: Aggiornamento Dati Completo
 
 on:
   schedule:
+    # Esegue ogni ora al minuto 15
     - cron: '15 * * * *'
+  
+  # ABILITA L'AVVIO MANUALE CON OPZIONI (Da Admin Panel o GitHub UI)
   workflow_dispatch:
+    inputs:
+      force_send:
+        description: 'Forza invio Notifiche'
+        required: false
+        default: 'false'
+        type: boolean
 
 permissions:
   contents: write
@@ -30,12 +39,13 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          # OneSignal Secrets
           ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
           ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+          # Passa l'input manuale a Python
+          FORCE_SEND: ${{ github.event.inputs.force_send }}
         run: python main.py
 
-      - name: 2. Esegui Scraping Sensori (scrape_sensors.py)
+      - name: 2. Esegui Scraping Sensori
         run: python scrape_sensors.py
 
       - name: Commit e Push dei dati aggiornati
@@ -43,5 +53,5 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
           git add dati_bollettino.json dati_sensori.json
-          git commit -m "Aggiornamento Dati Automatico" || echo "Nessuna modifica da committare"
+          git commit -m "Aggiornamento Dati (Forzato: ${{ github.event.inputs.force_send }})" || echo "Nessuna modifica da committare"
           git push
