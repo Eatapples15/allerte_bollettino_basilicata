@@ -39,3 +39,19 @@ jobs:
         git add dati_bollettino.json
         # Committa solo se ci sono cambiamenti
         git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento bollettino" && git push)
+        - name: Esegui Bollettino PDF (Principale)
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: python main.py
+
+      - name: Esegui Scraping Sensori (Secondario)
+        run: python scrape_sensors.py
+
+      - name: Commit e Push dei dati
+        run: |
+          git config --global user.name "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add dati_bollettino.json dati_sensori.json
+          git commit -m "Aggiornamento Dati Automatico" || echo "Nessuna modifica da committare"
+          git push
