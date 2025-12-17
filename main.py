@@ -11,7 +11,6 @@ from bs4 import BeautifulSoup
 # --- CONFIGURAZIONE ---
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
-# NUOVI SECRET
 ONESIGNAL_APP_ID = os.environ.get("ONESIGNAL_APP_ID")
 ONESIGNAL_API_KEY = os.environ.get("ONESIGNAL_API_KEY")
 
@@ -20,7 +19,7 @@ LIST_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.
 PDF_FILENAME = "bollettino.pdf"
 JSON_FILENAME = "dati_bollettino.json"
 
-# --- NOTIFICHE PUSH ---
+# --- NOTIFICHE PUSH (OneSignal) ---
 def send_push_notification(title, message):
     if not ONESIGNAL_APP_ID or not ONESIGNAL_API_KEY:
         print("⚠️ OneSignal non configurato.")
@@ -99,6 +98,11 @@ def get_pdf_url():
 
 def main():
     print("--- INIZIO ELABORAZIONE BOLLETTINO ---")
+
+    # 1. CONTROLLO MODALITÀ FORZATA
+    force_send_active = os.environ.get("FORCE_SEND") == "true"
+    if force_send_active:
+        print("⚠️ MODALITÀ FORZATA ATTIVA: Le notifiche verranno inviate comunque.")
     
     pdf_url = get_pdf_url()
     if not pdf_url: return
@@ -116,12 +120,14 @@ def main():
             if date_match: pdf_date_str = date_match.group(1)
     except: pass
 
+    # 2. LOGICA DI CONTROLLO (Salta se forzato)
     if os.path.exists(JSON_FILENAME):
         try:
             with open(JSON_FILENAME, 'r') as f:
                 old_data = json.load(f)
-                if old_data.get("data_bollettino") == pdf_date_str and not old_data.get("manual_override"):
-                    print("✅ Bollettino già processato.")
+                # Se la data è uguale, E non c'è override manuale, E NON è forzato -> STOP
+                if old_data.get("data_bollettino") == pdf_date_str and not old_data.get("manual_override") and not force_send_active:
+                    print("✅ Bollettino già processato. Nessuna azione.")
                     return
         except: pass
 
@@ -161,7 +167,7 @@ def main():
         msg += "\n📍 _Mappa: https://eatapples15.github.io/allerte_bollettino_basilicata/index.html_"
         send_telegram_message(msg, PDF_FILENAME)
         
-        # PUSH NOTIFICATION (OneSignal)
+        # Push
         push_title = f"Bollettino {extracted_data['data_bollettino']}"
         push_msg = f"Validità: {extracted_data['validita_inizio']}. Controlla la mappa."
         send_push_notification(push_title, push_msg)
