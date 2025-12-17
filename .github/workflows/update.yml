@@ -2,9 +2,11 @@ name: Aggiornamento Dati Completo
 
 on:
   schedule:
-    # Esegue ogni ora al minuto 15 (es. 08:15, 09:15...)
     - cron: '15 * * * *'
-  workflow_dispatch: # Permette l'avvio manuale dal pulsante "Run workflow"
+  workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -28,8 +30,9 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          WHATSAPP_PHONE: ${{ secrets.WHATSAPP_PHONE }}
-          WHATSAPP_KEY: ${{ secrets.WHATSAPP_KEY }}
+          # OneSignal Secrets
+          ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
+          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
         run: python main.py
 
       - name: 2. Esegui Scraping Sensori (scrape_sensors.py)
@@ -39,8 +42,6 @@ jobs:
         run: |
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
-          # Aggiunge entrambi i file JSON se modificati
           git add dati_bollettino.json dati_sensori.json
-          # Esegue il commit solo se ci sono cambiamenti
           git commit -m "Aggiornamento Dati Automatico" || echo "Nessuna modifica da committare"
           git push
