@@ -35,7 +35,8 @@ def send_push_notification(title, message):
         "included_segments": ["Total Subscriptions"],
         "headings": {"en": title, "it": title},
         "contents": {"en": message, "it": message},
-        "url": "https://eatapples15.github.io/allerte_bollettino_basilicata/index.html"
+        # Nota: La push apre l'app (index), il link telegram apre la mappa specifica
+        "url": "https://www.formazionesicurezza.org/protezionecivile/bollettino/index.html"
     }
 
     try:
@@ -50,11 +51,17 @@ def send_push_notification(title, message):
 # --- TELEGRAM ---
 def send_telegram_message(message, file_path=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID: return
-    whatsapp_text = urllib.parse.quote(message)
+    
+    # Codifica il messaggio per l'URL
+    # Nota: Non usiamo quote per tutto il body se inviamo via POST data, ma qui prepariamo il link whatsapp
+    whatsapp_text = urllib.parse.quote(message.replace('*', '').replace('_', '')) # Rimuovi markdown per whatsapp
     whatsapp_link = f"https://wa.me/?text={whatsapp_text}"
+    
     full_message = message + f"\n\n📲 [Inoltra su WhatsApp]({whatsapp_link})"
+    
     url_msg = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     data = {"chat_id": TELEGRAM_CHAT_ID, "text": full_message, "parse_mode": "Markdown", "disable_web_page_preview": True}
+    
     try:
         requests.post(url_msg, data=data)
         if file_path and os.path.exists(file_path):
@@ -125,7 +132,6 @@ def main():
         try:
             with open(JSON_FILENAME, 'r') as f:
                 old_data = json.load(f)
-                # Se la data è uguale, E non c'è override manuale, E NON è forzato -> STOP
                 if old_data.get("data_bollettino") == pdf_date_str and not old_data.get("manual_override") and not force_send_active:
                     print("✅ Bollettino già processato. Nessuna azione.")
                     return
@@ -159,17 +165,32 @@ def main():
     if extracted_data["zone"]:
         with open(JSON_FILENAME, 'w') as f: json.dump(extracted_data, f, indent=4)
         
-        # Telegram
-        msg = f"🚨 *Bollettino {extracted_data['data_bollettino']}*\nValidità: {extracted_data['validita_inizio']}\n\n"
+        # Dizionario traduzione colori
+        color_labels = {
+            "green": "VERDE",
+            "yellow": "GIALLO",
+            "orange": "ARANCIONE",
+            "red": "ROSSO"
+        }
+
+        # Costruzione Messaggio Telegram
+        msg = f"🚨 *Bollettino {extracted_data['data_bollettino']}*\n"
+        msg += f"Validità: {extracted_data['validita_inizio']}\n\n"
+        
         for z, c in extracted_data["zone"].items():
             icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c,"⚪")
-            msg += f"{icon} *{z}*: {c.upper()}\n"
-        msg += "\n📍 _Mappa: https://eatapples15.github.io/allerte_bollettino_basilicata/index.html_"
+            # Usa il nome italiano (fallback su inglese UPPER se manca)
+            label_ita = color_labels.get(c, c.upper())
+            msg += f"{icon} *{z}*: {label_ita}\n"
+            
+        # Link aggiornato richiesto
+        msg += "\n📍 [Apri Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
+        
         send_telegram_message(msg, PDF_FILENAME)
         
-        # Push
+        # Push Notification
         push_title = f"Bollettino {extracted_data['data_bollettino']}"
-        push_msg = f"Validità: {extracted_data['validita_inizio']}. Controlla la mappa."
+        push_msg = f"Validità: {extracted_data['validita_inizio']}. Colori aggiornati in mappa."
         send_push_notification(push_title, push_msg)
 
 if __name__ == "__main__":
