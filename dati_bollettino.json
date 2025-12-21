@@ -1,24 +1,30 @@
 {
-    "ultimo_aggiornamento": "21/12/2025 15:23",
+    "ultimo_aggiornamento": "21/12/2025 15:27",
     "data_bollettino": "21/12/2025",
     "validita_inizio": "ore 14:00 del 21/12/2025",
     "validita_fine": "ore 23:59 del 22/12/2025",
+    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_21_12_2025.pdf",
+    "manual_override": false,
     "zone": {
         "BASI A1": "green",
         "BASI A2": "green",
         "BASI B": "green",
         "BASI C": "green",
         "BASI D": "green",
-        "BASI E1": "green",
-        "BASI E2": "green"
+        "BASI E1": "yellow",
+        "BASI E2": "yellow"
     },
     "dettagli_rischi": {
-        "BASI A1": "Nessuna criticit\u00e0 ordinaria",
-        "BASI A2": "Nessuna criticit\u00e0 ordinaria",
-        "BASI B": "Nessuna criticit\u00e0 ordinaria",
-        "BASI C": "Nessuna criticit\u00e0 ordinaria",
-        "BASI D": "Nessuna criticit\u00e0 ordinaria",
-        "BASI E1": "Nessuna criticit\u00e0 ordinaria",
-        "BASI E2": "Nessuna criticit\u00e0 ordinaria"
+        "BASI A1": "Nessuna criticit\u00e0 rilevante",
+        "BASI A2": "Nessuna criticit\u00e0 rilevante",
+        "BASI B": "Nessuna criticit\u00e0 rilevante",
+        "BASI C": "Nessuna criticit\u00e0 rilevante",
+        "BASI D": "Nessuna criticit\u00e0 rilevante",
+        "BASI E1": "Temporali (YELLOW)",
+        "BASI E2": "Temporali (YELLOW)"
+    },
+    "log_sistema": {
+        "stato": "OK",
+        "msg": "Aggiornato"
     }
 }
