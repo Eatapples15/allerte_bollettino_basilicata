@@ -2,16 +2,21 @@ name: Aggiornamento Dati Completo
 
 on:
   schedule:
-    # ORARI UTC (GitHub usa UTC, l'Italia è UTC+1 in inverno, UTC+2 in estate).
+    # ORARI UTC (GitHub usa UTC).
+    # Italia: Inverno = UTC+1 / Estate = UTC+2
     #
-    # Fascia oraria impostata: 10:00 UTC -> 17:00 UTC
-    # - In Estate:  dalle 12:00 alle 19:00 italiane
-    # - In Inverno: dalle 11:00 alle 18:00 italiane
-    #
-    # Frequenza: Ogni 20 minuti (minuti 0, 20, 40)
-    - cron: '0,30,45 10-17 * * *'
+    # Esegue al minuto 30 delle seguenti ore UTC:
+    # 07:30 UTC -> 08:30/09:30 IT (Controllo mattutino sicurezza)
+    # 10:30 UTC -> 11:30/12:30 IT (Inizio finestra probabile)
+    # 11:30 UTC -> 12:30/13:30 IT (Picco uscita)
+    # 12:30 UTC -> 13:30/14:30 IT (Picco uscita)
+    # 13:30 UTC -> 14:30/15:30 IT (Post-uscita)
+    # 14:30 UTC -> 15:30/16:30 IT (Pomeriggio)
+    # 16:30 UTC -> 17:30/18:30 IT (Controllo serale sicurezza)
+    
+    - cron: '30 7,10-14,16 * * *'
   
-  # ABILITA L'AVVIO MANUALE (Sempre utile per test o aggiornamenti fuori orario)
+  # Avvio Manuale (sempre disponibile per emergenze)
   workflow_dispatch:
     inputs:
       force_send:
