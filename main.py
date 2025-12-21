@@ -19,16 +19,14 @@ LIST_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.
 PDF_FILENAME = "bollettino.pdf"
 JSON_FILENAME = "dati_bollettino.json"
 
-# --- NOTIFICHE PUSH (OneSignal) ---
+FAKE_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8"
+}
+
 def send_push_notification(title, message):
-    if not ONESIGNAL_APP_ID or not ONESIGNAL_API_KEY:
-        return "OneSignal non configurato"
-
-    header = {
-        "Content-Type": "application/json; charset=utf-8",
-        "Authorization": f"Basic {ONESIGNAL_API_KEY}"
-    }
-
+    if not ONESIGNAL_APP_ID or not ONESIGNAL_API_KEY: return "OneSignal non configurato"
+    header = {"Content-Type": "application/json; charset=utf-8", "Authorization": f"Basic {ONESIGNAL_API_KEY}"}
     payload = {
         "app_id": ONESIGNAL_APP_ID,
         "included_segments": ["Total Subscriptions"],
@@ -36,187 +34,138 @@ def send_push_notification(title, message):
         "contents": {"en": message, "it": message},
         "url": "https://www.formazionesicurezza.org/protezionecivile/bollettino/index.html"
     }
+    try: requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
+    except: pass
+    return "OK"
 
-    try:
-        req = requests.post("https://onesignal.com/api/v1/notifications", headers=header, data=json.dumps(payload))
-        if req.status_code == 200:
-            return "OK"
-        else:
-            return f"Errore API: {req.text}"
-    except Exception as e:
-        return f"Errore Connessione: {str(e)}"
-
-# --- TELEGRAM ---
 def send_telegram_message(message, file_path=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID: return "Telegram non configurato"
-    
-    whatsapp_text = urllib.parse.quote(message.replace('*', '').replace('_', ''))
-    whatsapp_link = f"https://wa.me/?text={whatsapp_text}"
-    full_message = message + f"\n\n📲 [Inoltra su WhatsApp]({whatsapp_link})"
-    
     url_msg = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    data = {"chat_id": TELEGRAM_CHAT_ID, "text": full_message, "parse_mode": "Markdown", "disable_web_page_preview": True}
-    
+    data = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "Markdown", "disable_web_page_preview": True}
     try:
-        r = requests.post(url_msg, data=data)
-        if r.status_code != 200: return f"Err Msg: {r.text}"
-
+        requests.post(url_msg, data=data)
         if file_path and os.path.exists(file_path):
             url_doc = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"
-            with open(file_path, 'rb') as f:
-                files = {'document': f}
-                r2 = requests.post(url_doc, data={"chat_id": TELEGRAM_CHAT_ID}, files=files)
-                if r2.status_code != 200: return f"Err Doc: {r2.text}"
-        
-        return "OK"
-    except Exception as e: return f"Err Conn: {str(e)}"
+            with open(file_path, 'rb') as f: requests.post(url_doc, data={"chat_id": TELEGRAM_CHAT_ID}, files={'document': f})
+    except: pass
+    return "OK"
 
-# --- PARSING AVANZATO (LOGICA WORST-CASE) ---
-def calcola_rischio_peggiore(testo_completo):
+# --- LOGICA INTELLIGENTE COLORI E RISCHI ---
+def analizza_riga(celle):
     """
-    Analizza tutto il testo della riga (concatenazione delle colonne rischio).
-    Restituisce il colore con priorità più alta trovato.
+    Analizza le 3 colonne di rischio (Idrogeologica, Temporali, Idraulica).
+    Restituisce: (colore_finale, descrizione_rischio)
     Priorità: ROSSO > ARANCIONE > GIALLO > VERDE
     """
-    if not testo_completo:
-        return "green"
-        
-    t = str(testo_completo).upper()
+    # Indici colonne nel PDF (spesso sono: 1=Idro, 2=Temporali, 3=Idraulica)
+    # Se la lista è pulita: [Zona, Idro, Temp, Idraulica, Note]
     
-    if "ROSS" in t: return "red"
-    elif "ARANC" in t: return "orange"
-    elif "GIALL" in t: return "yellow"
-    else: return "green"
+    livelli = {"VERDE": 0, "GIALL": 1, "ARANC": 2, "ROSS": 3}
+    colori_output = {0: "green", 1: "yellow", 2: "orange", 3: "red"}
+    
+    max_score = 0
+    descrizione = "Nessuna criticità rilevante"
+    
+    # Mappatura colonne (dipende da come pdfplumber estrae, assumiamo ordine standard)
+    labels = ["Rischio Idrogeologico", "Rischio Temporali", "Rischio Idraulico"]
+    
+    # Controlliamo le celle dalla 1 alla 3 (la 0 è la Zona)
+    for i in range(1, len(celle)):
+        if i > 3: break # Evita note o colonne extra
+        
+        testo = str(celle[i]).upper()
+        punteggio = 0
+        if "ROSS" in testo: punteggio = 3
+        elif "ARANC" in testo: punteggio = 2
+        elif "GIALL" in testo: punteggio = 1
+        
+        if punteggio > 0:
+            # Se troviamo un rischio, aggiorniamo descrizione
+            tipo_rischio = labels[i-1] if (i-1) < len(labels) else "Criticità"
+            
+            if punteggio > max_score:
+                max_score = punteggio
+                descrizione = f"{tipo_rischio}" # Sovrascrive col rischio più grave
+            elif punteggio == max_score:
+                descrizione += f" + {tipo_rischio}" # Aggiunge se pari merito
+                
+    if max_score == 0:
+        descrizione = "Nessuna criticità ordinaria"
 
-def extract_validity_info(text):
-    start_validity, end_validity = "N/D", "N/D"
-    # Cerca pattern tipo "Inizio validità: ore 14:00 del ..."
-    start_match = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
-    end_match = re.search(r"Fine validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
-    if start_match: start_validity = start_match.group(1).strip()
-    if end_match: end_validity = end_match.group(1).strip()
-    return start_validity, end_validity
+    return colori_output[max_score], descrizione
 
 def get_pdf_url():
     try:
-        r = requests.get(LIST_URL)
+        r = requests.get(LIST_URL, headers=FAKE_HEADERS, timeout=30)
         soup = BeautifulSoup(r.text, 'html.parser')
         for a in soup.find_all('a', href=True):
             if "Bollettino_Criticita" in a['href']:
-                full_url = BASE_URL + a['href'] if not a['href'].startswith('http') else a['href']
-                return full_url
-    except Exception as e: print(f"Errore scraping PDF: {e}")
+                return BASE_URL + a['href'] if not a['href'].startswith('http') else a['href']
+    except: pass
     return None
 
 def main():
-    print("--- INIZIO ELABORAZIONE ---")
-    
-    force_send_active = os.environ.get("FORCE_SEND") == "true"
-    
+    force = os.environ.get("FORCE_SEND") == "true"
     pdf_url = get_pdf_url()
     if not pdf_url: return
 
     try:
-        r = requests.get(pdf_url)
+        r = requests.get(pdf_url, headers=FAKE_HEADERS)
         with open(PDF_FILENAME, 'wb') as f: f.write(r.content)
     except: return
 
-    pdf_date_str = datetime.date.today().strftime("%d/%m/%Y")
-    try:
-        with pdfplumber.open(PDF_FILENAME) as pdf:
-            text = pdf.pages[0].extract_text()
-            # Cerca la data del bollettino (es. DEL 21/12/2025)
-            date_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", text)
-            if date_match: pdf_date_str = date_match.group(1)
-    except: pass
-
-    # Verifica se già processato (se non forzato)
-    old_data = {}
-    if os.path.exists(JSON_FILENAME):
-        try:
-            with open(JSON_FILENAME, 'r') as f:
-                old_data = json.load(f)
-                if old_data.get("data_bollettino") == pdf_date_str and not old_data.get("manual_override") and not force_send_active:
-                    print("✅ Bollettino già processato.")
-                    return
-        except: pass
-
-    extracted_data = {
+    pdf_date = datetime.date.today().strftime("%d/%m/%Y")
+    
+    extracted = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "data_bollettino": pdf_date_str,
-        "validita_inizio": "", "validita_fine": "", "url_bollettino": pdf_url,
-        "manual_override": False, 
+        "data_bollettino": pdf_date,
+        "validita_inizio": "N/D", "validita_fine": "N/D",
         "zone": {},
-        "log_sistema": old_data.get("log_sistema", {"stato": "Attesa", "msg": "Nessuna operazione recente"})
+        "dettagli_rischi": {} # NUOVO CAMPO PER MAPPA
     }
 
     try:
         with pdfplumber.open(PDF_FILENAME) as pdf:
-            # Estrazione Testo pagina 1 per date
-            text_p1 = pdf.pages[0].extract_text()
-            v_s, v_e = extract_validity_info(text_p1)
-            extracted_data["validita_inizio"], extracted_data["validita_fine"] = v_s, v_e
+            text = pdf.pages[0].extract_text()
+            d_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", text)
+            if d_match: extracted["data_bollettino"] = d_match.group(1)
             
-            # Estrazione Tabella (solitamente a pag 1)
+            # Date validità
+            v_start = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
+            v_end = re.search(r"Fine validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
+            if v_start: extracted["validita_inizio"] = v_start.group(1).strip()
+            if v_end: extracted["validita_fine"] = v_end.group(1).strip()
+
+            # Estrazione Tabella
             tables = pdf.pages[0].extract_tables()
-            
             if tables:
-                # Itera sulle righe della prima tabella trovata
                 for row in tables[0]:
-                    # Pulisce i dati della riga
-                    cleaned = [str(c).replace("\n", " ").strip() if c else "" for c in row]
-                    
-                    # Controlla se la riga contiene una Zona (es. BASI A1, BASI E1...)
-                    # La zona è solitamente nella prima colonna (indice 0)
-                    if len(cleaned) >= 2 and "BASI" in cleaned[0]:
-                        zone_name = cleaned[0]
-                        
-                        # Prendi il contenuto delle colonne rischio (solitamente indici 1, 2, 3)
-                        # Concateniamo tutto il testo per cercare "GIALLA", "ARANCIONE", "ROSSA"
-                        # Indipendentemente dalla colonna specifica
-                        risk_columns_text = " ".join(cleaned[1:4])
-                        
-                        # Calcola il colore peggiore trovato nella riga
-                        final_color = calcola_rischio_peggiore(risk_columns_text)
-                        
-                        extracted_data["zone"][zone_name] = final_color
-    except Exception as e:
-        print(f"Errore parsing PDF: {e}")
+                    cln = [str(c).replace("\n", " ").strip() if c else "" for c in row]
+                    if len(cln) >= 4 and "BASI" in cln[0]:
+                        zona = cln[0]
+                        colore, desc = analizza_riga(cln)
+                        extracted["zone"][zona] = colore
+                        extracted["dettagli_rischi"][zona] = desc
+    except Exception as e: print(e)
 
-    # Se abbiamo estratto zone, procediamo al salvataggio e notifiche
-    if extracted_data["zone"]:
+    # Verifica se salvare
+    if extracted["zone"]:
+        # Se non forzato e data uguale, stop. Ma se forzato sovrascrivi.
+        with open(JSON_FILENAME, 'w') as f: json.dump(extracted, f, indent=4)
         
-        # --- INVIO NOTIFICHE E REGISTRAZIONE LOG ---
-        log_res = {"data": datetime.datetime.now().strftime("%d/%m %H:%M"), "telegram": "N/D", "push": "N/D"}
-        
-        color_labels = {"green": "VERDE", "yellow": "GIALLO", "orange": "ARANCIONE", "red": "ROSSO"}
-        msg = f"🚨 *Bollettino {extracted_data['data_bollettino']}*\nValidità: {extracted_data['validita_inizio']}\n\n"
-        
-        # Ordina le zone per nome
-        for z in sorted(extracted_data["zone"].keys()):
-            c = extracted_data["zone"][z]
+        # Notifiche
+        msg = f"🚨 *Bollettino {extracted['data_bollettino']}*\nValidità: {extracted['validita_inizio']}\n\n"
+        for z in sorted(extracted["zone"].keys()):
+            c = extracted["zone"][z]
             icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c,"⚪")
-            label_ita = color_labels.get(c, c.upper())
-            msg += f"{icon} *{z}*: {label_ita}\n"
-            
-        msg += "\n📍 [Apri Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
+            dettaglio = extracted["dettagli_rischi"].get(z, "")
+            msg += f"{icon} *{z}*: {dettaglio}\n"
         
-        # Invio Telegram
-        res_tg = send_telegram_message(msg, PDF_FILENAME)
-        log_res["telegram"] = res_tg
+        msg += "\n📍 [Apri Mappa](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
         
-        # Invio Push
-        push_title = f"Bollettino {extracted_data['data_bollettino']}"
-        push_msg = f"Validità: {extracted_data['validita_inizio']}. Colori aggiornati."
-        res_push = send_push_notification(push_title, push_msg)
-        log_res["push"] = res_push
-
-        # Aggiorna il log nel JSON
-        extracted_data["log_sistema"] = log_res
-
-        # Salvataggio
-        with open(JSON_FILENAME, 'w') as f: json.dump(extracted_data, f, indent=4)
-        print("✅ Dati e Log salvati correttamente.")
+        send_telegram_message(msg, PDF_FILENAME)
+        send_push_notification(f"Bollettino {extracted['data_bollettino']}", "Dati aggiornati. Controlla la mappa.")
+        print("✅ Aggiornamento completato.")
 
 if __name__ == "__main__":
     main()
