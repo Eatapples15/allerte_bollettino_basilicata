@@ -71,21 +71,26 @@ def send_telegram_message(message, file_path=None):
         return "OK"
     except Exception as e: return f"Err Conn: {str(e)}"
 
-# --- PARSING ---
-def parse_alert_color(text):
-    if not text: return "green"
-    text = str(text).upper()
-    if "ROSS" in text: return "red"
-    if "ARANCION" in text: return "orange"
-    if "GIALL" in text: return "yellow"
-    return "green"
-
-def get_risk_level(color):
-    levels = {"green": 0, "yellow": 1, "orange": 2, "red": 3}
-    return levels.get(color, 0)
+# --- PARSING AVANZATO (LOGICA WORST-CASE) ---
+def calcola_rischio_peggiore(testo_completo):
+    """
+    Analizza tutto il testo della riga (concatenazione delle colonne rischio).
+    Restituisce il colore con priorità più alta trovato.
+    Priorità: ROSSO > ARANCIONE > GIALLO > VERDE
+    """
+    if not testo_completo:
+        return "green"
+        
+    t = str(testo_completo).upper()
+    
+    if "ROSS" in t: return "red"
+    elif "ARANC" in t: return "orange"
+    elif "GIALL" in t: return "yellow"
+    else: return "green"
 
 def extract_validity_info(text):
     start_validity, end_validity = "N/D", "N/D"
+    # Cerca pattern tipo "Inizio validità: ore 14:00 del ..."
     start_match = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
     end_match = re.search(r"Fine validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
     if start_match: start_validity = start_match.group(1).strip()
@@ -120,11 +125,12 @@ def main():
     try:
         with pdfplumber.open(PDF_FILENAME) as pdf:
             text = pdf.pages[0].extract_text()
+            # Cerca la data del bollettino (es. DEL 21/12/2025)
             date_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", text)
             if date_match: pdf_date_str = date_match.group(1)
     except: pass
 
-    # Recupera dati vecchi per mantenere lo storico del log se non facciamo nulla
+    # Verifica se già processato (se non forzato)
     old_data = {}
     if os.path.exists(JSON_FILENAME):
         try:
@@ -141,28 +147,43 @@ def main():
         "validita_inizio": "", "validita_fine": "", "url_bollettino": pdf_url,
         "manual_override": False, 
         "zone": {},
-        # Manteniamo log precedente finché non ne generiamo uno nuovo
         "log_sistema": old_data.get("log_sistema", {"stato": "Attesa", "msg": "Nessuna operazione recente"})
     }
 
     try:
         with pdfplumber.open(PDF_FILENAME) as pdf:
-            text = pdf.pages[0].extract_text()
-            tables = pdf.pages[0].extract_tables()
-            v_s, v_e = extract_validity_info(text)
+            # Estrazione Testo pagina 1 per date
+            text_p1 = pdf.pages[0].extract_text()
+            v_s, v_e = extract_validity_info(text_p1)
             extracted_data["validita_inizio"], extracted_data["validita_fine"] = v_s, v_e
             
+            # Estrazione Tabella (solitamente a pag 1)
+            tables = pdf.pages[0].extract_tables()
+            
             if tables:
+                # Itera sulle righe della prima tabella trovata
                 for row in tables[0]:
+                    # Pulisce i dati della riga
                     cleaned = [str(c).replace("\n", " ").strip() if c else "" for c in row]
+                    
+                    # Controlla se la riga contiene una Zona (es. BASI A1, BASI E1...)
+                    # La zona è solitamente nella prima colonna (indice 0)
                     if len(cleaned) >= 2 and "BASI" in cleaned[0]:
-                        zone, colors = cleaned[0], [parse_alert_color(c) for c in cleaned[1:4]]
-                        max_risk, final = 0, "green"
-                        for c in colors:
-                            if get_risk_level(c) > max_risk: max_risk, final = get_risk_level(c), c
-                        extracted_data["zone"][zone] = final
-    except: pass
+                        zone_name = cleaned[0]
+                        
+                        # Prendi il contenuto delle colonne rischio (solitamente indici 1, 2, 3)
+                        # Concateniamo tutto il testo per cercare "GIALLA", "ARANCIONE", "ROSSA"
+                        # Indipendentemente dalla colonna specifica
+                        risk_columns_text = " ".join(cleaned[1:4])
+                        
+                        # Calcola il colore peggiore trovato nella riga
+                        final_color = calcola_rischio_peggiore(risk_columns_text)
+                        
+                        extracted_data["zone"][zone_name] = final_color
+    except Exception as e:
+        print(f"Errore parsing PDF: {e}")
 
+    # Se abbiamo estratto zone, procediamo al salvataggio e notifiche
     if extracted_data["zone"]:
         
         # --- INVIO NOTIFICHE E REGISTRAZIONE LOG ---
@@ -170,10 +191,14 @@ def main():
         
         color_labels = {"green": "VERDE", "yellow": "GIALLO", "orange": "ARANCIONE", "red": "ROSSO"}
         msg = f"🚨 *Bollettino {extracted_data['data_bollettino']}*\nValidità: {extracted_data['validita_inizio']}\n\n"
-        for z, c in extracted_data["zone"].items():
+        
+        # Ordina le zone per nome
+        for z in sorted(extracted_data["zone"].keys()):
+            c = extracted_data["zone"][z]
             icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c,"⚪")
             label_ita = color_labels.get(c, c.upper())
             msg += f"{icon} *{z}*: {label_ita}\n"
+            
         msg += "\n📍 [Apri Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
         
         # Invio Telegram
@@ -191,7 +216,7 @@ def main():
 
         # Salvataggio
         with open(JSON_FILENAME, 'w') as f: json.dump(extracted_data, f, indent=4)
-        print("✅ Dati e Log salvati.")
+        print("✅ Dati e Log salvati correttamente.")
 
 if __name__ == "__main__":
     main()
