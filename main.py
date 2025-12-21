@@ -16,6 +16,7 @@ ONESIGNAL_API_KEY = os.environ.get("ONESIGNAL_API_KEY")
 
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/"
 LIST_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.php?lt=A"
+OFFICIAL_LINK = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.php?lt=A"
 PDF_FILENAME = "bollettino.pdf"
 JSON_FILENAME = "dati_bollettino.json"
 
@@ -43,14 +44,10 @@ def analizza_riga_rischi(celle):
     Analizza la riga per trovare il rischio peggiore.
     Restituisce: (colore_peggiore, descrizione_rischio)
     """
-    # MAPPATURA ESATTA DELLE COLONNE DEL BOLLETTINO
-    # Col 1: Idrogeologica
-    # Col 2: Idrogeologica per Temporali
-    # Col 3: Idraulica
     labels_rischio = {
-        1: "Idrogeologica", 
-        2: "Idrogeologica per Temporali", 
-        3: "Idraulica"
+        1: "Idrogeologico", 
+        2: "Idrogeologico per Temporali", 
+        3: "Idraulico"
     }
     
     max_score = 0
@@ -71,18 +68,18 @@ def analizza_riga_rischi(celle):
             if score > max_score:
                 max_score = score
                 final_color = colore
-                descrizione_parts = [tipo] # Resetta e mette il nuovo rischio dominante
+                # MODIFICA: Solo il tipo, niente colore in inglese tra parentesi
+                descrizione_parts = [tipo] 
             elif score == max_score:
-                descrizione_parts.append(tipo) # Aggiunge se pari merito
+                descrizione_parts.append(tipo)
 
     if max_score == 0:
         return "green", "Ordinaria"
     
-    # Esempio: "Idrogeologica per Temporali"
     desc_finale = " + ".join(descrizione_parts)
     return final_color, desc_finale
 
-# --- UTILS STANDARD ---
+# --- UTILS ---
 def extract_validity_info(text):
     start_validity, end_validity = "N/D", "N/D"
     start_match = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
@@ -103,10 +100,20 @@ def get_pdf_url():
 
 def send_telegram_message(message, file_path=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID: return
-    url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
-    data = {"chat_id": TELEGRAM_CHAT_ID, "text": message, "parse_mode": "Markdown", "disable_web_page_preview": True}
+    
+    # 🟢 FIX WHATSAPP: Encoding corretto per mantenere le icone
+    # Rimuove il markdown (* e _) ma lascia le emoji intatte
+    clean_text = message.replace('*', '').replace('_', '').replace('`', '')
+    whatsapp_encoded = urllib.parse.quote(clean_text)
+    
+    # Aggiunge il link di inoltro al messaggio originale
+    full_message = message + f"\n\n📲 [Inoltra su WhatsApp](https://wa.me/?text={whatsapp_encoded})"
+
+    url_msg = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    data = {"chat_id": TELEGRAM_CHAT_ID, "text": full_message, "parse_mode": "Markdown", "disable_web_page_preview": True}
+    
     try:
-        requests.post(url, data=data)
+        requests.post(url_msg, data=data)
         if file_path:
             url_doc = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"
             with open(file_path, 'rb') as f: requests.post(url_doc, data={"chat_id": TELEGRAM_CHAT_ID}, files={'document': f})
@@ -150,13 +157,13 @@ def main():
 
     try:
         with pdfplumber.open(PDF_FILENAME) as pdf:
-            # Date da pagina 1
+            # 1. Date
             p1_text = pdf.pages[0].extract_text()
             extracted["validita_inizio"], extracted["validita_fine"] = extract_validity_info(p1_text)
             d_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", p1_text)
             if d_match: extracted["data_bollettino"] = d_match.group(1)
 
-            # Scan Totale (Scenario Peggiore)
+            # 2. Scan Totale
             for page in pdf.pages:
                 tables = page.extract_tables()
                 for table in tables:
@@ -167,8 +174,7 @@ def main():
                             colore_riga, desc_riga = analizza_riga_rischi(cleaned)
                             score_riga = get_risk_score(colore_riga)
                             
-                            current_color = extracted["zone"].get(zona, "green")
-                            current_score = get_risk_score(current_color)
+                            current_score = get_risk_score(extracted["zone"].get(zona, "green"))
 
                             if score_riga > current_score:
                                 extracted["zone"][zona] = colore_riga
@@ -181,6 +187,7 @@ def main():
         print(f"Errore: {e}")
         extracted["log_sistema"] = {"stato": "Errore", "msg": str(e)}
 
+    # Verifica Salvataggio
     if extracted["zone"]:
         old_data = {}
         data_changed = True
@@ -195,21 +202,19 @@ def main():
         if data_changed or force:
             with open(JSON_FILENAME, 'w') as f: json.dump(extracted, f, indent=4)
             
-            # --- COSTRUZIONE MESSAGGIO TELEGRAM AGGIORNATA ---
+            # --- COSTRUZIONE MESSAGGIO ---
             labels_colori = {"green":"Verde", "yellow":"Giallo", "orange":"Arancione", "red":"Rosso"}
             
             msg = f"🚨 *Bollettino {extracted['data_bollettino']}*\nValidità: {extracted['validita_inizio']}\n\n"
             
             for z in sorted(extracted["zone"].keys()):
                 c = extracted["zone"][z]
-                # Recupera la descrizione del rischio (es. "Idrogeologica per Temporali")
+                # Testo rischio pulito (es. "Idrogeologico per Temporali")
                 tipo_rischio = extracted["dettagli_rischi"].get(z, "Ordinaria")
                 colore_txt = labels_colori.get(c, "N/D")
                 icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c,"⚪")
                 
-                # FORMATTAZIONE RICHIESTA:
-                # Verde: "Verde - Ordinaria"
-                # Altro: "Giallo - Criticità Idrogeologica..."
+                # Formato: Colore - Criticità Tipo
                 if c == "green":
                     linea_txt = f"{colore_txt} - Ordinaria"
                 else:
@@ -217,6 +222,8 @@ def main():
                 
                 msg += f"{icon} *{z}*: {linea_txt}\n"
             
+            # Link Ufficiali e Mappa
+            msg += f"\n🌐 [Sito Ufficiale Centro Funzionale]({OFFICIAL_LINK})"
             msg += "\n📍 [Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
             
             send_telegram_message(msg, PDF_FILENAME)
