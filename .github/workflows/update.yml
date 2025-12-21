@@ -2,10 +2,16 @@ name: Aggiornamento Dati Completo
 
 on:
   schedule:
-    # Esegue ogni ora al minuto 15
-    - cron: '15 * * * *'
+    # ORARI UTC (GitHub usa UTC, l'Italia è UTC+1 in inverno, UTC+2 in estate).
+    #
+    # Fascia oraria impostata: 10:00 UTC -> 17:00 UTC
+    # - In Estate:  dalle 12:00 alle 19:00 italiane
+    # - In Inverno: dalle 11:00 alle 18:00 italiane
+    #
+    # Frequenza: Ogni 20 minuti (minuti 0, 20, 40)
+    - cron: '0,30,45 10-17 * * *'
   
-  # ABILITA L'AVVIO MANUALE CON OPZIONI (Da Admin Panel o GitHub UI)
+  # ABILITA L'AVVIO MANUALE (Sempre utile per test o aggiornamenti fuori orario)
   workflow_dispatch:
     inputs:
       force_send:
@@ -41,7 +47,6 @@ jobs:
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
           ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
-          # Passa l'input manuale a Python
           FORCE_SEND: ${{ github.event.inputs.force_send }}
         run: python main.py
 
@@ -53,5 +58,6 @@ jobs:
           git config --global user.name "GitHub Actions Bot"
           git config --global user.email "actions@github.com"
           git add dati_bollettino.json dati_sensori.json
-          git commit -m "Aggiornamento Dati (Forzato: ${{ github.event.inputs.force_send }})" || echo "Nessuna modifica da committare"
+          # Il commit avviene solo se ci sono cambiamenti
+          git commit -m "Aggiornamento Dati Automatico" || echo "Nessuna modifica da committare"
           git push
