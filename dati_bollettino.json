@@ -1,27 +1,53 @@
 {
-    "ultimo_aggiornamento": "21/12/2025 15:37",
+    "ultimo_aggiornamento": "22/12/2025 08:17",
     "data_bollettino": "21/12/2025",
     "validita_inizio": "ore 14:00 del 21/12/2025",
     "validita_fine": "ore 23:59 del 22/12/2025",
     "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_21_12_2025.pdf",
     "manual_override": false,
     "zone": {
-        "BASI A1": "green",
-        "BASI A2": "green",
-        "BASI B": "green",
-        "BASI C": "green",
-        "BASI D": "green",
-        "BASI E1": "yellow",
-        "BASI E2": "yellow"
-    },
-    "dettagli_rischi": {
-        "BASI A1": "Ordinaria",
-        "BASI A2": "Ordinaria",
-        "BASI B": "Ordinaria",
-        "BASI C": "Ordinaria",
-        "BASI D": "Ordinaria",
-        "BASI E1": "Idrogeologico per Temporali",
-        "BASI E2": "Idrogeologico per Temporali"
+        "BASI A1": {
+            "oggi": "green",
+            "rischio_oggi": "Ordinaria",
+            "domani": "green",
+            "rischio_domani": "Ordinaria"
+        },
+        "BASI A2": {
+            "oggi": "green",
+            "rischio_oggi": "Ordinaria",
+            "domani": "green",
+            "rischio_domani": "Ordinaria"
+        },
+        "BASI B": {
+            "oggi": "green",
+            "rischio_oggi": "Ordinaria",
+            "domani": "green",
+            "rischio_domani": "Ordinaria"
+        },
+        "BASI C": {
+            "oggi": "green",
+            "rischio_oggi": "Ordinaria",
+            "domani": "green",
+            "rischio_domani": "Ordinaria"
+        },
+        "BASI D": {
+            "oggi": "green",
+            "rischio_oggi": "Ordinaria",
+            "domani": "green",
+            "rischio_domani": "Ordinaria"
+        },
+        "BASI E1": {
+            "oggi": "green",
+            "rischio_oggi": "Ordinaria",
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
+        },
+        "BASI E2": {
+            "oggi": "green",
+            "rischio_oggi": "Ordinaria",
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
+        }
     },
     "log_sistema": {
         "stato": "OK",
