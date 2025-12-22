@@ -45,29 +45,54 @@ def scrape_sensor_type(sensor_key, config):
     data_list = []
     
     try:
-        r = requests.get(url, headers=FAKE_HEADERS, timeout=20)
+        r = requests.get(url, headers=FAKE_HEADERS, timeout=30)
+        # Usa html5lib se disponibile, altrimenti html.parser
         soup = BeautifulSoup(r.text, 'html.parser')
         
+        # LOGICA DI RICERCA MIGLIORATA
+        # Cerchiamo tutte le tabelle e prendiamo quella che contiene "Stazione" nella prima riga
         tables = soup.find_all("table")
         target_table = None
         
         for t in tables:
-            if len(t.find_all("tr")) > 5:
+            # Prendi le prime righe per controllare l'intestazione
+            rows = t.find_all("tr")
+            if not rows: continue
+            
+            # Controlla se nell'header c'è la parola chiave
+            header_text = rows[0].text.strip()
+            if "Stazione" in header_text or "STAZIONE" in header_text.upper():
                 target_table = t
                 break
-        
+            
+            # Fallback: controlla la seconda riga se la prima è vuota
+            if len(rows) > 1 and "Stazione" in rows[1].text:
+                target_table = t
+                break
+
         if not target_table:
-            print(f"⚠️ Nessuna tabella trovata per {sensor_key}")
-            return []
+            # Fallback estremo: prendiamo la tabella con più righe
+            max_rows = 0
+            for t in tables:
+                l = len(t.find_all("tr"))
+                if l > max_rows:
+                    max_rows = l
+                    target_table = t
+            
+            if not target_table or max_rows < 2:
+                print(f"⚠️ Nessuna tabella valida trovata per {sensor_key}")
+                return []
 
         rows = target_table.find_all("tr")
         
         for row in rows:
             cols = row.find_all("td")
             if len(cols) >= 3:
+                # Struttura tipica: Nome Stazione | Data/Ora | Valore
                 nome_stazione = clean_text(cols[0].text)
                 
-                if not nome_stazione or "Stazione" in nome_stazione:
+                # Ignora righe di intestazione o nomi vuoti
+                if not nome_stazione or "Stazione" in nome_stazione or "Provincia" in nome_stazione:
                     continue
 
                 link = cols[0].find("a")
@@ -112,10 +137,13 @@ def main():
             "dati": readings
         }
 
-    with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
-        json.dump(final_data, f, indent=4, ensure_ascii=False)
-    
-    print(f"Salvataggio completato in {JSON_FILENAME}")
+    # Scrittura JSON
+    try:
+        with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
+            json.dump(final_data, f, indent=4, ensure_ascii=False)
+        print(f"Salvataggio completato in {JSON_FILENAME}")
+    except Exception as e:
+        print(f"Errore salvataggio JSON: {e}")
 
 if __name__ == "__main__":
     main()
