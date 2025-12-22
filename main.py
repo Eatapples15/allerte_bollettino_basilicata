@@ -3,6 +3,7 @@ import pdfplumber
 import json
 import os
 import datetime
+from datetime import timedelta # <--- NUOVA IMPORTAZIONE
 import re
 import sys
 import urllib.parse
@@ -11,9 +12,7 @@ from bs4 import BeautifulSoup
 # --- CONFIGURAZIONE ---
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
-# OneSignal rimosso o lasciato vuoto se non usato
-ONESIGNAL_APP_ID = os.environ.get("ONESIGNAL_APP_ID")
-ONESIGNAL_API_KEY = os.environ.get("ONESIGNAL_API_KEY")
+FORCE_SEND = os.environ.get("FORCE_SEND") == "true"
 
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/"
 LIST_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.php?lt=A"
@@ -39,13 +38,11 @@ def parse_alert_color(text):
     return "green"
 
 def analizza_riga_rischi(celle):
-    # Diciture complete come richiesto
     labels_rischio = {
         1: "Criticità Idrogeologica", 
         2: "Criticità Idrogeologica per Temporali", 
         3: "Criticità Idraulica"
     }
-    
     max_score = 0
     final_color = "green"
     descrizione_parts = []
@@ -58,7 +55,6 @@ def analizza_riga_rischi(celle):
 
         if score > 0: 
             tipo = labels_rischio.get(i, "Criticità Generica")
-            
             if score > max_score:
                 max_score = score
                 final_color = colore
@@ -92,7 +88,6 @@ def get_pdf_url():
     except: pass
     return None
 
-# MODIFICATO: Accetta custom_filename
 def send_telegram_message(message, file_path=None, custom_filename=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID: return
     
@@ -105,22 +100,15 @@ def send_telegram_message(message, file_path=None, custom_filename=None):
     
     try:
         requests.post(url_msg, data=data)
-        
         if file_path:
             url_doc = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"
             with open(file_path, 'rb') as f:
-                # Se c'è un nome personalizzato, lo usiamo nella tupla dei file
-                if custom_filename:
-                    files_payload = {'document': (custom_filename, f, 'application/pdf')}
-                else:
-                    files_payload = {'document': f}
-                
+                files_payload = {'document': (custom_filename or file_path, f, 'application/pdf')}
                 requests.post(url_doc, data={"chat_id": TELEGRAM_CHAT_ID}, files=files_payload)
     except Exception as e: 
-        print(f"Errore invio Telegram: {e}")
+        print(f"Errore Telegram: {e}")
 
 def main():
-    force = os.environ.get("FORCE_SEND") == "true"
     pdf_url = get_pdf_url()
     if not pdf_url: return
 
@@ -129,16 +117,15 @@ def main():
         with open(PDF_FILENAME, 'wb') as f: f.write(r.content)
     except: return
 
-    pdf_date = datetime.date.today().strftime("%d/%m/%Y")
+    # Data di default oggi
+    pdf_date_str = datetime.date.today().strftime("%d/%m/%Y")
     
     extracted = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "data_bollettino": pdf_date,
+        "data_bollettino": pdf_date_str,
         "validita_inizio": "N/D", "validita_fine": "N/D",
         "url_bollettino": pdf_url,
-        "manual_override": False,
-        "zone": {}, 
-        "log_sistema": {"stato": "OK", "msg": "Aggiornato"}
+        "zone": {}
     }
 
     try:
@@ -146,10 +133,9 @@ def main():
             p1_text = pdf.pages[0].extract_text()
             extracted["validita_inizio"], extracted["validita_fine"] = extract_validity_info(p1_text)
             
+            # Cerca data nel PDF
             d_match = re.search(r"PROT.*DEL\s+(\d{2}/\d{2}/\d{4})", p1_text)
-            if not d_match:
-                d_match = re.search(r"DEL\s+(\d{2}/\d{2}/\d{4})", p1_text)
-            
+            if not d_match: d_match = re.search(r"DEL\s+(\d{2}/\d{2}/\d{4})", p1_text)
             if d_match: extracted["data_bollettino"] = d_match.group(1)
 
             tables_found = []
@@ -165,12 +151,10 @@ def main():
                         tables_found.append(table)
 
             giorni = ["oggi", "domani"]
-            print(f"Tabelle trovate: {len(tables_found)}")
-
+            
             for i, table in enumerate(tables_found):
                 if i >= 2: break 
                 current_day = giorni[i]
-                
                 for row in table:
                     cleaned = [str(c).strip() if c else "" for c in row]
                     if len(cleaned) >= 2 and "BASI" in cleaned[0]:
@@ -186,71 +170,76 @@ def main():
                         extracted["zone"][zona][current_day] = colore
                         extracted["zone"][zona][f"rischio_{current_day}"] = desc
 
-    except Exception as e:
-        print(f"Errore: {e}")
-        extracted["log_sistema"] = {"stato": "Errore", "msg": str(e)}
+    except Exception as e: print(f"Errore PDF: {e}")
 
-    if extracted["zone"]:
-        old_data = {}
-        data_changed = True
-        if os.path.exists(JSON_FILENAME) and not force:
-            try:
-                with open(JSON_FILENAME, 'r') as f:
-                    old_data = json.load(f)
-                    if old_data.get("data_bollettino") == extracted["data_bollettino"]:
-                        data_changed = False
-            except: pass
+    # Controllo cambiamenti
+    old_data = {}
+    data_changed = True
+    if os.path.exists(JSON_FILENAME) and not FORCE_SEND:
+        try:
+            with open(JSON_FILENAME, 'r') as f:
+                old_data = json.load(f)
+                if old_data.get("data_bollettino") == extracted["data_bollettino"]:
+                    data_changed = False
+        except: pass
+    
+    if data_changed or FORCE_SEND:
+        with open(JSON_FILENAME, 'w') as f: json.dump(extracted, f, indent=4)
         
-        if data_changed or force:
-            with open(JSON_FILENAME, 'w') as f: json.dump(extracted, f, indent=4)
-            
-            labels_it = {"green":"VERDE", "yellow":"GIALLO", "orange":"ARANCIONE", "red":"ROSSO"}
-            
-            msg = f"🚨 *Bollettino Protezione Civile {extracted['data_bollettino']}*\n"
-            msg += f"🕒 Validità: {extracted['validita_inizio']}\n\n"
-            
-            # OGGI
-            msg += "📋 *SITUAZIONE OGGI:*\n"
-            for z in sorted(extracted["zone"].keys()):
-                dati = extracted["zone"][z]
-                c_oggi = dati["oggi"]
-                icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c_oggi,"⚪")
-                txt = labels_it.get(c_oggi, "N/D")
-                detail = dati['rischio_oggi']
-                
-                if c_oggi != "green":
-                    msg += f"{icon} *{z}*: {txt}\n   ⚠️ _{detail}_\n"
-                else:
-                    msg += f"{icon} *{z}*: {txt}\n"
+        # --- CALCOLO DATE STRINGHE ---
+        str_oggi = extracted['data_bollettino']
+        try:
+            date_obj = datetime.datetime.strptime(str_oggi, "%d/%m/%Y")
+            date_domani = date_obj + timedelta(days=1)
+            str_domani = date_domani.strftime("%d/%m/%Y")
+        except:
+            str_domani = "Data N/D"
 
-            # DOMANI
-            msg += "\n🔮 *PREVISIONE DOMANI:*\n"
-            crit_domani = False
-            for z in sorted(extracted["zone"].keys()):
-                dati = extracted["zone"][z]
-                c_dom = dati["domani"]
-                if c_dom != "green":
-                    crit_domani = True
-                    icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c_dom,"⚪")
-                    txt = labels_it.get(c_dom, "N/D")
-                    detail = dati['rischio_domani']
-                    msg += f"{icon} *{z}*: {txt}\n   ⚠️ _{detail}_\n"
+        labels_it = {"green":"VERDE", "yellow":"GIALLO", "orange":"ARANCIONE", "red":"ROSSO"}
+        
+        msg = f"🚨 *Bollettino Protezione Civile {str_oggi}*\n"
+        msg += f"🕒 Validità: {extracted['validita_inizio']}\n\n"
+        
+        # OGGI CON DATA
+        msg += f"📋 *SITUAZIONE OGGI ({str_oggi}):*\n"
+        for z in sorted(extracted["zone"].keys()):
+            dati = extracted["zone"][z]
+            c_oggi = dati["oggi"]
+            icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c_oggi,"⚪")
+            txt = labels_it.get(c_oggi, "N/D")
+            detail = dati['rischio_oggi']
             
-            if not crit_domani:
-                msg += "🟢 Nessuna criticità significativa prevista.\n"
+            if c_oggi != "green":
+                msg += f"{icon} *{z}*: {txt}\n   ⚠️ _{detail}_\n"
+            else:
+                msg += f"{icon} *{z}*: {txt}\n"
 
-            msg += f"\n🌐 [Scarica Bollettino PDF]({extracted['url_bollettino']})"
-            msg += "\n📍 [Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
-            
-            # --- CREAZIONE NOME FILE PDF PERSONALIZZATO ---
-            # Sostituiamo gli slash con trattini per evitare errori nel filesystem
-            safe_date = extracted['data_bollettino'].replace("/", "-")
-            custom_pdf_name = f"Bollettino del {safe_date}.pdf"
+        # DOMANI CON DATA
+        msg += f"\n🔮 *PREVISIONE DOMANI ({str_domani}):*\n"
+        crit_domani = False
+        for z in sorted(extracted["zone"].keys()):
+            dati = extracted["zone"][z]
+            c_dom = dati["domani"]
+            if c_dom != "green":
+                crit_domani = True
+                icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c_dom,"⚪")
+                txt = labels_it.get(c_dom, "N/D")
+                detail = dati['rischio_domani']
+                msg += f"{icon} *{z}*: {txt}\n   ⚠️ _{detail}_\n"
+        
+        if not crit_domani:
+            msg += "🟢 Nessuna criticità significativa prevista.\n"
 
-            send_telegram_message(msg, PDF_FILENAME, custom_pdf_name)
-            print("Salvataggio completato e notifica inviata.")
-        else:
-            print("Dati invariati.")
+        msg += f"\n🌐 [Scarica Bollettino PDF]({extracted['url_bollettino']})"
+        msg += "\n📍 [Mappa Interattiva](https://eatapples15.github.io/allerte_bollettino_basilicata/mappa.html)"
+        
+        safe_date = str_oggi.replace("/", "-")
+        custom_pdf_name = f"Bollettino del {safe_date}.pdf"
+
+        send_telegram_message(msg, PDF_FILENAME, custom_pdf_name)
+        print("Notifica inviata.")
+    else:
+        print("Dati invariati.")
 
 if __name__ == "__main__":
     main()
