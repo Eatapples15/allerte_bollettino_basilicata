@@ -1,5 +1,55 @@
 {
-    "ultimo_aggiornamento": "22/12/2025 08:31",
-    "pioggia": [],
-    "fiumi": []
+    "ultimo_aggiornamento": "22/12/2025 10:45",
+    "sensori": {
+        "idrometria": {
+            "meta": {
+                "code": "ID",
+                "label": "Idrometri",
+                "unit": "m",
+                "icon": "fa-water",
+                "threshold": 2.0
+            },
+            "dati": []
+        },
+        "pluviometria": {
+            "meta": {
+                "code": "PL",
+                "label": "Pluviometri",
+                "unit": "mm",
+                "icon": "fa-cloud-rain",
+                "threshold": 40.0
+            },
+            "dati": []
+        },
+        "anemometria": {
+            "meta": {
+                "code": "VV",
+                "label": "Anemometri",
+                "unit": "m/s",
+                "icon": "fa-wind",
+                "threshold": 15.0
+            },
+            "dati": []
+        },
+        "termometria": {
+            "meta": {
+                "code": "TE",
+                "label": "Termometri",
+                "unit": "°C",
+                "icon": "fa-thermometer-half",
+                "threshold": 35.0
+            },
+            "dati": []
+        },
+        "nivometria": {
+            "meta": {
+                "code": "NI",
+                "label": "Nivometri",
+                "unit": "cm",
+                "icon": "fa-snowflake",
+                "threshold": 5.0
+            },
+            "dati": []
+        }
+    }
 }
