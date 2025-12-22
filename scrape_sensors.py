@@ -1,4 +1,3 @@
-
 import requests
 from bs4 import BeautifulSoup
 import json
@@ -10,13 +9,13 @@ import re
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
 JSON_FILENAME = "dati_sensori.json"
 
-# MAPPATURA TIPI SENSORI
+# MAPPATURA TIPI SENSORI (Codici ufficiali del sito CFD)
 SENSORI = {
-    "idrometria": {"code": "ID", "label": "Idrometri", "unit": "m", "icon": "fa-water", "threshold": 2.5}, # Soglia allerta generica
+    "idrometria": {"code": "ID", "label": "Idrometri", "unit": "m", "icon": "fa-water", "threshold": 2.0},
     "pluviometria": {"code": "PL", "label": "Pluviometri", "unit": "mm", "icon": "fa-cloud-rain", "threshold": 40.0},
-    "anemometria": {"code": "VV", "label": "Anemometri", "unit": "m/s", "icon": "fa-wind", "threshold": 20.0}, # ~72 km/h
+    "anemometria": {"code": "VV", "label": "Anemometri", "unit": "m/s", "icon": "fa-wind", "threshold": 15.0},
     "termometria": {"code": "TE", "label": "Termometri", "unit": "°C", "icon": "fa-thermometer-half", "threshold": 35.0},
-    "nivometria": {"code": "NI", "label": "Nivometri", "unit": "cm", "icon": "fa-snowflake", "threshold": 1.0}
+    "nivometria": {"code": "NI", "label": "Nivometri", "unit": "cm", "icon": "fa-snowflake", "threshold": 5.0}
 }
 
 FAKE_HEADERS = {
@@ -24,14 +23,17 @@ FAKE_HEADERS = {
 }
 
 def clean_text(text):
+    if not text: return ""
     return text.replace("\xa0", " ").strip()
 
 def parse_value(val_str):
     try:
-        # Gestisce formati come "0.5" o "1,2"
+        if not val_str: return None
+        # Gestione formati "0.5" o "1,2"
         clean = val_str.replace(",", ".").strip()
-        # Rimuove unità di misura se attaccate
+        # Rimuove caratteri non numerici tranne punto e meno
         clean = re.sub(r'[^\d\.\-]', '', clean)
+        if not clean: return None
         return float(clean)
     except:
         return None
@@ -43,22 +45,21 @@ def scrape_sensor_type(sensor_key, config):
     data_list = []
     
     try:
-        r = requests.get(url, headers=FAKE_HEADERS, timeout=15)
+        r = requests.get(url, headers=FAKE_HEADERS, timeout=20)
         soup = BeautifulSoup(r.text, 'html.parser')
         
-        # Cerca la tabella dei dati
-        # Solitamente è una tabella standard. Cerchiamo tr che contengono dati.
+        # Cerca la tabella dati. Di solito è quella con classe o molte righe.
         tables = soup.find_all("table")
-        
         target_table = None
+        
         for t in tables:
-            # Euristica: la tabella dati ha spesso header specifici o molte righe
+            # Euristica: la tabella dati ha > 5 righe
             if len(t.find_all("tr")) > 5:
                 target_table = t
                 break
         
         if not target_table:
-            print(f"Nessuna tabella trovata per {sensor_key}")
+            print(f"⚠️ Nessuna tabella trovata per {sensor_key}")
             return []
 
         rows = target_table.find_all("tr")
@@ -67,30 +68,28 @@ def scrape_sensor_type(sensor_key, config):
             cols = row.find_all("td")
             if len(cols) >= 3:
                 # Struttura tipica: Nome Stazione | Data/Ora | Valore
-                # A volte c'è un link sulla stazione
                 nome_stazione = clean_text(cols[0].text)
                 
-                # Ignora righe di intestazione o vuote
+                # Ignora intestazioni
                 if not nome_stazione or "Stazione" in nome_stazione:
                     continue
 
-                # Estrazione Link ID (utile per dettagli futuri)
+                # Estrazione ID Stazione dal link (utile per link diretto)
                 link = cols[0].find("a")
                 station_id = ""
                 if link and 'href' in link.attrs:
                     # id=331200
                     match = re.search(r'id=(\d+)', link['href'])
-                    if match:
-                        station_id = match.group(1)
+                    if match: station_id = match.group(1)
 
                 data_ora = clean_text(cols[1].text)
                 valore_raw = clean_text(cols[2].text)
                 valore_num = parse_value(valore_raw)
 
                 if valore_num is not None:
-                    # Calcolo Stato Allerta (Semplificato)
+                    # Calcolo Stato Allerta Semplificato
                     status = "normal"
-                    if valore_num >= config['threshold']:
+                    if abs(valore_num) >= config['threshold']:
                         status = "alert"
                     
                     data_list.append({
@@ -102,8 +101,9 @@ def scrape_sensor_type(sensor_key, config):
                     })
 
     except Exception as e:
-        print(f"Errore scraping {sensor_key}: {e}")
+        print(f"❌ Errore scraping {sensor_key}: {e}")
 
+    print(f"✅ Trovati {len(data_list)} dati per {sensor_key}")
     return data_list
 
 def main():
