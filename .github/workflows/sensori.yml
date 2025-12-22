@@ -2,38 +2,47 @@ name: Aggiornamento Sensori Live
 
 on:
   schedule:
+    # Esegue ogni 20 minuti (es. :00, :20, :40)
     - cron: '*/20 * * * *'
+  
+  # Permette di avviarlo manualmente dal tab "Actions"
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   scrape-sensors:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout del codice
         uses: actions/checkout@v3
 
-      - name: Setup Python
+      - name: Imposta Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-     - name: Installazione Librerie
-        run: pip install requests beautifulsoup4 selenium webdriver-manager
-
-      # --- QUESTO E' IL PASSO DI DEBUG NUOVO ---
-      - name: Debug - Mostra tutti i file
+      - name: Installazione Librerie
+        # Installiamo esplicitamente Selenium e il Webdriver Manager
+        # oltre a requests e beautifulsoup4
         run: |
-          echo "Ecco i file nella cartella corrente:"
-          ls -R
-      # -----------------------------------------
+          python -m pip install --upgrade pip
+          pip install requests beautifulsoup4 selenium webdriver-manager
 
       - name: Esecuzione Scraping Sensori
+        # Questo lancia lo script Python che usa Chrome (Selenium)
         run: python scrape_sensors.py
 
       - name: Commit e Push dei Dati
         run: |
           git config --global user.name "Sensori Bot"
           git config --global user.email "bot@users.noreply.github.com"
+          
+          # Aggiungiamo il file JSON generato
           git add dati_sensori.json
+          
+          # Se il file è cambiato rispetto a prima, fai il commit e push
+          # Se è uguale (nessun dato nuovo), non fa nulla ed esce senza errori
           git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento Dati Sensori Live" && git push)
