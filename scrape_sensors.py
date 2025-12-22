@@ -9,7 +9,7 @@ import re
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
 JSON_FILENAME = "dati_sensori.json"
 
-# MAPPATURA TIPI SENSORI
+# MAPPATURA SENSORI
 SENSORI = {
     "idrometria": {"code": "ID", "label": "Idrometri", "unit": "m", "icon": "fa-water", "threshold": 2.0},
     "pluviometria": {"code": "PL", "label": "Pluviometri", "unit": "mm", "icon": "fa-cloud-rain", "threshold": 40.0},
@@ -29,9 +29,8 @@ def clean_text(text):
 def parse_value(val_str):
     try:
         if not val_str: return None
-        # Gestione formati "0.5" o "1,2"
         clean = val_str.replace(",", ".").strip()
-        # Rimuove caratteri non numerici tranne punto e meno
+        # Rimuove tutto tranne numeri, punto e meno
         clean = re.sub(r'[^\d\.\-]', '', clean)
         if not clean: return None
         return float(clean)
@@ -40,88 +39,73 @@ def parse_value(val_str):
 
 def scrape_sensor_type(sensor_key, config):
     url = f"{BASE_URL}?st={config['code']}"
-    print(f"Scraping {config['label']} da {url}...")
+    print(f"--- Scraping {config['label']} ({url}) ---")
     
     data_list = []
     
     try:
         r = requests.get(url, headers=FAKE_HEADERS, timeout=30)
-        # Usa html5lib se disponibile, altrimenti html.parser
+        # Usa html.parser standard
         soup = BeautifulSoup(r.text, 'html.parser')
         
-        # LOGICA DI RICERCA MIGLIORATA
-        # Cerchiamo tutte le tabelle e prendiamo quella che contiene "Stazione" nella prima riga
-        tables = soup.find_all("table")
-        target_table = None
+        # STRATEGIA "HUNTER": Cerca ovunque i dati
+        # Prende TUTTE le righe di TUTTE le tabelle della pagina
+        all_rows = soup.find_all("tr")
         
-        for t in tables:
-            # Prendi le prime righe per controllare l'intestazione
-            rows = t.find_all("tr")
-            if not rows: continue
-            
-            # Controlla se nell'header c'è la parola chiave
-            header_text = rows[0].text.strip()
-            if "Stazione" in header_text or "STAZIONE" in header_text.upper():
-                target_table = t
-                break
-            
-            # Fallback: controlla la seconda riga se la prima è vuota
-            if len(rows) > 1 and "Stazione" in rows[1].text:
-                target_table = t
-                break
-
-        if not target_table:
-            # Fallback estremo: prendiamo la tabella con più righe
-            max_rows = 0
-            for t in tables:
-                l = len(t.find_all("tr"))
-                if l > max_rows:
-                    max_rows = l
-                    target_table = t
-            
-            if not target_table or max_rows < 2:
-                print(f"⚠️ Nessuna tabella valida trovata per {sensor_key}")
-                return []
-
-        rows = target_table.find_all("tr")
-        
-        for row in rows:
+        for row in all_rows:
             cols = row.find_all("td")
-            if len(cols) >= 3:
-                # Struttura tipica: Nome Stazione | Data/Ora | Valore
-                nome_stazione = clean_text(cols[0].text)
+            
+            # Un dato valido deve avere almeno 3 colonne
+            if len(cols) < 3:
+                continue
                 
-                # Ignora righe di intestazione o nomi vuoti
-                if not nome_stazione or "Stazione" in nome_stazione or "Provincia" in nome_stazione:
-                    continue
+            # COLONNA 1: Nome Stazione
+            nome_stazione = clean_text(cols[0].text)
+            
+            # COLONNA 2: Data (deve contenere un ':' o '/')
+            data_ora = clean_text(cols[1].text)
+            
+            # COLONNA 3: Valore
+            valore_raw = clean_text(cols[2].text)
+            
+            # FILTRI DI VALIDITÀ
+            # 1. Ignora intestazioni
+            if "Stazione" in nome_stazione or "Provincia" in nome_stazione:
+                continue
+                
+            # 2. La colonna 2 deve sembrare una data/ora (contiene : o /)
+            if ":" not in data_ora and "/" not in data_ora:
+                continue
+                
+            # 3. La colonna 3 deve essere un numero
+            valore_num = parse_value(valore_raw)
+            if valore_num is None:
+                continue
 
-                link = cols[0].find("a")
-                station_id = ""
-                if link and 'href' in link.attrs:
-                    match = re.search(r'id=(\d+)', link['href'])
-                    if match: station_id = match.group(1)
+            # Estrazione ID dal link (se presente)
+            link = cols[0].find("a")
+            station_id = ""
+            if link and 'href' in link.attrs:
+                match = re.search(r'id=(\d+)', link['href'])
+                if match: station_id = match.group(1)
 
-                data_ora = clean_text(cols[1].text)
-                valore_raw = clean_text(cols[2].text)
-                valore_num = parse_value(valore_raw)
-
-                if valore_num is not None:
-                    status = "normal"
-                    if abs(valore_num) >= config['threshold']:
-                        status = "alert"
-                    
-                    data_list.append({
-                        "id": station_id,
-                        "nome": nome_stazione,
-                        "data": data_ora,
-                        "valore": valore_num,
-                        "status": status
-                    })
+            # Calcolo stato
+            status = "normal"
+            if abs(valore_num) >= config['threshold']:
+                status = "alert"
+            
+            data_list.append({
+                "id": station_id,
+                "nome": nome_stazione,
+                "data": data_ora,
+                "valore": valore_num,
+                "status": status
+            })
 
     except Exception as e:
-        print(f"❌ Errore scraping {sensor_key}: {e}")
+        print(f"❌ Errore critico su {sensor_key}: {e}")
 
-    print(f"✅ Trovati {len(data_list)} dati per {sensor_key}")
+    print(f"✅ Trovati {len(data_list)} record.")
     return data_list
 
 def main():
@@ -137,13 +121,12 @@ def main():
             "dati": readings
         }
 
-    # Scrittura JSON
     try:
         with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
             json.dump(final_data, f, indent=4, ensure_ascii=False)
-        print(f"Salvataggio completato in {JSON_FILENAME}")
+        print(f"Salvataggio completato: {JSON_FILENAME}")
     except Exception as e:
-        print(f"Errore salvataggio JSON: {e}")
+        print(f"Errore scrittura file: {e}")
 
 if __name__ == "__main__":
     main()
