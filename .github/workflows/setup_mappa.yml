@@ -1,0 +1,33 @@
+name: Setup Coordinate Mappa
+
+on:
+  workflow_dispatch: # Solo avvio manuale
+
+permissions:
+  contents: write
+
+jobs:
+  geolocation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Python Setup
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install Libs
+        run: pip install requests
+
+      - name: Esegui Geolocalizzazione
+        run: python genera_coordinate.py
+
+      - name: Salva Risultati
+        run: |
+          git config --global user.name "Map Bot"
+          git config --global user.email "bot@users.noreply.github.com"
+          git add anagrafica_stazioni.json
+          git commit -m "Aggiornamento Coordinate Stazioni" || echo "Nessuna modifica"
+          git push
