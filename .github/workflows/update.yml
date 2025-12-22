@@ -1,22 +1,11 @@
-name: Aggiornamento Dati Completo
+name: Aggiornamento Bollettino PDF
 
 on:
   schedule:
-    # ORARI UTC (GitHub usa UTC).
-    # Italia: Inverno = UTC+1 / Estate = UTC+2
-    #
-    # Esegue al minuto 30 delle seguenti ore UTC:
-    # 07:30 UTC -> 08:30/09:30 IT (Controllo mattutino sicurezza)
-    # 10:30 UTC -> 11:30/12:30 IT (Inizio finestra probabile)
-    # 11:30 UTC -> 12:30/13:30 IT (Picco uscita)
-    # 12:30 UTC -> 13:30/14:30 IT (Picco uscita)
-    # 13:30 UTC -> 14:30/15:30 IT (Post-uscita)
-    # 14:30 UTC -> 15:30/16:30 IT (Pomeriggio)
-    # 16:30 UTC -> 17:30/18:30 IT (Controllo serale sicurezza)
-    
+    # Esegue al minuto 30 delle ore indicate (UTC)
+    # Copre l'uscita del bollettino tra le 11:30 e le 18:30 italiane
     - cron: '30 7,10-14,16 * * *'
   
-  # Avvio Manuale (sempre disponibile per emergenze)
   workflow_dispatch:
     inputs:
       force_send:
@@ -46,23 +35,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: 1. Esegui Bollettino PDF (main.py)
+      - name: Esegui Bollettino PDF (main.py)
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          ONESIGNAL_APP_ID: ${{ secrets.ONESIGNAL_APP_ID }}
-          ONESIGNAL_API_KEY: ${{ secrets.ONESIGNAL_API_KEY }}
+          # ONESIGNAL rimossi se non usati
           FORCE_SEND: ${{ github.event.inputs.force_send }}
         run: python main.py
 
-      - name: 2. Esegui Scraping Sensori
-        run: python scrape_sensors.py
+      # NOTA: Ho rimosso lo step dei sensori da qui per non duplicarlo
+      # I sensori sono gestiti da sensori.yml ogni 20 min H24
 
-      - name: Commit e Push dei dati aggiornati
+      - name: Commit e Push del Bollettino
         run: |
-          git config --global user.name "GitHub Actions Bot"
-          git config --global user.email "actions@github.com"
-          git add dati_bollettino.json dati_sensori.json
-          # Il commit avviene solo se ci sono cambiamenti
-          git commit -m "Aggiornamento Dati Automatico" || echo "Nessuna modifica da committare"
-          git push
+          git config --global user.name "Bollettino Bot"
+          git config --global user.email "bot@users.noreply.github.com"
+          git add dati_bollettino.json
+          # Commit solo se il file è cambiato
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento Bollettino PDF" && git push)
