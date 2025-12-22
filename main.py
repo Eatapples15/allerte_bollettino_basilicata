@@ -16,7 +16,6 @@ ONESIGNAL_API_KEY = os.environ.get("ONESIGNAL_API_KEY")
 
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/"
 LIST_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.php?lt=A"
-OFFICIAL_LINK = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.php?lt=A"
 PDF_FILENAME = "bollettino.pdf"
 JSON_FILENAME = "dati_bollettino.json"
 
@@ -38,55 +37,39 @@ def parse_alert_color(text):
     if "GIALL" in t: return "yellow"
     return "green"
 
-# --- ANALISI RIGA TABELLA ---
 def analizza_riga_rischi(celle):
-    """
-    Analizza la riga per trovare il rischio peggiore.
-    Restituisce: (colore_peggiore, descrizione_rischio)
-    """
-    labels_rischio = {
-        1: "Idrogeologico", 
-        2: "Idrogeologico per Temporali", 
-        3: "Idraulico"
-    }
-    
+    labels_rischio = {1: "Idrogeologico", 2: "Temporali", 3: "Idraulico"}
     max_score = 0
     final_color = "green"
     descrizione_parts = []
 
-    # Itera sulle colonne 1, 2, 3
     for i in range(1, len(celle)):
         if i > 3: break 
-        
         col_text = str(celle[i]).replace("\n", " ").strip()
         colore = parse_alert_color(col_text)
         score = get_risk_score(colore)
 
-        if score > 0: # Se c'è un'allerta
+        if score > 0:
             tipo = labels_rischio.get(i, "Generico")
-            
             if score > max_score:
                 max_score = score
                 final_color = colore
-                # MODIFICA: Solo il tipo, niente colore in inglese tra parentesi
-                descrizione_parts = [tipo] 
+                descrizione_parts = [tipo]
             elif score == max_score:
                 descrizione_parts.append(tipo)
 
-    if max_score == 0:
-        return "green", "Ordinaria"
-    
+    if max_score == 0: return "green", "Ordinaria"
     desc_finale = " + ".join(descrizione_parts)
     return final_color, desc_finale
 
 # --- UTILS ---
 def extract_validity_info(text):
-    start_validity, end_validity = "N/D", "N/D"
-    start_match = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
-    end_match = re.search(r"Fine validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
-    if start_match: start_validity = start_match.group(1).strip()
-    if end_match: end_validity = end_match.group(1).strip()
-    return start_validity, end_validity
+    start, end = "N/D", "N/D"
+    s_match = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
+    e_match = re.search(r"Fine validit[àa][:.]?\s*(.*?)(?:\n|$)", text, re.IGNORECASE)
+    if s_match: start = s_match.group(1).strip()
+    if e_match: end = e_match.group(1).strip()
+    return start, end
 
 def get_pdf_url():
     try:
@@ -100,18 +83,11 @@ def get_pdf_url():
 
 def send_telegram_message(message, file_path=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID: return
-    
-    # 🟢 FIX WHATSAPP: Encoding corretto per mantenere le icone
-    # Rimuove il markdown (* e _) ma lascia le emoji intatte
     clean_text = message.replace('*', '').replace('_', '').replace('`', '')
     whatsapp_encoded = urllib.parse.quote(clean_text)
-    
-    # Aggiunge il link di inoltro al messaggio originale
     full_message = message + f"\n\n📲 [Inoltra su WhatsApp](https://wa.me/?text={whatsapp_encoded})"
-
     url_msg = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
     data = {"chat_id": TELEGRAM_CHAT_ID, "text": full_message, "parse_mode": "Markdown", "disable_web_page_preview": True}
-    
     try:
         requests.post(url_msg, data=data)
         if file_path:
@@ -144,50 +120,71 @@ def main():
 
     pdf_date = datetime.date.today().strftime("%d/%m/%Y")
     
+    # NUOVA STRUTTURA JSON PER GESTIRE DUE GIORNI
     extracted = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "data_bollettino": pdf_date,
         "validita_inizio": "N/D", "validita_fine": "N/D",
         "url_bollettino": pdf_url,
         "manual_override": False,
-        "zone": {},
-        "dettagli_rischi": {},
+        "zone": {}, # Struttura: "BASI A1": { "oggi": "green", "domani": "yellow", "rischio_oggi": "...", "rischio_domani": "..." }
         "log_sistema": {"stato": "OK", "msg": "Aggiornato"}
     }
 
     try:
         with pdfplumber.open(PDF_FILENAME) as pdf:
-            # 1. Date
             p1_text = pdf.pages[0].extract_text()
             extracted["validita_inizio"], extracted["validita_fine"] = extract_validity_info(p1_text)
             d_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", p1_text)
             if d_match: extracted["data_bollettino"] = d_match.group(1)
 
-            # 2. Scan Totale
+            # LOGICA DI RILEVAMENTO TABELLE
+            # Assumiamo che la prima tabella con "BASI" sia OGGI, la seconda sia DOMANI
+            tables_found = [] # Lista di tabelle valide trovate
+            
             for page in pdf.pages:
                 tables = page.extract_tables()
                 for table in tables:
+                    # Controlla se è una tabella di allerta (deve avere una riga che inizia con BASI)
+                    is_alert_table = False
                     for row in table:
-                        cleaned = [str(c).strip() if c else "" for c in row]
-                        if len(cleaned) >= 2 and "BASI" in cleaned[0]:
-                            zona = cleaned[0]
-                            colore_riga, desc_riga = analizza_riga_rischi(cleaned)
-                            score_riga = get_risk_score(colore_riga)
-                            
-                            current_score = get_risk_score(extracted["zone"].get(zona, "green"))
+                        clean_row = [str(c).strip() if c else "" for c in row]
+                        if len(clean_row) >= 2 and "BASI" in clean_row[0]:
+                            is_alert_table = True
+                            break
+                    if is_alert_table:
+                        tables_found.append(table)
 
-                            if score_riga > current_score:
-                                extracted["zone"][zona] = colore_riga
-                                extracted["dettagli_rischi"][zona] = desc_riga
-                            elif score_riga == current_score and zona not in extracted["zone"]:
-                                extracted["zone"][zona] = colore_riga
-                                extracted["dettagli_rischi"][zona] = desc_riga
+            # PROCESSA LE TABELLE TROVATE
+            # Index 0 = Oggi, Index 1 = Domani (se esiste)
+            giorni = ["oggi", "domani"]
+            
+            for i, table in enumerate(tables_found):
+                if i >= 2: break # Gestiamo solo oggi e domani
+                current_day = giorni[i]
+                
+                for row in table:
+                    cleaned = [str(c).strip() if c else "" for c in row]
+                    if len(cleaned) >= 2 and "BASI" in cleaned[0]:
+                        zona = cleaned[0]
+                        colore, desc = analizza_riga_rischi(cleaned)
+                        
+                        # Inizializza zona se non esiste
+                        if zona not in extracted["zone"]:
+                            extracted["zone"][zona] = {
+                                "oggi": "green", "rischio_oggi": "Ordinaria",
+                                "domani": "green", "rischio_domani": "Ordinaria"
+                            }
+                        
+                        # Salva i dati per il giorno specifico
+                        extracted["zone"][zona][current_day] = colore
+                        extracted["zone"][zona][f"rischio_{current_day}"] = desc
 
     except Exception as e:
         print(f"Errore: {e}")
         extracted["log_sistema"] = {"stato": "Errore", "msg": str(e)}
 
-    # Verifica Salvataggio
+    # Salvataggio e Notifiche
     if extracted["zone"]:
         old_data = {}
         data_changed = True
@@ -202,32 +199,43 @@ def main():
         if data_changed or force:
             with open(JSON_FILENAME, 'w') as f: json.dump(extracted, f, indent=4)
             
-            # --- COSTRUZIONE MESSAGGIO ---
-            labels_colori = {"green":"Verde", "yellow":"Giallo", "orange":"Arancione", "red":"Rosso"}
+            # Messaggio Telegram: Priorità a OGGI, menzione a DOMANI se peggiora
+            labels_it = {"green":"VERDE", "yellow":"GIALLO", "orange":"ARANCIONE", "red":"ROSSO"}
+            msg = f"🚨 *Bollettino {extracted['data_bollettino']}*\n"
+            msg += f"Validità: {extracted['validita_inizio']}\n\n"
+            msg += "📋 *SITUAZIONE OGGI:*\n"
             
-            msg = f"🚨 *Bollettino {extracted['data_bollettino']}*\nValidità: {extracted['validita_inizio']}\n\n"
-            
+            # Ordina zone
             for z in sorted(extracted["zone"].keys()):
-                c = extracted["zone"][z]
-                # Testo rischio pulito (es. "Idrogeologico per Temporali")
-                tipo_rischio = extracted["dettagli_rischi"].get(z, "Ordinaria")
-                colore_txt = labels_colori.get(c, "N/D")
-                icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c,"⚪")
+                dati = extracted["zone"][z]
+                c_oggi = dati["oggi"]
+                icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c_oggi,"⚪")
                 
-                # Formato: Colore - Criticità Tipo
-                if c == "green":
-                    linea_txt = f"{colore_txt} - Ordinaria"
-                else:
-                    linea_txt = f"{colore_txt} - Criticità {tipo_rischio}"
+                txt = labels_it.get(c_oggi, "N/D")
+                if c_oggi != "green": txt += f" ({dati['rischio_oggi']})"
                 
-                msg += f"{icon} *{z}*: {linea_txt}\n"
+                msg += f"{icon} *{z}*: {txt}\n"
+
+            # Check rapido domani (solo se ci sono criticità)
+            crit_domani = False
+            msg_domani = "\n🔮 *PREVISIONE DOMANI:*\n"
+            for z in sorted(extracted["zone"].keys()):
+                dati = extracted["zone"][z]
+                if dati["domani"] != "green":
+                    crit_domani = True
+                    icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(dati["domani"],"⚪")
+                    msg_domani += f"{icon} *{z}*: {dati['rischio_domani']}\n"
             
-            # Link Ufficiali e Mappa
-            msg += f"\n🌐 [Sito Ufficiale Centro Funzionale]({OFFICIAL_LINK})"
+            if crit_domani:
+                msg += msg_domani
+            else:
+                msg += "\n🔮 *Domani:* Nessuna criticità prevista.\n"
+
+            msg += f"\n🌐 [Sito Ufficiale]({LIST_URL})"
             msg += "\n📍 [Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
             
             send_telegram_message(msg, PDF_FILENAME)
-            send_push_notification(f"Bollettino {extracted['data_bollettino']}", "Dati aggiornati. Controlla i rischi.")
+            send_push_notification(f"Bollettino {extracted['data_bollettino']}", "Dati aggiornati (Oggi/Domani).")
             print("Salvataggio completato.")
         else:
             print("Dati invariati.")
