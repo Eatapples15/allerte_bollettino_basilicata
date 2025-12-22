@@ -120,14 +120,13 @@ def main():
 
     pdf_date = datetime.date.today().strftime("%d/%m/%Y")
     
-    # NUOVA STRUTTURA JSON PER GESTIRE DUE GIORNI
     extracted = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "data_bollettino": pdf_date,
         "validita_inizio": "N/D", "validita_fine": "N/D",
         "url_bollettino": pdf_url,
         "manual_override": False,
-        "zone": {}, # Struttura: "BASI A1": { "oggi": "green", "domani": "yellow", "rischio_oggi": "...", "rischio_domani": "..." }
+        "zone": {}, 
         "log_sistema": {"stato": "OK", "msg": "Aggiornato"}
     }
 
@@ -135,32 +134,42 @@ def main():
         with pdfplumber.open(PDF_FILENAME) as pdf:
             p1_text = pdf.pages[0].extract_text()
             extracted["validita_inizio"], extracted["validita_fine"] = extract_validity_info(p1_text)
-            d_match = re.search(r"DEL (\d{2}/\d{2}/\d{4})", p1_text)
+            
+            # Cerca data specifica del bollettino (es. DEL 21/12/2025)
+            # Regex più robusta per evitare date di leggi/riferimenti
+            d_match = re.search(r"PROT.*DEL\s+(\d{2}/\d{2}/\d{4})", p1_text)
+            if not d_match:
+                d_match = re.search(r"DEL\s+(\d{2}/\d{2}/\d{4})", p1_text)
+            
             if d_match: extracted["data_bollettino"] = d_match.group(1)
 
-            # LOGICA DI RILEVAMENTO TABELLE
-            # Assumiamo che la prima tabella con "BASI" sia OGGI, la seconda sia DOMANI
-            tables_found = [] # Lista di tabelle valide trovate
+            # RILEVAMENTO TABELLE PIÙ ROBUSTO
+            tables_found = []
             
             for page in pdf.pages:
                 tables = page.extract_tables()
                 for table in tables:
-                    # Controlla se è una tabella di allerta (deve avere una riga che inizia con BASI)
-                    is_alert_table = False
+                    # Controlla se è una tabella valida (deve contenere zone BASI)
+                    valid_rows = 0
                     for row in table:
+                        # Pulisce la riga da None o spazi
                         clean_row = [str(c).strip() if c else "" for c in row]
+                        # Cerca "BASI" nella prima colonna
                         if len(clean_row) >= 2 and "BASI" in clean_row[0]:
-                            is_alert_table = True
-                            break
-                    if is_alert_table:
+                            valid_rows += 1
+                    
+                    # Se ha almeno 3 righe di zone, è una tabella valida
+                    if valid_rows > 3:
                         tables_found.append(table)
 
-            # PROCESSA LE TABELLE TROVATE
-            # Index 0 = Oggi, Index 1 = Domani (se esiste)
+            # PROCESSA LE TABELLE
+            # Index 0 = Oggi, Index 1 = Domani
             giorni = ["oggi", "domani"]
             
+            print(f"Tabelle trovate: {len(tables_found)}")
+
             for i, table in enumerate(tables_found):
-                if i >= 2: break # Gestiamo solo oggi e domani
+                if i >= 2: break 
                 current_day = giorni[i]
                 
                 for row in table:
@@ -169,14 +178,12 @@ def main():
                         zona = cleaned[0]
                         colore, desc = analizza_riga_rischi(cleaned)
                         
-                        # Inizializza zona se non esiste
                         if zona not in extracted["zone"]:
                             extracted["zone"][zona] = {
                                 "oggi": "green", "rischio_oggi": "Ordinaria",
                                 "domani": "green", "rischio_domani": "Ordinaria"
                             }
                         
-                        # Salva i dati per il giorno specifico
                         extracted["zone"][zona][current_day] = colore
                         extracted["zone"][zona][f"rischio_{current_day}"] = desc
 
@@ -199,13 +206,11 @@ def main():
         if data_changed or force:
             with open(JSON_FILENAME, 'w') as f: json.dump(extracted, f, indent=4)
             
-            # Messaggio Telegram: Priorità a OGGI, menzione a DOMANI se peggiora
             labels_it = {"green":"VERDE", "yellow":"GIALLO", "orange":"ARANCIONE", "red":"ROSSO"}
             msg = f"🚨 *Bollettino {extracted['data_bollettino']}*\n"
             msg += f"Validità: {extracted['validita_inizio']}\n\n"
             msg += "📋 *SITUAZIONE OGGI:*\n"
             
-            # Ordina zone
             for z in sorted(extracted["zone"].keys()):
                 dati = extracted["zone"][z]
                 c_oggi = dati["oggi"]
@@ -216,7 +221,7 @@ def main():
                 
                 msg += f"{icon} *{z}*: {txt}\n"
 
-            # Check rapido domani (solo se ci sono criticità)
+            # Check domani
             crit_domani = False
             msg_domani = "\n🔮 *PREVISIONE DOMANI:*\n"
             for z in sorted(extracted["zone"].keys()):
@@ -224,14 +229,15 @@ def main():
                 if dati["domani"] != "green":
                     crit_domani = True
                     icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(dati["domani"],"⚪")
-                    msg_domani += f"{icon} *{z}*: {dati['rischio_domani']}\n"
+                    txt = labels_it.get(dati["domani"], "N/D")
+                    msg_domani += f"{icon} *{z}*: {txt} ({dati['rischio_domani']})\n"
             
             if crit_domani:
                 msg += msg_domani
             else:
                 msg += "\n🔮 *Domani:* Nessuna criticità prevista.\n"
 
-            msg += f"\n🌐 [Sito Ufficiale]({LIST_URL})"
+            msg += f"\n🌐 [Sito Ufficiale Centro Funzionale]({LIST_URL})"
             msg += "\n📍 [Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
             
             send_telegram_message(msg, PDF_FILENAME)
