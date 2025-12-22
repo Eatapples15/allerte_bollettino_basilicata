@@ -2,9 +2,8 @@ name: Aggiornamento Sensori Live
 
 on:
   schedule:
-    # Esegue ogni 20 minuti (es. :00, :20, :40)
     - cron: '*/20 * * * *'
-  workflow_dispatch: # Permette avvio manuale
+  workflow_dispatch:
 
 jobs:
   scrape-sensors:
@@ -22,6 +21,13 @@ jobs:
       - name: Installazione Librerie
         run: pip install requests beautifulsoup4
 
+      # --- QUESTO E' IL PASSO DI DEBUG NUOVO ---
+      - name: Debug - Mostra tutti i file
+        run: |
+          echo "Ecco i file nella cartella corrente:"
+          ls -R
+      # -----------------------------------------
+
       - name: Esecuzione Scraping Sensori
         run: python scrape_sensori.py
 
@@ -30,6 +36,4 @@ jobs:
           git config --global user.name "Sensori Bot"
           git config --global user.email "bot@users.noreply.github.com"
           git add dati_sensori.json
-          
-          # Se il file non è cambiato, non fare nulla ed esci pulito
           git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento Dati Sensori Live" && git push)
