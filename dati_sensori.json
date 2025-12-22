@@ -1,22 +1,20 @@
 {
-    "ultimo_aggiornamento": "22/12/2025 11:02",
+    "ultimo_aggiornamento": "22/12/2025 11:07",
     "sensori": {
         "idrometria": {
             "meta": {
-                "code": "ID",
+                "code": "I",
                 "label": "Idrometri",
                 "unit": "m",
-                "icon": "fa-water",
                 "threshold": 2.0
             },
             "dati": []
         },
         "pluviometria": {
             "meta": {
-                "code": "PL",
+                "code": "P",
                 "label": "Pluviometri",
                 "unit": "mm",
-                "icon": "fa-cloud-rain",
                 "threshold": 40.0
             },
             "dati": []
@@ -26,27 +24,24 @@
                 "code": "VV",
                 "label": "Anemometri",
                 "unit": "m/s",
-                "icon": "fa-wind",
                 "threshold": 15.0
             },
             "dati": []
         },
         "termometria": {
             "meta": {
-                "code": "TE",
+                "code": "T",
                 "label": "Termometri",
                 "unit": "°C",
-                "icon": "fa-thermometer-half",
-                "threshold": 35.0
+                "threshold": 38.0
             },
             "dati": []
         },
         "nivometria": {
             "meta": {
-                "code": "NI",
+                "code": "N",
                 "label": "Nivometri",
                 "unit": "cm",
-                "icon": "fa-snowflake",
                 "threshold": 5.0
             },
             "dati": []
