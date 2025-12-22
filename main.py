@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 # --- CONFIGURAZIONE ---
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
-# OneSignal rimosso o lasciato vuoto se non usato, manteniamo le variabili per compatibilità
+# OneSignal rimosso o lasciato vuoto se non usato
 ONESIGNAL_APP_ID = os.environ.get("ONESIGNAL_APP_ID")
 ONESIGNAL_API_KEY = os.environ.get("ONESIGNAL_API_KEY")
 
@@ -39,10 +39,7 @@ def parse_alert_color(text):
     return "green"
 
 def analizza_riga_rischi(celle):
-    # --- MODIFICA QUI: DICITURE COMPLETE ---
-    # Colonna 1 = Idrogeologico
-    # Colonna 2 = Temporali
-    # Colonna 3 = Idraulico
+    # Diciture complete come richiesto
     labels_rischio = {
         1: "Criticità Idrogeologica", 
         2: "Criticità Idrogeologica per Temporali", 
@@ -53,30 +50,26 @@ def analizza_riga_rischi(celle):
     final_color = "green"
     descrizione_parts = []
 
-    # Itera le colonne 1, 2, 3
     for i in range(1, len(celle)):
         if i > 3: break 
         col_text = str(celle[i]).replace("\n", " ").strip()
         colore = parse_alert_color(col_text)
         score = get_risk_score(colore)
 
-        if score > 0: # Se c'è un'allerta (Giallo, Arancio, Rosso)
+        if score > 0: 
             tipo = labels_rischio.get(i, "Criticità Generica")
             
-            # Logica: prendiamo il rischio più alto. 
-            # Se ci sono due rischi uguali (es. entrambi gialli), li elenchiamo entrambi.
             if score > max_score:
                 max_score = score
                 final_color = colore
-                descrizione_parts = [tipo] # Reset e imposta il nuovo rischio dominante
+                descrizione_parts = [tipo]
             elif score == max_score:
                 if tipo not in descrizione_parts:
-                    descrizione_parts.append(tipo) # Aggiunge altro rischio di pari livello
+                    descrizione_parts.append(tipo)
 
     if max_score == 0: 
-        return "green", "Assenza di fenomeni significativi" # O "Criticità Assente"
+        return "green", "Assenza di fenomeni significativi"
     
-    # Unisce le descrizioni (es: "Criticità Idraulica + Criticità Idrogeologica")
     desc_finale = " + ".join(descrizione_parts)
     return final_color, desc_finale
 
@@ -99,13 +92,12 @@ def get_pdf_url():
     except: pass
     return None
 
-def send_telegram_message(message, file_path=None):
+# MODIFICATO: Accetta custom_filename
+def send_telegram_message(message, file_path=None, custom_filename=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_ID: return
-    # Pulizia caratteri speciali per link whatsapp
+    
     clean_text = message.replace('*', '').replace('_', '').replace('`', '')
     whatsapp_encoded = urllib.parse.quote(clean_text)
-    
-    # Aggiunta tasto inoltro WhatsApp
     full_message = message + f"\n\n📲 [Condividi su WhatsApp](https://wa.me/?text={whatsapp_encoded})"
     
     url_msg = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
@@ -113,11 +105,19 @@ def send_telegram_message(message, file_path=None):
     
     try:
         requests.post(url_msg, data=data)
+        
         if file_path:
             url_doc = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument"
-            with open(file_path, 'rb') as f: 
-                requests.post(url_doc, data={"chat_id": TELEGRAM_CHAT_ID}, files={'document': f})
-    except: pass
+            with open(file_path, 'rb') as f:
+                # Se c'è un nome personalizzato, lo usiamo nella tupla dei file
+                if custom_filename:
+                    files_payload = {'document': (custom_filename, f, 'application/pdf')}
+                else:
+                    files_payload = {'document': f}
+                
+                requests.post(url_doc, data={"chat_id": TELEGRAM_CHAT_ID}, files=files_payload)
+    except Exception as e: 
+        print(f"Errore invio Telegram: {e}")
 
 def main():
     force = os.environ.get("FORCE_SEND") == "true"
@@ -146,16 +146,13 @@ def main():
             p1_text = pdf.pages[0].extract_text()
             extracted["validita_inizio"], extracted["validita_fine"] = extract_validity_info(p1_text)
             
-            # Cerca data specifica del bollettino
             d_match = re.search(r"PROT.*DEL\s+(\d{2}/\d{2}/\d{4})", p1_text)
             if not d_match:
                 d_match = re.search(r"DEL\s+(\d{2}/\d{2}/\d{4})", p1_text)
             
             if d_match: extracted["data_bollettino"] = d_match.group(1)
 
-            # RILEVAMENTO TABELLE
             tables_found = []
-            
             for page in pdf.pages:
                 tables = page.extract_tables()
                 for table in tables:
@@ -164,13 +161,10 @@ def main():
                         clean_row = [str(c).strip() if c else "" for c in row]
                         if len(clean_row) >= 2 and "BASI" in clean_row[0]:
                             valid_rows += 1
-                    
                     if valid_rows > 3:
                         tables_found.append(table)
 
-            # PROCESSA LE TABELLE (0=Oggi, 1=Domani)
             giorni = ["oggi", "domani"]
-            
             print(f"Tabelle trovate: {len(tables_found)}")
 
             for i, table in enumerate(tables_found):
@@ -196,7 +190,6 @@ def main():
         print(f"Errore: {e}")
         extracted["log_sistema"] = {"stato": "Errore", "msg": str(e)}
 
-    # Salvataggio e Notifiche
     if extracted["zone"]:
         old_data = {}
         data_changed = True
@@ -213,26 +206,19 @@ def main():
             
             labels_it = {"green":"VERDE", "yellow":"GIALLO", "orange":"ARANCIONE", "red":"ROSSO"}
             
-            # --- COSTRUZIONE MESSAGGIO TELEGRAM ---
             msg = f"🚨 *Bollettino Protezione Civile {extracted['data_bollettino']}*\n"
             msg += f"🕒 Validità: {extracted['validita_inizio']}\n\n"
             
             # OGGI
             msg += "📋 *SITUAZIONE OGGI:*\n"
-            has_crit_oggi = False
             for z in sorted(extracted["zone"].keys()):
                 dati = extracted["zone"][z]
                 c_oggi = dati["oggi"]
-                
-                # Mostra solo se c'è criticità o se è stato richiesto esplicitamente
-                # Qui mostriamo tutto come lista, evidenziando le criticità
                 icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c_oggi,"⚪")
-                
                 txt = labels_it.get(c_oggi, "N/D")
                 detail = dati['rischio_oggi']
                 
                 if c_oggi != "green":
-                    has_crit_oggi = True
                     msg += f"{icon} *{z}*: {txt}\n   ⚠️ _{detail}_\n"
                 else:
                     msg += f"{icon} *{z}*: {txt}\n"
@@ -240,11 +226,9 @@ def main():
             # DOMANI
             msg += "\n🔮 *PREVISIONE DOMANI:*\n"
             crit_domani = False
-            
             for z in sorted(extracted["zone"].keys()):
                 dati = extracted["zone"][z]
                 c_dom = dati["domani"]
-                
                 if c_dom != "green":
                     crit_domani = True
                     icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(c_dom,"⚪")
@@ -258,7 +242,12 @@ def main():
             msg += f"\n🌐 [Scarica Bollettino PDF]({extracted['url_bollettino']})"
             msg += "\n📍 [Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
             
-            send_telegram_message(msg, PDF_FILENAME)
+            # --- CREAZIONE NOME FILE PDF PERSONALIZZATO ---
+            # Sostituiamo gli slash con trattini per evitare errori nel filesystem
+            safe_date = extracted['data_bollettino'].replace("/", "-")
+            custom_pdf_name = f"Bollettino del {safe_date}.pdf"
+
+            send_telegram_message(msg, PDF_FILENAME, custom_pdf_name)
             print("Salvataggio completato e notifica inviata.")
         else:
             print("Dati invariati.")
