@@ -29,7 +29,7 @@ jobs:
       # -----------------------------------------
 
       - name: Esecuzione Scraping Sensori
-        run: python scrape_sensori.py
+        run: python scrape_sensors.py
 
       - name: Commit e Push dei Dati
         run: |
