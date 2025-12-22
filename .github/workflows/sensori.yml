@@ -18,8 +18,9 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Installazione Librerie
-        run: pip install requests beautifulsoup4
+     - name: Installazione Librerie
+        # Aggiungiamo selenium e webdriver-manager
+        run: pip install requests beautifulsoup4 selenium webdriver-manager
 
       # --- QUESTO E' IL PASSO DI DEBUG NUOVO ---
       - name: Debug - Mostra tutti i file
