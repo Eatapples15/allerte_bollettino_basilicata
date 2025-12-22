@@ -9,7 +9,7 @@ import re
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
 JSON_FILENAME = "dati_sensori.json"
 
-# MAPPATURA TIPI SENSORI (Codici ufficiali del sito CFD)
+# MAPPATURA TIPI SENSORI
 SENSORI = {
     "idrometria": {"code": "ID", "label": "Idrometri", "unit": "m", "icon": "fa-water", "threshold": 2.0},
     "pluviometria": {"code": "PL", "label": "Pluviometri", "unit": "mm", "icon": "fa-cloud-rain", "threshold": 40.0},
@@ -48,12 +48,10 @@ def scrape_sensor_type(sensor_key, config):
         r = requests.get(url, headers=FAKE_HEADERS, timeout=20)
         soup = BeautifulSoup(r.text, 'html.parser')
         
-        # Cerca la tabella dati. Di solito è quella con classe o molte righe.
         tables = soup.find_all("table")
         target_table = None
         
         for t in tables:
-            # Euristica: la tabella dati ha > 5 righe
             if len(t.find_all("tr")) > 5:
                 target_table = t
                 break
@@ -67,18 +65,14 @@ def scrape_sensor_type(sensor_key, config):
         for row in rows:
             cols = row.find_all("td")
             if len(cols) >= 3:
-                # Struttura tipica: Nome Stazione | Data/Ora | Valore
                 nome_stazione = clean_text(cols[0].text)
                 
-                # Ignora intestazioni
                 if not nome_stazione or "Stazione" in nome_stazione:
                     continue
 
-                # Estrazione ID Stazione dal link (utile per link diretto)
                 link = cols[0].find("a")
                 station_id = ""
                 if link and 'href' in link.attrs:
-                    # id=331200
                     match = re.search(r'id=(\d+)', link['href'])
                     if match: station_id = match.group(1)
 
@@ -87,7 +81,6 @@ def scrape_sensor_type(sensor_key, config):
                 valore_num = parse_value(valore_raw)
 
                 if valore_num is not None:
-                    # Calcolo Stato Allerta Semplificato
                     status = "normal"
                     if abs(valore_num) >= config['threshold']:
                         status = "alert"
