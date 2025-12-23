@@ -1,9 +1,9 @@
-name: Daily Dam Data Scraper
+name: Dighe Scraper
 
 on:
   schedule:
-    - cron: '0 8 * * *' # Gira ogni giorno alle 08:00 UTC
-  workflow_dispatch: # Permette di avviarlo manualmente
+    - cron: '0 8 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -18,16 +18,14 @@ jobs:
           python-version: '3.9'
 
       - name: Install dependencies
-        run: |
-          pip install requests beautifulsoup4 pandas
+        run: pip install requests beautifulsoup4 pandas
 
       - name: Run scraper
-        run: python dighe_scraper.py
+        run: python dighe_scraper.py  # <--- Nome corretto dello script
 
       - name: Commit and push if changed
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add storico_invasi.csv
-          git commit -m "Aggiornamento dati invasi $(date)" || exit 0
-          git push
+          git add dati_invasi.csv     # <--- Nome corretto del file dati
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento dati invasi $(date)" && git push)
