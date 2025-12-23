@@ -1,4 +1,4 @@
-name: Dighe Scraper
+name: Daily Dam Data Scraper
 
 on:
   schedule:
@@ -21,11 +21,13 @@ jobs:
         run: pip install requests beautifulsoup4 pandas
 
       - name: Run scraper
-        run: python dighe_scraper.py  # <--- Nome corretto dello script
+        env:
+          SCRAPERAPI_KEY: ${{ secrets.SCRAPERAPI_KEY }} # <--- Passa il segreto
+        run: python dighe_scraper.py
 
       - name: Commit and push if changed
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
-          git add dati_invasi.csv     # <--- Nome corretto del file dati
+          git add dati_invasi.csv
           git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento dati invasi $(date)" && git push)
