@@ -3,60 +3,63 @@ from bs4 import BeautifulSoup
 import pandas as pd
 from datetime import datetime
 import os
-import time
+import sys
 
 def scrape():
-    url = "http://www.adb.basilicata.it/adb/risorseidriche/dispoidriche/sceglidatidighe.asp"
+    # Recupera l'API Key dai segreti di GitHub
+    api_key = os.getenv('SCRAPERAPI_KEY')
+    if not api_key:
+        print("Errore: SCRAPERAPI_KEY non trovata.")
+        sys.exit(1)
+
+    target_url = "http://www.adb.basilicata.it/adb/risorseidriche/dispoidriche/sceglidatidighe.asp"
     
-    # Simula un browser reale per evitare blocchi
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8',
-        'Origin': 'http://www.adb.basilicata.it',
-        'Referer': 'http://www.adb.basilicata.it/adb/risorseidriche/dispoidriche/sceglidatidighe.asp'
+    # Configurazione ScraperAPI per usare IP Italiani
+    params = {
+        'api_key': api_key,
+        'url': target_url,
+        'country_code': 'it',  # <--- Forza l'IP italiano
+        'keep_headers': 'true',
+        'device_type': 'desktop'
     }
-    
+
+    # Il sito richiede un POST per mostrare i dati
     payload = {'listadighe': '0', 'Submit': 'Visualizza'}
 
-    # Tentativi multipli (Retry logic)
-    for attempt in range(3):
-        try:
-            print(f"Tentativo {attempt + 1}...")
-            response = requests.post(url, data=payload, headers=headers, timeout=30)
-            response.raise_for_status()
+    try:
+        print("Connessione tramite ScraperAPI con IP Italiano...")
+        # Passiamo i parametri di ScraperAPI nell'URL e il payload nel corpo della POST
+        response = requests.post('http://api.scraperapi.com', params=params, data=payload, timeout=60)
+        response.raise_for_status()
+        
+        soup = BeautifulSoup(response.text, 'html.parser')
+        table = soup.find('table', {'border': '1'}) 
+        
+        if not table:
+            # Debug: se non trova la tabella, stampa parte dell'HTML ricevuto
+            print("Tabella non trovata. HTML ricevuto:")
+            print(response.text[:500])
+            return
+
+        data = []
+        for row in table.find_all('tr'):
+            cols = [ele.text.strip() for ele in row.find_all(['td', 'th'])]
+            if cols: data.append(cols)
+
+        df = pd.DataFrame(data)
+        df['Data_Esecuzione'] = datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        file_name = "dati_invasi.csv"
+        if not os.path.isfile(file_name):
+            df.to_csv(file_name, index=False)
+        else:
+            df.to_csv(file_name, mode='a', index=False, header=False)
             
-            # Se arriviamo qui, la connessione è riuscita
-            soup = BeautifulSoup(response.text, 'html.parser')
-            table = soup.find('table', {'border': '1'}) 
-            
-            if not table:
-                print("Connesso, ma tabella non trovata.")
-                return
+        print(f"Successo! Dati salvati in {file_name}")
 
-            data = []
-            for row in table.find_all('tr'):
-                cols = [ele.text.strip() for ele in row.find_all(['td', 'th'])]
-                if cols: data.append(cols)
-
-            df = pd.DataFrame(data)
-            df['Data_Esecuzione'] = datetime.now().strftime("%Y-%m-%d %H:%M")
-
-            file_name = "dati_invasi.csv"
-            if not os.path.isfile(file_name):
-                df.to_csv(file_name, index=False)
-            else:
-                df.to_csv(file_name, mode='a', index=False, header=False)
-                
-            print(f"Successo! Dati salvati in {file_name}")
-            return # Esci dalla funzione dopo il successo
-
-        except requests.exceptions.RequestException as e:
-            print(f"Errore al tentativo {attempt + 1}: {e}")
-            if attempt < 2:
-                time.sleep(5) # Aspetta 5 secondi prima di riprovare
-            else:
-                print("Tutti i tentativi falliti.")
-                exit(1)
+    except Exception as e:
+        print(f"Errore durante lo scraping: {e}")
+        sys.exit(1)
 
 if __name__ == "__main__":
     scrape()
