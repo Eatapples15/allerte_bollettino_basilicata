@@ -231,7 +231,7 @@ def main():
             msg += "🟢 Nessuna criticità significativa prevista.\n"
 
         msg += f"\n🌐 [Scarica Bollettino PDF]({extracted['url_bollettino']})"
-        msg += "\n📍 [Mappa Interattiva](https://eatapples15.github.io/allerte_bollettino_basilicata/mappa.html)"
+        msg += "\n📍 [Mappa Interattiva](https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html)"
         
         safe_date = str_oggi.replace("/", "-")
         custom_pdf_name = f"Bollettino del {safe_date}.pdf"
