@@ -1,68 +1,80 @@
 import requests
 from bs4 import BeautifulSoup
+import pdfplumber
+import io
 import pandas as pd
 from datetime import datetime
 import os
-import sys
 
-def scrape():
-    # Recupera la chiave - Assicurati che su GitHub il Secret si chiami SCRAPERAPI_KEY
-    api_key = os.getenv('SCRAPERAPI_KEY')
-    
-    if not api_key:
-        print("Errore: La variabile SCRAPERAPI_KEY è vuota o non trovata.")
-        sys.exit(1)
-
-    # Endpoint ScraperAPI (usiamo HTTPS)
-    proxy_url = 'https://api.scraperapi.com'
-    
-    # Parametri minimi per evitare conflitti con il piano free
-    params = {
-        'api_key': api_key,
-        'url': 'http://www.adb.basilicata.it/adb/risorseidriche/dispoidriche/sceglidatidighe.asp',
-        'country_code': 'it'
+def get_current_month_url():
+    # Mappa mesi in italiano per l'URL
+    mesi = {
+        1: "gennaio", 2: "febbraio", 3: "marzo", 4: "aprile",
+        5: "maggio", 6: "giugno", 7: "luglio", 8: "agosto",
+        9: "settembre", 10: "ottobre", 11: "novembre", 12: "dicembre"
     }
+    ora = datetime.now()
+    mese_str = mesi[ora.month]
+    anno = ora.year
+    return f"https://acquedelsudspa.it/servizi/{mese_str}-{anno}/"
 
-    payload = {'listadighe': '0', 'Submit': 'Visualizza'}
-
+def scrape_bollettino():
+    url_pagina = get_current_month_url()
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    
     try:
-        print(f"Tentativo di connessione per l'URL: {params['url']}")
-        # Usiamo una POST tramite ScraperAPI
-        response = requests.post(proxy_url, params=params, data=payload, timeout=60)
-        
-        if response.status_code == 401:
-            print("Errore 401: Chiave API non valida o account non attivo. Controlla i Secrets su GitHub.")
-            sys.exit(1)
-            
+        print(f"Controllo pagina: {url_pagina}")
+        response = requests.get(url_pagina, headers=headers, timeout=20)
         response.raise_for_status()
         
         soup = BeautifulSoup(response.text, 'html.parser')
-        # Il sito dell'AdB usa tabelle con l'attributo border="1" per i dati
-        table = soup.find('table', {'border': '1'}) 
+        # Trova tutti i link ai PDF dei bollettini
+        links = [a['href'] for a in soup.find_all('a', href=True) if 'Bollettino' in a['href'] and '.pdf' in a['href']]
         
-        if not table:
-            print("Tabella non trovata nell'HTML ricevuto.")
+        if not links:
+            print("Nessun bollettino trovato per il mese corrente.")
             return
 
-        data = []
-        for row in table.find_all('tr'):
-            cols = [ele.text.strip() for ele in row.find_all(['td', 'th'])]
-            if cols and len(cols) > 1: # Evitiamo righe vuote
-                data.append(cols)
+        # Prende l'ultimo link (il più recente)
+        ultimo_pdf_url = links[-1]
+        data_bollettino = ultimo_pdf_url.split('_')[-1].replace('.pdf', '')
+        print(f"Analisi bollettino del: {data_bollettino}")
 
-        df = pd.DataFrame(data)
-        df['Data_Scraping'] = datetime.now().strftime("%d/%m/%Y %H:%M")
-
-        file_name = "dati_invasi.csv"
-        # Scrittura intelligente: header solo se il file è nuovo
-        hdr = not os.path.exists(file_name)
-        df.to_csv(file_name, mode='a', index=False, header=hdr, encoding='utf-8')
+        # Scarica il PDF
+        pdf_res = requests.get(ultimo_pdf_url, headers=headers)
+        
+        with pdfplumber.open(io.BytesIO(pdf_res.content)) as pdf:
+            # Di solito i dati sono nella prima pagina
+            table = pdf.pages[0].extract_table()
             
-        print(f"Successo! {len(data)} righe scritte in {file_name}")
+            if not table:
+                print("Impossibile estrarre la tabella dal PDF.")
+                return
+
+            # Pulizia dati: creiamo il DataFrame
+            # Nota: le tabelle nei PDF possono avere righe vuote o intestazioni sporche
+            df_temp = pd.DataFrame(table)
+            
+            # Aggiungiamo metadati
+            df_temp['data_bollettino'] = data_bollettino
+            df_temp['data_aggiornamento'] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            
+            file_name = "storico_invasi_basilicata.csv"
+            
+            # Salvataggio (Append)
+            if not os.path.exists(file_name):
+                df_temp.to_csv(file_name, index=False)
+            else:
+                # Carichiamo l'esistente per evitare duplicati della stessa data
+                df_esistente = pd.read_csv(file_name)
+                if data_bollettino not in df_esistente['data_bollettino'].values:
+                    df_temp.to_csv(file_name, mode='a', index=False, header=False)
+                    print(f"Dati del {data_bollettino} aggiunti al CSV.")
+                else:
+                    print(f"Dati del {data_bollettino} già presenti. Salto.")
 
     except Exception as e:
-        print(f"Errore: {e}")
-        sys.exit(1)
+        print(f"Errore durante lo scraping: {e}")
 
 if __name__ == "__main__":
-    scrape()
+    scrape_bollettino()
