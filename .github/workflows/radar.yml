@@ -1,0 +1,38 @@
+name: Aggiornamento Radar DPC
+
+on:
+  schedule:
+    - cron: '*/15 * * * *' # Esegue ogni 15 minuti
+  workflow_dispatch: # Permette l'avvio manuale
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v3
+
+      - name: Installa dipendenze di sistema (C-libraries)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libeccodes-dev
+
+      - name: Configura Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Installa librerie Python
+        run: |
+          pip install cfgrib xarray numpy requests
+
+      - name: Elaborazione Dati Radar GRIB
+        run: python process_radar.py
+
+      - name: Commit e Push dei dati radar
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+          git add radar_data.json
+          git commit -m "Update Radar Data [skip ci]" || exit 0
+          git push
