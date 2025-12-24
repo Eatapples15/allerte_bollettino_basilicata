@@ -1,702 +1,20 @@
 {
-    "ultimo_aggiornamento": "24/12/2025 12:25",
+    "ultimo_aggiornamento": "24/12/2025 14:16",
     "stazioni_storico": [
+        {
+            "nome": "Brienza",
+            "id": "419900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
         {
             "nome": "Castrocucco",
             "id": "275600",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Maschito Arpab",
-            "id": "948100",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Albano di Lucania",
-            "id": "179900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Oppido Lucano",
-            "id": "418000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Laino Borgo",
-            "id": "276400",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Tursi",
-            "id": "276900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Rotonda",
-            "id": "699100",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Agri a Roccanova",
-            "id": "652900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Matera",
-            "id": "55000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Terranova di Pollino",
-            "id": "276500",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "San Giorgio Lucano Arpab",
-            "id": "949400",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Lavello",
-            "id": "418100",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Satriano di Lucania Arpab",
-            "id": "949700",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Venosa",
-            "id": "418200",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Ferrandina SP",
-            "id": "177100",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Laurenzana",
-            "id": "279200",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Ripacandida",
-            "id": "533300",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Avigliano",
-            "id": "512400",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Roccanova",
-            "id": "332500",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Rotondella Arpab",
-            "id": "949300",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Bella S.Antonio Casalini",
-            "id": "272700",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "San Severino Lucano Arpab",
-            "id": "949200",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "S.Mauro Forte",
-            "id": "417800",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "San Martino dAgri Arpab",
-            "id": "949500",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Irsina",
-            "id": "55200",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Lavello ETG",
-            "id": "528600",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Palazzo S.Gervasio",
-            "id": "418300",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Terra Montonata",
-            "id": "233200",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Basento freatimetro",
-            "id": "215900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Abriola a Sellata Pierfaone",
-            "id": "653100",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "P_Tolve",
-            "id": "908000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Tito",
-            "id": "420000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Bradano SS106",
-            "id": "417900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Guardia Perticara",
-            "id": "699200",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Oliveto Lucano Arpab",
-            "id": "948700",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Torre Accio",
-            "id": "177000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Potenza Q.A.",
-            "id": "387900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "F.Melandro S.Angelo Le Fratte",
-            "id": "698800",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Montalbano Jonico Arpab",
-            "id": "948500",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Gorgoglione",
-            "id": "482200",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Craco Peschiera",
-            "id": "176900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Vietri SP",
-            "id": "182800",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "S.Giuliano",
-            "id": "179700",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Basento SS 106",
-            "id": "240400",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Picerno",
-            "id": "419700",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "P_Sellata",
-            "id": "907800",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Muro Lucano",
-            "id": "513100",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Marsico Nuovo",
-            "id": "277300",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Marsicovetere Arpab",
-            "id": "948000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "S.Fele",
-            "id": "538100",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "S.Nicola",
-            "id": "83900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Anzi",
-            "id": "699400",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Castelsaraceno",
-            "id": "331200",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Miglionico Arpab",
-            "id": "948400",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Bradano Serramarina",
-            "id": "652700",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Episcopia-Pizzutello",
-            "id": "275500",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Maratea Massa",
-            "id": "331900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Monticchio Bagni",
-            "id": "525000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Tricarico",
-            "id": "698900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Noepoli",
-            "id": "54900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Sinni SS106",
-            "id": "203900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Francavilla in Sinni Arpab",
-            "id": "947500",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Forenza",
-            "id": "531500",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Grottole Arpab",
-            "id": "947600",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
@@ -717,19 +35,8 @@
             }
         },
         {
-            "nome": "Genzano di Lucania Arpab",
-            "id": "948800",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Montemilone",
-            "id": "532800",
+            "nome": "Rotonda",
+            "id": "699100",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
@@ -750,8 +57,8 @@
             }
         },
         {
-            "nome": "Pomarico frana",
-            "id": "858200",
+            "nome": "P_Sellata",
+            "id": "907800",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
@@ -761,8 +68,8 @@
             }
         },
         {
-            "nome": "Sinni a Valsinni",
-            "id": "653000",
+            "nome": "Irsina",
+            "id": "55200",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
@@ -772,206 +79,8 @@
             }
         },
         {
-            "nome": "Venosa ETG",
-            "id": "529400",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Pescopagano",
-            "id": "538000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "P_Cancellara",
-            "id": "907900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Montescaglioso",
-            "id": "481200",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Melfi Arpab",
-            "id": "948300",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Grassano SP",
-            "id": "240700",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Lagopesole",
-            "id": "531800",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Atella Arpab",
-            "id": "947000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Pietrapertosa Arpab",
-            "id": "948900",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Salandra",
-            "id": "699000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Spinoso",
-            "id": "767300",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Balvano",
-            "id": "419800",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Monte Vulture",
-            "id": "532700",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Ofanto a Monticchio",
-            "id": "652800",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Stigliano",
-            "id": "54800",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Vaglio di Basilicata",
-            "id": "699300",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Montemurro Arpab",
-            "id": "948600",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Cavone SS106",
-            "id": "204000",
-            "dati_multipli": {
-                "1h": 0,
-                "3h": 0,
-                "6h": 0,
-                "12h": 0,
-                "24h": 0
-            }
-        },
-        {
-            "nome": "Tortora",
-            "id": "298400",
+            "nome": "Miglionico Arpab",
+            "id": "948400",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
@@ -992,8 +101,8 @@
             }
         },
         {
-            "nome": "Maratea Arpab",
-            "id": "947900",
+            "nome": "Monte Vulture",
+            "id": "532700",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
@@ -1003,8 +112,8 @@
             }
         },
         {
-            "nome": "Brienza",
-            "id": "419900",
+            "nome": "Muro Lucano",
+            "id": "513100",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
@@ -1014,8 +123,371 @@
             }
         },
         {
-            "nome": "Grumento-Ponte La Marmora",
-            "id": "275400",
+            "nome": "Tortora",
+            "id": "298400",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Ripacandida",
+            "id": "533300",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Anzi",
+            "id": "699400",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Pietrapertosa Arpab",
+            "id": "948900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Ferrandina SP",
+            "id": "177100",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "S.Nicola",
+            "id": "83900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Laino Borgo",
+            "id": "276400",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Palazzo S.Gervasio",
+            "id": "418300",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Abriola a Sellata Pierfaone",
+            "id": "653100",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Venosa",
+            "id": "418200",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Picerno",
+            "id": "419700",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Montescaglioso",
+            "id": "481200",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Montemurro Arpab",
+            "id": "948600",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Lagopesole",
+            "id": "531800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Rotondella Arpab",
+            "id": "949300",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Guardia Perticara",
+            "id": "699200",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Bradano SS106",
+            "id": "417900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "P_Tolve",
+            "id": "908000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Tursi",
+            "id": "276900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Craco Peschiera",
+            "id": "176900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Cavone SS106",
+            "id": "204000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "F.Melandro S.Angelo Le Fratte",
+            "id": "698800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Melfi Arpab",
+            "id": "948300",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "P_Cancellara",
+            "id": "907900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Forenza",
+            "id": "531500",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "San Severino Lucano Arpab",
+            "id": "949200",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Basento SS 106",
+            "id": "240400",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "S.Giuliano",
+            "id": "179700",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Venosa ETG",
+            "id": "529400",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "San Martino dAgri Arpab",
+            "id": "949500",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Sinni SS106",
+            "id": "203900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Grassano SP",
+            "id": "240700",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Bradano Serramarina",
+            "id": "652700",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Gorgoglione",
+            "id": "482200",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
@@ -1036,8 +508,261 @@
             }
         },
         {
-            "nome": "Potenza",
-            "id": "83800",
+            "nome": "Basento freatimetro",
+            "id": "215900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Balvano",
+            "id": "419800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Laurenzana",
+            "id": "279200",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Pomarico frana",
+            "id": "858200",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Matera",
+            "id": "55000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Grottole Arpab",
+            "id": "947600",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Salandra",
+            "id": "699000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Ofanto a Monticchio",
+            "id": "652800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Spinoso",
+            "id": "767300",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Agri a Roccanova",
+            "id": "652900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Avigliano",
+            "id": "512400",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Potenza Q.A.",
+            "id": "387900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Episcopia-Pizzutello",
+            "id": "275500",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Vaglio di Basilicata",
+            "id": "699300",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "San Giorgio Lucano Arpab",
+            "id": "949400",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Genzano di Lucania Arpab",
+            "id": "948800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Montalbano Jonico Arpab",
+            "id": "948500",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Bella S.Antonio Casalini",
+            "id": "272700",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Oliveto Lucano Arpab",
+            "id": "948700",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Oppido Lucano",
+            "id": "418000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Vietri SP",
+            "id": "182800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Tito",
+            "id": "420000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Montemilone",
+            "id": "532800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Noepoli",
+            "id": "54900",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
@@ -1049,6 +774,281 @@
         {
             "nome": "Bradano a S. Lucia",
             "id": "639000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Tricarico",
+            "id": "698900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Lavello ETG",
+            "id": "528600",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Sinni a Valsinni",
+            "id": "653000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Grumento-Ponte La Marmora",
+            "id": "275400",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Francavilla in Sinni Arpab",
+            "id": "947500",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Torre Accio",
+            "id": "177000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Terranova di Pollino",
+            "id": "276500",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Castelsaraceno",
+            "id": "331200",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Atella Arpab",
+            "id": "947000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Albano di Lucania",
+            "id": "179900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Pescopagano",
+            "id": "538000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Potenza",
+            "id": "83800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "S.Fele",
+            "id": "538100",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Maratea Massa",
+            "id": "331900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Maschito Arpab",
+            "id": "948100",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Roccanova",
+            "id": "332500",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "S.Mauro Forte",
+            "id": "417800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Lavello",
+            "id": "418100",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Terra Montonata",
+            "id": "233200",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Maratea Arpab",
+            "id": "947900",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Monticchio Bagni",
+            "id": "525000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Satriano di Lucania Arpab",
+            "id": "949700",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Marsicovetere Arpab",
+            "id": "948000",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Stigliano",
+            "id": "54800",
+            "dati_multipli": {
+                "1h": 0,
+                "3h": 0,
+                "6h": 0,
+                "12h": 0,
+                "24h": 0
+            }
+        },
+        {
+            "nome": "Marsico Nuovo",
+            "id": "277300",
             "dati_multipli": {
                 "1h": 0,
                 "3h": 0,
