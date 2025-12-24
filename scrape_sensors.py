@@ -1,42 +1,26 @@
+import requests
+from bs4 import BeautifulSoup
 import json
 import datetime
 import re
-import time
 from concurrent.futures import ThreadPoolExecutor
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
-from bs4 import BeautifulSoup
 
-# CONFIGURAZIONE SOGLIE IDROMETRICHE [cite: 11, 15, 19]
-SOGLIE_IDRO = {
-    "Potenza Q.A.": 1.20,
-    "S. Demetrio": 1.40,
-    "Campomaggiore": 3.50,
-    "Bradano Serra Marina": 6.00,
-    "Agri SS 106": 4.00,
-    "Sinni SS 106": 3.50
-}
+# CONFIGURAZIONE URL E SOGLIE
+BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
+DETTAGLIO_URL = "https://centrofunzionale.regione.basilicata.it/it/dettaglioStazione.php"
+SOGLIE_IDRO = {"Potenza Q.A.": 1.20, "S. Demetrio": 1.40, "Campomaggiore": 3.50, "Bradano Serra Marina": 6.00}
 
-def get_driver():
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
-    # Disabilita immagini e estensioni per caricare più velocemente
-    options.add_argument("--disable-gpu")
-    options.add_argument("--blink-settings=imagesEnabled=false")
-    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+# Sessione per riutilizzare la connessione TCP (velocizza le richieste)
+session = requests.Session()
+session.headers.update({
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+})
 
-def get_station_history(station_id):
-    """Funzione atomica per caricare una singola stazione"""
-    driver = get_driver()
-    url = f"https://centrofunzionale.regione.basilicata.it/it/dettaglioStazione.php?id={station_id}"
+def get_historical_data(station_id):
+    """Scarica lo storico senza browser in millisecondi"""
     try:
-        driver.get(url)
-        time.sleep(1.5) # Tempo minimo per caricamento JS
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        resp = session.get(f"{DETTAGLIO_URL}?id={station_id}", timeout=10)
+        soup = BeautifulSoup(resp.text, 'html.parser')
         rows = soup.find_all("tr")[1:]
         values = []
         for r in rows:
@@ -47,7 +31,6 @@ def get_station_history(station_id):
                     values.append(val)
                 except: continue
         
-        # Calcolo somme mobili (assumendo step 15 min) [cite: 1]
         return {
             "1h": round(sum(values[:4]), 1) if len(values) >= 4 else 0,
             "3h": round(sum(values[:12]), 1) if len(values) >= 12 else 0,
@@ -57,19 +40,14 @@ def get_station_history(station_id):
         }
     except:
         return {"1h":0,"3h":0,"6h":0,"12h":0,"24h":0}
-    finally:
-        driver.quit()
 
-def process_category(key, code):
-    """Estrae l'elenco e poi parallelizza il dettaglio"""
-    print(f"🚀 Avvio scraping categoria: {key}")
-    driver = get_driver()
-    driver.get(f"https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php?st={code}")
-    time.sleep(3)
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
+def scrape_category(code):
+    """Ottiene l'elenco stazioni"""
+    resp = session.get(f"{BASE_URL}?st={code}", timeout=10)
+    soup = BeautifulSoup(resp.text, 'html.parser')
     rows = soup.find_all("tr")
     
-    stations_to_process = []
+    stations = []
     for row in rows:
         cols = row.find_all("td")
         if len(cols) < 4: continue
@@ -80,62 +58,51 @@ def process_category(key, code):
         try:
             val_now = float(re.findall(r"[-+]?\d*\.\d+|\d+", val_raw)[0])
         except: continue
-        
-        stations_to_process.append({"id": sid, "nome": name, "valore": val_now})
-    
-    driver.quit()
-
-    # --- PARTE VELOCE: PARALLELIZZAZIONE ---
-    final_readings = []
-    
-    # Usiamo 10 thread simultanei (puoi aumentare se il PC/Server regge)
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        if key == "pluviometria":
-            print(f"  ⚡ Elaborazione parallela di {len(stations_to_process)} pluviometri...")
-            # Mappiamo la funzione get_station_history su tutti gli ID
-            future_results = {executor.submit(get_station_history, s['id']): s for s in stations_to_process}
-            
-            for future in future_results:
-                station_meta = future_results[future]
-                history = future.result()
-                final_readings.append({
-                    "id": station_meta['id'],
-                    "nome": station_meta['nome'],
-                    "valore": station_meta['valore'],
-                    "data": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-                    "status": "normal",
-                    "dati_multipli": history
-                })
-        else:
-            # Per idrometria non serve entrare nel dettaglio per i cumulati
-            for s in stations_to_process:
-                status = "alert" if s['nome'] in SOGLIE_IDRO and s['valore'] >= SOGLIE_IDRO[s['nome']] else "normal"
-                final_readings.append({
-                    "id": s['id'],
-                    "nome": s['nome'],
-                    "valore": s['valore'],
-                    "data": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-                    "status": status
-                })
-                
-    return final_readings
+        stations.append({"id": sid, "nome": name, "valore": val_now})
+    return stations
 
 def main():
-    start_time = time.time()
-    
-    final_output = {
+    start_time = datetime.datetime.now()
+    print("⏳ Avvio acquisizione ultra-rapida...")
+
+    # Acquisizione Elenchi
+    idro_list = scrape_category("I")
+    pluvio_list = scrape_category("P")
+
+    final_data = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "sensori": {
-            "idrometria": {"meta": {"label": "Idrometri", "unit": "m"}, "dati": process_category("idrometria", "I")},
-            "pluviometria": {"meta": {"label": "Pluviometri", "unit": "mm"}, "dati": process_category("pluviometria", "P")}
+            "idrometria": {"meta": {"label": "Idrometri", "unit": "m"}, "dati": []},
+            "pluviometria": {"meta": {"label": "Pluviometri", "unit": "mm"}, "dati": []}
         }
     }
 
+    # Processamento Idrometri (Senza storico)
+    for s in idro_list:
+        status = "alert" if s['nome'] in SOGLIE_IDRO and s['valore'] >= SOGLIE_IDRO[s['nome']] else "normal"
+        final_data["sensori"]["idrometria"]["dati"].append({
+            **s, "data": final_data["ultimo_aggiornamento"], "status": status
+        })
+
+    # Processamento Pluviometri in parallelo (Requests è molto leggero, usiamo 20 thread)
+    print(f"🌩️ Elaborazione di {len(pluvio_list)} pluviometri...")
+    with ThreadPoolExecutor(max_workers=20) as executor:
+        futures = {executor.submit(get_historical_data, s['id']): s for s in pluvio_list}
+        for future in futures:
+            s_meta = futures[future]
+            history = future.result()
+            final_data["sensori"]["pluviometria"]["dati"].append({
+                **s_meta, 
+                "data": final_data["ultimo_aggiornamento"], 
+                "status": "normal", 
+                "dati_multipli": history
+            })
+
     with open("dati_sensori.json", "w", encoding="utf-8") as f:
-        json.dump(final_output, f, indent=4, ensure_ascii=False)
-    
-    end_time = time.time()
-    print(f"✅ Completato in {round(end_time - start_time, 2)} secondi.")
+        json.dump(final_data, f, indent=4, ensure_ascii=False)
+
+    duration = (datetime.datetime.now() - start_time).total_seconds()
+    print(f"✅ Dashboard aggiornata in {duration} secondi.")
 
 if __name__ == "__main__":
     main()
