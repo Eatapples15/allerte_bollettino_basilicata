@@ -1,126 +1,112 @@
-import requests
 import json
 import datetime
 import re
+import time
 from concurrent.futures import ThreadPoolExecutor
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+from bs4 import BeautifulSoup
 
 # CONFIGURAZIONE
-# Usiamo l'endpoint che fornisce i dati grezzi per evitare il rendering JS
-BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini/get_sensori.php"
+BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
 DETTAGLIO_URL = "https://centrofunzionale.regione.basilicata.it/it/dettaglioStazione.php"
+NUM_WORKERS = 5 # Numero di browser aperti contemporaneamente
 
-# [cite_start]Soglie Idrometriche da PDF [cite: 11, 15, 19]
-SOGLIE_IDRO = {
-    "Potenza Q.A.": 1.20,
-    "S. Demetrio": 1.40,
-    "Campomaggiore": 3.50,
-    "Bradano S. Lucia": 3.50,
-    "Bradano Serra Marina": 6.00,
-    "Agri SS 106": 4.00,
-    "Sinni SS 106": 3.50
-}
+def create_driver():
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--blink-settings=imagesEnabled=false") # Velocizza non caricando immagini
+    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
-session = requests.Session()
-session.headers.update({
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-    "X-Requested-With": "XMLHttpRequest"
-})
+# Inizializziamo un pool di driver per i thread
+drivers = [create_driver() for _ in range(NUM_WORKERS)]
 
-def get_historical_cumulates(station_id):
-    """Estrae i dati storici analizzando la tabella del dettaglio"""
+def get_station_data(index, station_id, station_name):
+    """Estrae lo storico usando uno dei driver del pool"""
+    driver = drivers[index % NUM_WORKERS]
     try:
-        # Nota: Alcuni siti richiedono parametri specifici per i dati storici
-        resp = session.get(f"{DETTAGLIO_URL}?id={station_id}", timeout=5)
-        # Regex per trovare i valori numerici nella tabella storica
-        # Cerca pattern come <td>12.4</td>
-        matches = re.findall(r'<td>(\d+[\.,]\d+)</td>', resp.text)
-        values = [float(m.replace(',', '.')) for m in matches]
+        driver.get(f"{DETTAGLIO_URL}?id={station_id}")
+        time.sleep(1.5) # Attesa minima per render tabella
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
         
-        # Se la tabella ha due colonne (Data | Valore), i valori sono ogni 2 match
-        # Filtriamo per prendere solo la colonna della pioggia
-        rain_values = values[0::1] # Adattare in base alla struttura reale se necessario
-
+        # Estrazione valori dalla tabella storica
+        rows = soup.select("table tr")[1:] # Seleziona righe saltando header
+        rain_values = []
+        for r in rows:
+            tds = r.find_all("td")
+            if len(tds) >= 2:
+                try:
+                    val = float(tds[1].get_text(strip=True).replace(",", "."))
+                    rain_values.append(val)
+                except: continue
+        
+        # Calcolo somme mobili (basate su step 15 min - dati forniti da PDF) 
         return {
-            "1h": round(sum(rain_values[:4]), 1) if len(rain_values) >= 4 else 0,
-            "3h": round(sum(rain_values[:12]), 1) if len(rain_values) >= 12 else 0,
-            "6h": round(sum(rain_values[:24]), 1) if len(rain_values) >= 24 else 0,
-            "12h": round(sum(rain_values[:48]), 1) if len(rain_values) >= 48 else 0,
-            "24h": round(sum(rain_values[:96]), 1) if len(rain_values) >= 96 else 0
+            "id": station_id,
+            "nome": station_name,
+            "valore": rain_values[0] if rain_values else 0,
+            "data": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+            "status": "normal",
+            "dati_multipli": {
+                "1h": round(sum(rain_values[:4]), 1) if len(rain_values) >= 4 else 0,
+                "3h": round(sum(rain_values[:12]), 1) if len(rain_values) >= 12 else 0,
+                "6h": round(sum(rain_values[:24]), 1) if len(rain_values) >= 24 else 0,
+                "12h": round(sum(rain_values[:48]), 1) if len(rain_values) >= 48 else 0,
+                "24h": round(sum(rain_values[:96]), 1) if len(rain_values) >= 96 else 0
+            }
         }
-    except:
-        return {"1h":0,"3h":0,"6h":0,"12h":0,"24h":0}
-
-def scrape_main_page(st_code):
-    """Legge la pagina principale e trova i link delle stazioni"""
-    url = f"https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php?st={st_code}"
-    resp = session.get(url)
-    # Cerchiamo i link tipo dettaglioStazione.php?id=XXXXXX
-    ids = re.findall(r'id=(\d+)', resp.text)
-    names = re.findall(r'class="linkStazione">([^<]+)', resp.text)
-    
-    # Estrazione valori tramite regex dalla tabella
-    # Questo bypassa il problema del 0 stazioni se l'HTML contiene i dati ma non formattati
-    vals = re.findall(r'<td>(\d+[\.,]\d+)</td>', resp.text)
-    
-    unique_stations = []
-    # Rimuove duplicati mantenendo l'ordine
-    seen_ids = set()
-    for i in range(min(len(ids), len(names))):
-        if ids[i] not in seen_ids:
-            unique_stations.append({"id": ids[i], "nome": names[i].strip()})
-            seen_ids.add(ids[i])
-    return unique_stations
+    except Exception as e:
+        return {"id": station_id, "nome": station_name, "valore": 0, "status": "error", "dati_multipli": {}}
 
 def main():
-    print("⏳ Recupero elenco sensori (Metodo Regex)...")
-    
-    # 1. Recupero ID e nomi
-    pluvio_list = scrape_main_page("P")
-    idro_list = scrape_main_page("I")
-    
-    if not pluvio_list:
-        print("❌ Errore: Ancora 0 stazioni trovate. Tentativo fallback...")
-        # Fallback se il sito usa strutture diverse
-        return
+    start_time = time.time()
+    print(f"⏳ Avvio acquisizione con {NUM_WORKERS} browser paralleli...")
 
-    print(f"✅ Trovati {len(pluvio_list)} pluviometri e {len(idro_list)} idrometri.")
+    # 1. Recupero elenco iniziale dei pluviometri
+    main_driver = drivers[0]
+    main_driver.get(f"{BASE_URL}?st=P")
+    time.sleep(4) # Importante per caricamento JS iniziale
+    soup = BeautifulSoup(main_driver.page_source, 'html.parser')
+    
+    links = soup.select('a[href*="id="]')
+    stations_to_do = []
+    for a in links:
+        sid = re.search(r'id=(\d+)', a['href']).group(1)
+        sname = a.get_text(strip=True)
+        if sid and sname:
+            stations_to_do.append((sid, sname))
+    
+    stations_to_do = list(set(stations_to_do)) # Rimuove duplicati
+    print(f"✅ Trovate {len(stations_to_do)} stazioni pluviometriche.")
 
-    final_data = {
+    # 2. Elaborazione parallela
+    final_readings = []
+    with ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor:
+        futures = [executor.submit(get_station_data, i, s[0], s[1]) for i, s in enumerate(stations_to_do)]
+        for future in futures:
+            final_readings.append(future.result())
+
+    # 3. Salvataggio
+    output = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "sensori": {
-            "idrometria": {"meta": {"label": "Idrometri", "unit": "m"}, "dati": []},
-            "pluviometria": {"meta": {"label": "Pluviometri", "unit": "mm"}, "dati": []}
+            "pluviometria": {"meta": {"label": "Pluviometri", "unit": "mm"}, "dati": final_readings},
+            "idrometria": {"meta": {"label": "Idrometri", "unit": "m"}, "dati": []} # Aggiungibile con logica simile
         }
     }
 
-    # 2. Processamento parallelo dei pluviometri (il cuore della lentezza)
-    print(f"🌩️ Calcolo cumulati storici per {len(pluvio_list)} stazioni...")
-    with ThreadPoolExecutor(max_workers=15) as executor:
-        futures = {executor.submit(get_historical_cumulates, s['id']): s for s in pluvio_list}
-        for future in futures:
-            meta = futures[future]
-            history = future.result()
-            final_data["sensori"]["pluviometria"]["dati"].append({
-                "id": meta["id"],
-                "nome": meta["nome"],
-                "valore": history["1h"], # Usiamo 1h come dato istantaneo
-                "status": "normal",
-                "dati_multipli": history
-            })
-
-    # 3. Processamento Idrometri (Semplice)
-    for s in idro_list:
-        final_data["sensori"]["idrometria"]["dati"].append({
-            "id": s["id"],
-            "nome": s["nome"],
-            "valore": 0.0, # Popolare con scraping se necessario
-            "status": "normal"
-        })
-
     with open("dati_sensori.json", "w", encoding="utf-8") as f:
-        json.dump(final_data, f, indent=4, ensure_ascii=False)
+        json.dump(output, f, indent=4, ensure_ascii=False)
+
+    # Pulizia driver
+    for d in drivers: d.quit()
     
-    print(f"🎉 Dashboard aggiornata con successo alle {final_data['ultimo_aggiornamento']}")
+    end_time = time.time()
+    print(f"🎉 Completato in {round(end_time - start_time, 2)} secondi. File dati_sensori.json pronto.")
 
 if __name__ == "__main__":
     main()
