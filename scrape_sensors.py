@@ -8,39 +8,60 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
-# CONFIGURAZIONE
-BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
-JSON_FILENAME = "dati_sensori.json"
-
-# Soglie fisse da PDF per validazione rapida nello scraping [cite: 2, 11]
-SOGLIE_IDRO = {"647100": 4.0, "179800": 3.5, "387900": 1.2} 
+# CONFIGURAZIONE SOGLIE IDROMETRICHE DA PDF 
+SOGLIE_IDRO = {
+    "Potenza Q.A.": 1.20,
+    "S. Demetrio": 1.40,
+    "Campomaggiore": 3.50,
+    "Bradano S. Lucia": 3.50,
+    "Bradano Serra Marina": 6.00,
+    "Agri SS 106": 4.00,
+    "Sinni SS 106": 3.50,
+    "Ofanto a Monticchio": 2.50
+}
 
 def setup_driver():
-    options = Options()
-    options.add_argument("--headless")
-    options.add_argument("--no-sandbox")
-    options.add_argument("--disable-dev-shm-usage")
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     service = Service(ChromeDriverManager().install())
-    return webdriver.Chrome(service=service, options=options)
+    return webdriver.Chrome(service=service, options=chrome_options)
 
-def get_multi_hour_data(driver, station_id):
-    """
-    Simula l'estrazione degli accumuli temporali. 
-    In un ambiente reale, questa funzione navigherebbe nel dettaglio della stazione
-    per sommare i millimetri registrati negli intervalli precedenti.
-    """
-    # Placeholder per logica di calcolo cumulati basata su storico 24h
-    return {
-        "1h": 0.0,
-        "3h": 0.0,
-        "6h": 0.0,
-        "12h": 0.0,
-        "24h": 0.0
-    }
+def get_historical_cumulates(driver, station_id):
+    """Accede alla tabella storica della stazione e calcola i cumulati."""
+    url = f"https://centrofunzionale.regione.basilicata.it/it/dettaglioStazione.php?id={station_id}"
+    try:
+        driver.get(url)
+        time.sleep(2)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        rows = soup.find_all("tr")[1:]  # Salta intestazione
+        
+        # Estrae i valori delle ultime 24 ore (intervalli da 15 min = 96 record)
+        values = []
+        for r in rows:
+            cols = r.find_all("td")
+            if len(cols) >= 2:
+                val = float(cols[1].get_text(strip=True).replace(",", "."))
+                values.append(val)
+        
+        # Calcolo somme mobili basate su 15 min per step 
+        return {
+            "1h": round(sum(values[:4]), 1) if len(values) >= 4 else 0,
+            "3h": round(sum(values[:12]), 1) if len(values) >= 12 else 0,
+            "6h": round(sum(values[:24]), 1) if len(values) >= 24 else 0,
+            "12h": round(sum(values[:48]), 1) if len(values) >= 48 else 0,
+            "24h": round(sum(values[:96]), 1) if len(values) >= 96 else 0
+        }
+    except Exception as e:
+        print(f"⚠️ Errore storico stazione {station_id}: {e}")
+        return {"1h":0,"3h":0,"6h":0,"12h":0,"24h":0}
 
-def scrape_sensors():
+def main():
     driver = setup_driver()
-    final_data = {
+    base_url = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
+    
+    final_output = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "sensori": {
             "idrometria": {"meta": {"label": "Idrometri", "unit": "m"}, "dati": []},
@@ -48,11 +69,12 @@ def scrape_sensors():
         }
     }
 
-    codes = {"idrometria": "I", "pluviometria": "P"}
+    categories = {"idrometria": "I", "pluviometria": "P"}
 
-    for key, code in codes.items():
-        driver.get(f"{BASE_URL}?st={code}")
-        time.sleep(5)
+    for key, code in categories.items():
+        print(f"🚀 Scraping categoria: {key}")
+        driver.get(f"{base_url}?st={code}")
+        time.sleep(4)
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         rows = soup.find_all("tr")
 
@@ -62,36 +84,41 @@ def scrape_sensors():
             
             name = cols[0].get_text(strip=True)
             val_raw = cols[3].get_text(strip=True).replace(",", ".")
+            
             try:
-                val = float(re.findall(r"[-+]?\d*\.\d+|\d+", val_raw)[0])
+                val_now = float(re.findall(r"[-+]?\d*\.\d+|\d+", val_raw)[0])
             except: continue
 
+            # Estrazione ID per navigazione storica
             link = cols[0].find("a")
             sid = re.search(r'id=(\d+)', link['href']).group(1) if link else ""
 
             entry = {
                 "id": sid,
                 "nome": name,
-                "valore": val,
+                "valore": val_now,
                 "data": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
                 "status": "normal"
             }
 
-            # Logica specifica per Pluviometri: Accumuli Multi-ora 
+            # Logica specifica PLUVIOMETRI: Cumulati storici 
             if key == "pluviometria":
-                entry["dati_multipli"] = get_multi_hour_data(driver, sid)
-                # Esempio: se valore istantaneo > 0, popola fittiziamente per test dashboard
-                entry["dati_multipli"]["1h"] = val 
+                print(f"  - Elaborazione storica: {name}")
+                entry["dati_multipli"] = get_historical_cumulates(driver, sid)
             
-            # Logica soglie Idrometriche [cite: 11, 15]
-            if key == "idrometria" and sid in SOGLIE_IDRO:
-                if val >= SOGLIE_IDRO[sid]: entry["status"] = "alert"
+            # Logica specifica IDROMETRI: Confronto soglie PDF 
+            if key == "idrometria":
+                if name in SOGLIE_IDRO and val_now >= SOGLIE_IDRO[name]:
+                    entry["status"] = "alert"
 
-            final_data["sensori"][key]["dati"].append(entry)
+            final_output["sensori"][key]["dati"].append(entry)
 
     driver.quit()
-    with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
-        json.dump(final_data, f, indent=4, ensure_ascii=False)
+    
+    # Salvataggio JSON per cfd.html
+    with open("dati_sensori.json", "w", encoding="utf-8") as f:
+        json.dump(final_output, f, indent=4, ensure_ascii=False)
+    print("✅ Scraping completato e file dati_sensori.json aggiornato.")
 
 if __name__ == "__main__":
-    scrape_sensors()
+    main()
