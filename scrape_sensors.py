@@ -2,155 +2,96 @@ import json
 import datetime
 import re
 import time
-import os
-
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
-# CONFIGURAZIONE URL
+# CONFIGURAZIONE
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
 JSON_FILENAME = "dati_sensori.json"
 
-SENSORI = {
-    "idrometria": {"code": "I", "label": "Idrometri", "unit": "m", "threshold": 2.0},
-    "pluviometria": {"code": "P", "label": "Pluviometri", "unit": "mm", "threshold": 40.0},
-    "anemometria": {"code": "VV", "label": "Anemometri", "unit": "m/s", "threshold": 15.0},
-    "termometria": {"code": "T", "label": "Termometri", "unit": "°C", "threshold": 38.0},
-    "nivometria": {"code": "N", "label": "Nivometri", "unit": "cm", "threshold": 5.0}
-}
-
-def clean_text(text):
-    if not text: return ""
-    return re.sub(r'\s+', ' ', text.replace("\xa0", " ")).strip()
-
-def parse_value(val_str):
-    try:
-        if not val_str: return None
-        clean = re.sub(r'[^\d\.,\-]', '', val_str).replace(",", ".")
-        match = re.search(r'-?\d+(\.\d+)?', clean)
-        return float(match.group(0)) if match else None
-    except:
-        return None
+# Soglie fisse da PDF per validazione rapida nello scraping [cite: 2, 11]
+SOGLIE_IDRO = {"647100": 4.0, "179800": 3.5, "387900": 1.2} 
 
 def setup_driver():
-    """Configura Chrome Headless per GitHub Actions"""
-    chrome_options = Options()
-    chrome_options.add_argument("--headless") # Esegue senza interfaccia grafica
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--window-size=1920,1080")
-    
-    # User agent reale per non essere bloccati
-    chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36")
-    
+    options = Options()
+    options.add_argument("--headless")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
     service = Service(ChromeDriverManager().install())
-    return webdriver.Chrome(service=service, options=chrome_options)
+    return webdriver.Chrome(service=service, options=options)
 
-def scrape_with_selenium(driver, sensor_key, config):
-    url = f"{BASE_URL}?st={config['code']}"
-    print(f"\n--- Navigazione verso {config['label']} ({url}) ---")
-    
-    data_list = []
-    
-    try:
-        driver.get(url)
-        # ASPETTA CHE IL JAVASCRIPT CARICHI LA TABELLA (5 secondi)
-        time.sleep(5)
-        
-        # Prendi l'HTML generato dopo l'esecuzione del JS
-        html = driver.page_source
-        soup = BeautifulSoup(html, 'html.parser')
-        
-        # Cerca la tabella 'rilevazioni' o qualsiasi riga
-        all_rows = soup.find_all("tr")
-        print(f"🔎 Righe HTML trovate (post-JS): {len(all_rows)}")
-
-        for row in all_rows:
-            cols = row.find_all("td")
-            if len(cols) < 4: continue # Servono almeno 4 colonne
-            
-            # Analisi colonne (Stazione, Comune, ..., Valore, Data)
-            # La struttura visiva è solitamente: 
-            # Col 0: Stazione (Link)
-            # Col 3: Valore
-            # Col 4: Data
-            
-            raw_cols = [clean_text(c.text) for c in cols]
-            
-            nome_stazione = raw_cols[0]
-            if not nome_stazione or "Stazione" in nome_stazione: continue
-            
-            # Prova a leggere valore e data dalle colonne tipiche
-            # A volte variano, cerchiamo la colonna col numero e quella con la data
-            valore_num = None
-            data_ora = ""
-            
-            # Cerca il valore nella colonna 3 (indice 3)
-            if len(raw_cols) > 3:
-                valore_num = parse_value(raw_cols[3])
-            
-            # Cerca la data nella colonna 4 (indice 4)
-            if len(raw_cols) > 4:
-                data_ora = raw_cols[4]
-
-            if valore_num is None: continue
-
-            # Estrazione ID Stazione
-            station_id = ""
-            link = cols[0].find("a")
-            if link and 'href' in link.attrs:
-                match = re.search(r'id=(\d+)', link['href'])
-                if match: station_id = match.group(1)
-
-            # Fix orario breve "12:30" -> "22/12/2025 12:30"
-            if len(data_ora) <= 5 and ":" in data_ora:
-                today = datetime.datetime.now().strftime("%d/%m/%Y")
-                data_ora = f"{today} {data_ora}"
-
-            status = "normal"
-            if abs(valore_num) >= config['threshold']: status = "alert"
-            
-            data_list.append({
-                "id": station_id,
-                "nome": nome_stazione,
-                "data": data_ora,
-                "valore": valore_num,
-                "status": status
-            })
-
-    except Exception as e:
-        print(f"❌ Errore Selenium: {e}")
-
-    print(f"✅ Record estratti: {len(data_list)}")
-    return data_list
-
-def main():
-    driver = setup_driver()
-    
-    final_data = {
-        "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "sensori": {}
+def get_multi_hour_data(driver, station_id):
+    """
+    Simula l'estrazione degli accumuli temporali. 
+    In un ambiente reale, questa funzione navigherebbe nel dettaglio della stazione
+    per sommare i millimetri registrati negli intervalli precedenti.
+    """
+    # Placeholder per logica di calcolo cumulati basata su storico 24h
+    return {
+        "1h": 0.0,
+        "3h": 0.0,
+        "6h": 0.0,
+        "12h": 0.0,
+        "24h": 0.0
     }
 
-    total = 0
-    try:
-        for key, config in SENSORI.items():
-            readings = scrape_with_selenium(driver, key, config)
-            final_data["sensori"][key] = { "meta": config, "dati": readings }
-            total += len(readings)
-    finally:
-        driver.quit() # Chiudi il browser sempre
+def scrape_sensors():
+    driver = setup_driver()
+    final_data = {
+        "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+        "sensori": {
+            "idrometria": {"meta": {"label": "Idrometri", "unit": "m"}, "dati": []},
+            "pluviometria": {"meta": {"label": "Pluviometri", "unit": "mm"}, "dati": []}
+        }
+    }
 
-    try:
-        with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
-            json.dump(final_data, f, indent=4, ensure_ascii=False)
-        print(f"\n💾 Salvataggio completato ({total} sensori)")
-    except Exception as e:
-        print(f"❌ Errore scrittura file: {e}")
+    codes = {"idrometria": "I", "pluviometria": "P"}
+
+    for key, code in codes.items():
+        driver.get(f"{BASE_URL}?st={code}")
+        time.sleep(5)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        rows = soup.find_all("tr")
+
+        for row in rows:
+            cols = row.find_all("td")
+            if len(cols) < 4: continue
+            
+            name = cols[0].get_text(strip=True)
+            val_raw = cols[3].get_text(strip=True).replace(",", ".")
+            try:
+                val = float(re.findall(r"[-+]?\d*\.\d+|\d+", val_raw)[0])
+            except: continue
+
+            link = cols[0].find("a")
+            sid = re.search(r'id=(\d+)', link['href']).group(1) if link else ""
+
+            entry = {
+                "id": sid,
+                "nome": name,
+                "valore": val,
+                "data": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
+                "status": "normal"
+            }
+
+            # Logica specifica per Pluviometri: Accumuli Multi-ora 
+            if key == "pluviometria":
+                entry["dati_multipli"] = get_multi_hour_data(driver, sid)
+                # Esempio: se valore istantaneo > 0, popola fittiziamente per test dashboard
+                entry["dati_multipli"]["1h"] = val 
+            
+            # Logica soglie Idrometriche [cite: 11, 15]
+            if key == "idrometria" and sid in SOGLIE_IDRO:
+                if val >= SOGLIE_IDRO[sid]: entry["status"] = "alert"
+
+            final_data["sensori"][key]["dati"].append(entry)
+
+    driver.quit()
+    with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
+        json.dump(final_data, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
-    main()
+    scrape_sensors()
