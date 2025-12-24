@@ -1,124 +1,79 @@
-import json, datetime, re, time
-from concurrent.futures import ThreadPoolExecutor
+import json
+import datetime
+import time
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
-NUM_WORKERS = 4 # Bilanciamento tra velocità e stabilità
-
-def create_driver():
+def main():
     options = Options()
     options.add_argument("--headless")
     options.add_argument("--no-sandbox")
     options.add_argument("--disable-dev-shm-usage")
-    options.add_argument("--blink-settings=imagesEnabled=false")
-    return webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
-
-drivers = [create_driver() for _ in range(NUM_WORKERS)]
-
-def get_detailed_history(index, sid, sname, cat_key):
-    driver = drivers[index % NUM_WORKERS]
-    url = f"https://centrofunzionale.regione.basilicata.it/it/dettaglioStazione.php?id={sid}"
-    try:
-        driver.get(url)
-        # Attesa forzata del caricamento della tabella dati
-        WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.TAG_NAME, "table")))
-        time.sleep(1) 
-        
-        soup = BeautifulSoup(driver.page_source, 'html.parser')
-        rows = soup.find_all("tr")
-        vals = []
-        
-        for tr in rows:
-            tds = tr.find_all("td")
-            if len(tds) >= 2:
-                # Pulizia del testo per estrarre solo il numero
-                raw_val = tds[1].get_text(strip=True).replace(",", ".")
-                match = re.findall(r"[-+]?\d*\.\d+|\d+", raw_val)
-                if match:
-                    vals.append(float(match[0]))
-
-        data_obj = {
-            "id": sid,
-            "nome": sname,
-            "valore": vals[0] if vals else 0.0,
-            "data": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-            "status": "normal"
-        }
-
-        # Calcolo cumulati solo per Pluviometria
-        if cat_key == "pluviometria":
-            data_obj["dati_multipli"] = {
-                "1h": round(sum(vals[:4]), 1) if len(vals) >= 4 else (vals[0] if vals else 0.0),
-                "3h": round(sum(vals[:12]), 1) if len(vals) >= 12 else 0.0,
-                "6h": round(sum(vals[:24]), 1) if len(vals) >= 24 else 0.0,
-                "12h": round(sum(vals[:48]), 1) if len(vals) >= 48 else 0.0,
-                "24h": round(sum(vals[:96]), 1) if len(vals) >= 96 else 0.0
-            }
-        return data_obj
-    except Exception as e:
-        print(f"⚠️ Errore stazione {sid} ({sname}): {e}")
-        return None
-
-def scrape_main_list(code):
-    driver = drivers[0]
-    driver.get(f"https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php?st={code}")
-    WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "linkStazione")))
     
-    soup = BeautifulSoup(driver.page_source, 'html.parser')
-    stations = []
-    links = soup.find_all("a", class_="linkStazione")
+    driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
     
-    for a in links:
-        name = a.get_text(strip=True)
-        href = a.get('href', '')
-        sid_match = re.search(r'id=(\d+)', href)
-        if sid_match:
-            sid = sid_match.group(1)
-            # Evita di scambiare il valore per il nome
-            if name and not any(u in name.lower() for u in ["mm", " m", "°c", "hpa"]):
-                stations.append((sid, name))
-    
-    return list(dict.fromkeys(stations)) # Rimuove duplicati mantenendo l'ordine
-
-def main():
-    start = time.time()
-    # Definizione completa dei sensori obbligatori
-    SENSORI_CONFIG = {
+    # Configurazione categorie: Chiave JSON -> Codice Sito Regione
+    categorie = {
         "pluviometria": "P",
         "idrometria": "I",
-        "anemometria": "VV",
         "termometria": "T",
+        "anemometria": "VV",
         "nivometria": "N"
     }
     
-    final_output = {
+    output = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
         "sensori": {}
     }
 
-    for key, code in SENSORI_CONFIG.items():
-        print(f"🔍 Scansione categoria: {key}...")
-        base_list = scrape_main_list(code)
-        
-        with ThreadPoolExecutor(max_workers=NUM_WORKERS) as executor:
-            # Avviamo il recupero dei dettagli per ogni stazione trovata
-            results = [r for r in executor.map(lambda p: get_detailed_history(p[0], p[1][0], p[1][1], key), enumerate(base_list)) if r]
-        
-        final_output["sensori"][key] = {"dati": results}
-        print(f"✅ {key.capitalize()}: {len(results)} stazioni acquisite.")
+    for cat_name, code in categorie.items():
+        print(f"Recupero dati live per: {cat_name}...")
+        try:
+            driver.get(f"https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php?st={code}")
+            # Attesa per il caricamento della tabella dinamica
+            time.sleep(5) 
+            
+            soup = BeautifulSoup(driver.page_source, 'html.parser')
+            table = soup.find("table")
+            if not table:
+                continue
 
-    # Salvataggio JSON definitivo
+            rows = table.find_all("tr")
+            data_list = []
+
+            for r in rows:
+                tds = r.find_all("td")
+                # La struttura tipica ha: Stazione (0), Ora (1), Valore (3)
+                if len(tds) >= 4:
+                    nome = tds[0].get_text(strip=True)
+                    # Evitiamo di catturare i valori spuri come se fossero nomi
+                    if not any(u in nome.lower() for u in ["mm", " m", "°c", "hpa"]):
+                        try:
+                            val_raw = tds[3].get_text(strip=True).replace(",", ".")
+                            valore = float(val_raw)
+                            data_list.append({
+                                "nome": nome,
+                                "valore": valore,
+                                "ora": tds[1].get_text(strip=True)
+                            })
+                        except ValueError:
+                            continue
+            
+            output["sensori"][cat_name] = data_list
+            print(f"✅ {cat_name}: {len(data_list)} sensori letti.")
+
+        except Exception as e:
+            print(f"❌ Errore durante lo scraping di {cat_name}: {e}")
+
+    # Salva il file JSON per i dati LIVE
     with open("dati_sensori.json", "w", encoding="utf-8") as f:
-        json.dump(final_output, f, indent=4, ensure_ascii=False)
+        json.dump(output, f, indent=4, ensure_ascii=False)
     
-    for d in drivers: d.quit()
-    print(f"🎉 Scraping terminato in {int(time.time()-start)}s. File pronto per cfd.html")
+    driver.quit()
+    print("🏁 Scraping LIVE completato.")
 
 if __name__ == "__main__":
     main()
