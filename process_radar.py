@@ -1,41 +1,58 @@
-import pygrib
-import json
 import requests
+import xarray as xr
+import json
 import os
 from datetime import datetime
 
-# URL del dataset MeteoHub per il Radar DPC
-RADAR_URL = "https://meteohub.agenziaitaliameteo.it/api/v1/datasets/radar_dpc/latest"
+# Configurazione
+GRIB_URL = "https://meteohub.agenziaitaliameteo.it/api/v1/datasets/radar_dpc/latest"
+OUTPUT_FILE = "radar_data.json"
 
-def main():
-    print("🛰️ Download dati Radar DPC...")
-    # 1. Download del file Grib
-    response = requests.get(RADAR_URL)
-    with open("radar_latest.grib", "wb") as f:
-        f.write(response.content)
+def process():
+    try:
+        print("📥 Download file GRIB dal Radar DPC...")
+        r = requests.get(GRIB_URL, timeout=30)
+        with open("temp_radar.grib", "wb") as f:
+            f.write(r.content)
 
-    # 2. Parsing del file GRIB
-    grbs = pygrib.open("radar_latest.grib")
-    grb = grbs.select(name='Surface rainfall intensity')[0]
-    data, lats, lons = grb.data(lat1=39.5, lat2=41.5, lon1=15.2, lon2=17.0) # Ritaglio sulla Basilicata
+        # Lettura del file GRIB con cfgrib
+        # Il dataset contiene 'sri' (Surface Rainfall Intensity)
+        ds = xr.open_dataset("temp_radar.grib", engine="cfgrib")
+        
+        # Ritaglio (Slicing) sull'area della Basilicata per non caricare dati inutili
+        # Nota: le coordinate potrebbero variare in base alla proiezione del GRIB
+        basilicata = ds.sel(latitude=slice(41.2, 39.9), longitude=slice(15.3, 16.9))
 
-    # 3. Conversione in formato leggero per la mappa
-    radar_points = []
-    for i in range(data.shape[0]):
-        for j in range(data.shape[1]):
-            val = float(data[i, j])
-            if val > 0.2: # Filtro rumore/pioggia assente
-                radar_points.append([float(lats[i,j]), float(lons[i,j]), val])
+        radar_points = []
+        # Iteriamo sui dati per estrarre solo i punti con pioggia significativa (> 0.2 mm/h)
+        df = basilicata.to_dataframe().reset_index()
+        
+        # Cerchiamo la colonna del valore (solitamente 'sri' o il nome del parametro)
+        val_col = [c for c in df.columns if c not in ['latitude', 'longitude', 'time', 'step', 'surface']][0]
 
-    radar_output = {
-        "timestamp": datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "points": radar_points
-    }
+        for _, row in df.iterrows():
+            if row[val_col] > 0.4: # Filtro per intensità minima (evita rumore)
+                radar_points.append({
+                    "lat": round(float(row['latitude']), 4),
+                    "lon": round(float(row['longitude']), 4),
+                    "val": round(float(row[val_col]), 2)
+                })
 
-    with open("radar_data.json", "w") as f:
-        json.dump(radar_output, f)
-    
-    print(f"✅ Radar processato: {len(radar_points)} punti rilevati.")
+        output = {
+            "last_update": datetime.now().strftime("%d/%m/%Y %H:%M"),
+            "points": radar_points
+        }
+
+        with open(OUTPUT_FILE, "w") as f:
+            json.dump(output, f)
+
+        print(f"✅ Elaborazione completata. Trovati {len(radar_points)} punti radar.")
+        
+    except Exception as e:
+        print(f"❌ Errore: {e}")
+    finally:
+        if os.path.exists("temp_radar.grib"):
+            os.remove("temp_radar.grib")
 
 if __name__ == "__main__":
-    main()
+    process()
