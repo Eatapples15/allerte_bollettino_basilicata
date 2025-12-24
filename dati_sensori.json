@@ -1,10 +1,5479 @@
 {
-    "ultimo_aggiornamento": "24/12/2025 12:12",
+    "ultimo_aggiornamento": "24/12/2025 12:21",
     "sensori": {
-        "pluviometria": [],
-        "idrometria": [],
-        "termometria": [],
-        "anemometria": [],
-        "nivometria": []
+        "pluviometria": {
+            "meta": {
+                "code": "P",
+                "label": "Pluviometri",
+                "unit": "mm",
+                "threshold": 40.0
+            },
+            "dati": [
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 12.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 4.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 5.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 6.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 12.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652900",
+                    "nome": "Agri a Roccanova",
+                    "valore": 7.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652900",
+                    "nome": "Agri a Roccanova",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652900",
+                    "nome": "Agri a Roccanova",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652900",
+                    "nome": "Agri a Roccanova",
+                    "valore": 0.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652900",
+                    "nome": "Agri a Roccanova",
+                    "valore": 4.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652900",
+                    "nome": "Agri a Roccanova",
+                    "valore": 7.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179900",
+                    "nome": "Albano di Lucania",
+                    "valore": 2.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179900",
+                    "nome": "Albano di Lucania",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179900",
+                    "nome": "Albano di Lucania",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179900",
+                    "nome": "Albano di Lucania",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179900",
+                    "nome": "Albano di Lucania",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179900",
+                    "nome": "Albano di Lucania",
+                    "valore": 2.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699400",
+                    "nome": "Anzi",
+                    "valore": 4.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699400",
+                    "nome": "Anzi",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699400",
+                    "nome": "Anzi",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699400",
+                    "nome": "Anzi",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699400",
+                    "nome": "Anzi",
+                    "valore": 1.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699400",
+                    "nome": "Anzi",
+                    "valore": 4.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947000",
+                    "nome": "Atella Arpab",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947000",
+                    "nome": "Atella Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947000",
+                    "nome": "Atella Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947000",
+                    "nome": "Atella Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947000",
+                    "nome": "Atella Arpab",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947000",
+                    "nome": "Atella Arpab",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "512400",
+                    "nome": "Avigliano",
+                    "valore": 2.0,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "512400",
+                    "nome": "Avigliano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "512400",
+                    "nome": "Avigliano",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "512400",
+                    "nome": "Avigliano",
+                    "valore": 0.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "512400",
+                    "nome": "Avigliano",
+                    "valore": 1.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "512400",
+                    "nome": "Avigliano",
+                    "valore": 2.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419800",
+                    "nome": "Balvano",
+                    "valore": 14.0,
+                    "data": "24/12/2025 13:27",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419800",
+                    "nome": "Balvano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419800",
+                    "nome": "Balvano",
+                    "valore": 4.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419800",
+                    "nome": "Balvano",
+                    "valore": 5.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419800",
+                    "nome": "Balvano",
+                    "valore": 10.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419800",
+                    "nome": "Balvano",
+                    "valore": 14.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240400",
+                    "nome": "Basento SS 106",
+                    "valore": 13.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240400",
+                    "nome": "Basento SS 106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240400",
+                    "nome": "Basento SS 106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240400",
+                    "nome": "Basento SS 106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240400",
+                    "nome": "Basento SS 106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240400",
+                    "nome": "Basento SS 106",
+                    "valore": 13.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "272700",
+                    "nome": "Bella S.Antonio Casalini",
+                    "valore": 5.4,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "272700",
+                    "nome": "Bella S.Antonio Casalini",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "272700",
+                    "nome": "Bella S.Antonio Casalini",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "272700",
+                    "nome": "Bella S.Antonio Casalini",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "272700",
+                    "nome": "Bella S.Antonio Casalini",
+                    "valore": 3.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "272700",
+                    "nome": "Bella S.Antonio Casalini",
+                    "valore": 5.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "639000",
+                    "nome": "Bradano a S. Lucia",
+                    "valore": 3.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "639000",
+                    "nome": "Bradano a S. Lucia",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "639000",
+                    "nome": "Bradano a S. Lucia",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "639000",
+                    "nome": "Bradano a S. Lucia",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "639000",
+                    "nome": "Bradano a S. Lucia",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "639000",
+                    "nome": "Bradano a S. Lucia",
+                    "valore": 3.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652700",
+                    "nome": "Bradano Serramarina",
+                    "valore": 18.8,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652700",
+                    "nome": "Bradano Serramarina",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652700",
+                    "nome": "Bradano Serramarina",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652700",
+                    "nome": "Bradano Serramarina",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652700",
+                    "nome": "Bradano Serramarina",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "652700",
+                    "nome": "Bradano Serramarina",
+                    "valore": 18.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417900",
+                    "nome": "Bradano SS106",
+                    "valore": 13.5,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417900",
+                    "nome": "Bradano SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417900",
+                    "nome": "Bradano SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417900",
+                    "nome": "Bradano SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417900",
+                    "nome": "Bradano SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417900",
+                    "nome": "Bradano SS106",
+                    "valore": 13.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419900",
+                    "nome": "Brienza",
+                    "valore": 14.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419900",
+                    "nome": "Brienza",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419900",
+                    "nome": "Brienza",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419900",
+                    "nome": "Brienza",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419900",
+                    "nome": "Brienza",
+                    "valore": 7.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419900",
+                    "nome": "Brienza",
+                    "valore": 14.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 36.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 1.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 18.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 36.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275600",
+                    "nome": "Castrocucco",
+                    "valore": 30.6,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275600",
+                    "nome": "Castrocucco",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275600",
+                    "nome": "Castrocucco",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275600",
+                    "nome": "Castrocucco",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275600",
+                    "nome": "Castrocucco",
+                    "valore": 16.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275600",
+                    "nome": "Castrocucco",
+                    "valore": 30.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "204000",
+                    "nome": "Cavone SS106",
+                    "valore": 18.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "204000",
+                    "nome": "Cavone SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "204000",
+                    "nome": "Cavone SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "204000",
+                    "nome": "Cavone SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "204000",
+                    "nome": "Cavone SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "204000",
+                    "nome": "Cavone SS106",
+                    "valore": 18.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "176900",
+                    "nome": "Craco Peschiera",
+                    "valore": 6.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "176900",
+                    "nome": "Craco Peschiera",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "176900",
+                    "nome": "Craco Peschiera",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "176900",
+                    "nome": "Craco Peschiera",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "176900",
+                    "nome": "Craco Peschiera",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "176900",
+                    "nome": "Craco Peschiera",
+                    "valore": 6.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275500",
+                    "nome": "Episcopia-Pizzutello",
+                    "valore": 20.2,
+                    "data": "24/12/2025 13:19",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275500",
+                    "nome": "Episcopia-Pizzutello",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275500",
+                    "nome": "Episcopia-Pizzutello",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275500",
+                    "nome": "Episcopia-Pizzutello",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275500",
+                    "nome": "Episcopia-Pizzutello",
+                    "valore": 9.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "275500",
+                    "nome": "Episcopia-Pizzutello",
+                    "valore": 20.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.Melandro S.Angelo Le Fratte",
+                    "valore": 19.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.Melandro S.Angelo Le Fratte",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.Melandro S.Angelo Le Fratte",
+                    "valore": 3.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.Melandro S.Angelo Le Fratte",
+                    "valore": 4.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.Melandro S.Angelo Le Fratte",
+                    "valore": 11.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.Melandro S.Angelo Le Fratte",
+                    "valore": 19.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177100",
+                    "nome": "Ferrandina SP",
+                    "valore": 6.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177100",
+                    "nome": "Ferrandina SP",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177100",
+                    "nome": "Ferrandina SP",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177100",
+                    "nome": "Ferrandina SP",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177100",
+                    "nome": "Ferrandina SP",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177100",
+                    "nome": "Ferrandina SP",
+                    "valore": 6.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531500",
+                    "nome": "Forenza",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531500",
+                    "nome": "Forenza",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531500",
+                    "nome": "Forenza",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531500",
+                    "nome": "Forenza",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531500",
+                    "nome": "Forenza",
+                    "valore": 0.2,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947500",
+                    "nome": "Francavilla in Sinni Arpab",
+                    "valore": 9.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947500",
+                    "nome": "Francavilla in Sinni Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947500",
+                    "nome": "Francavilla in Sinni Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947500",
+                    "nome": "Francavilla in Sinni Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947500",
+                    "nome": "Francavilla in Sinni Arpab",
+                    "valore": 5.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947500",
+                    "nome": "Francavilla in Sinni Arpab",
+                    "valore": 9.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948800",
+                    "nome": "Genzano di Lucania Arpab",
+                    "valore": 1.4,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948800",
+                    "nome": "Genzano di Lucania Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948800",
+                    "nome": "Genzano di Lucania Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948800",
+                    "nome": "Genzano di Lucania Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948800",
+                    "nome": "Genzano di Lucania Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948800",
+                    "nome": "Genzano di Lucania Arpab",
+                    "valore": 1.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 8.4,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 4.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 8.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240700",
+                    "nome": "Grassano SP",
+                    "valore": 4.8,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240700",
+                    "nome": "Grassano SP",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240700",
+                    "nome": "Grassano SP",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240700",
+                    "nome": "Grassano SP",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240700",
+                    "nome": "Grassano SP",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "240700",
+                    "nome": "Grassano SP",
+                    "valore": 4.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947600",
+                    "nome": "Grottole Arpab",
+                    "valore": 5.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947600",
+                    "nome": "Grottole Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947600",
+                    "nome": "Grottole Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947600",
+                    "nome": "Grottole Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947600",
+                    "nome": "Grottole Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947600",
+                    "nome": "Grottole Arpab",
+                    "valore": 5.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699200",
+                    "nome": "Guardia Perticara",
+                    "valore": 8.9,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699200",
+                    "nome": "Guardia Perticara",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699200",
+                    "nome": "Guardia Perticara",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699200",
+                    "nome": "Guardia Perticara",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699200",
+                    "nome": "Guardia Perticara",
+                    "valore": 4.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699200",
+                    "nome": "Guardia Perticara",
+                    "valore": 8.9,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55200",
+                    "nome": "Irsina",
+                    "valore": 6.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55200",
+                    "nome": "Irsina",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55200",
+                    "nome": "Irsina",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55200",
+                    "nome": "Irsina",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55200",
+                    "nome": "Irsina",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55200",
+                    "nome": "Irsina",
+                    "valore": 6.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55100",
+                    "nome": "Lagonegro",
+                    "valore": 40.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55100",
+                    "nome": "Lagonegro",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55100",
+                    "nome": "Lagonegro",
+                    "valore": 5.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55100",
+                    "nome": "Lagonegro",
+                    "valore": 8.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55100",
+                    "nome": "Lagonegro",
+                    "valore": 24.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55100",
+                    "nome": "Lagonegro",
+                    "valore": 40.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531800",
+                    "nome": "Lagopesole",
+                    "valore": 0.2,
+                    "data": "24/12/2025 12:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531800",
+                    "nome": "Lagopesole",
+                    "valore": 0.2,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531800",
+                    "nome": "Lagopesole",
+                    "valore": 0.6,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531800",
+                    "nome": "Lagopesole",
+                    "valore": 1.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "531800",
+                    "nome": "Lagopesole",
+                    "valore": 1.8,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276400",
+                    "nome": "Laino Borgo",
+                    "valore": 22.8,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276400",
+                    "nome": "Laino Borgo",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276400",
+                    "nome": "Laino Borgo",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276400",
+                    "nome": "Laino Borgo",
+                    "valore": 0.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276400",
+                    "nome": "Laino Borgo",
+                    "valore": 6.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276400",
+                    "nome": "Laino Borgo",
+                    "valore": 23.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "279200",
+                    "nome": "Laurenzana",
+                    "valore": 11.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "279200",
+                    "nome": "Laurenzana",
+                    "valore": 1.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "279200",
+                    "nome": "Laurenzana",
+                    "valore": 1.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "279200",
+                    "nome": "Laurenzana",
+                    "valore": 1.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "279200",
+                    "nome": "Laurenzana",
+                    "valore": 6.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "279200",
+                    "nome": "Laurenzana",
+                    "valore": 11.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "528600",
+                    "nome": "Lavello ETG",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "528600",
+                    "nome": "Lavello ETG",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "528600",
+                    "nome": "Lavello ETG",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "528600",
+                    "nome": "Lavello ETG",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "528600",
+                    "nome": "Lavello ETG",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947900",
+                    "nome": "Maratea Arpab",
+                    "valore": 30.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947900",
+                    "nome": "Maratea Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947900",
+                    "nome": "Maratea Arpab",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947900",
+                    "nome": "Maratea Arpab",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947900",
+                    "nome": "Maratea Arpab",
+                    "valore": 8.1,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "947900",
+                    "nome": "Maratea Arpab",
+                    "valore": 30.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "277300",
+                    "nome": "Marsico Nuovo",
+                    "valore": 20.6,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "277300",
+                    "nome": "Marsico Nuovo",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "277300",
+                    "nome": "Marsico Nuovo",
+                    "valore": 1.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "277300",
+                    "nome": "Marsico Nuovo",
+                    "valore": 2.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "277300",
+                    "nome": "Marsico Nuovo",
+                    "valore": 12.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "277300",
+                    "nome": "Marsico Nuovo",
+                    "valore": 20.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948000",
+                    "nome": "Marsicovetere Arpab",
+                    "valore": 12.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948000",
+                    "nome": "Marsicovetere Arpab",
+                    "valore": 0.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948000",
+                    "nome": "Marsicovetere Arpab",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948000",
+                    "nome": "Marsicovetere Arpab",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948000",
+                    "nome": "Marsicovetere Arpab",
+                    "valore": 6.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948000",
+                    "nome": "Marsicovetere Arpab",
+                    "valore": 12.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948100",
+                    "nome": "Maschito Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948100",
+                    "nome": "Maschito Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948100",
+                    "nome": "Maschito Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948100",
+                    "nome": "Maschito Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948100",
+                    "nome": "Maschito Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948100",
+                    "nome": "Maschito Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55000",
+                    "nome": "Matera",
+                    "valore": 10.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55000",
+                    "nome": "Matera",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55000",
+                    "nome": "Matera",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55000",
+                    "nome": "Matera",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55000",
+                    "nome": "Matera",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "55000",
+                    "nome": "Matera",
+                    "valore": 10.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532500",
+                    "nome": "Melfi",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532500",
+                    "nome": "Melfi",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532500",
+                    "nome": "Melfi",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532500",
+                    "nome": "Melfi",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532500",
+                    "nome": "Melfi",
+                    "valore": 1.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948300",
+                    "nome": "Melfi Arpab",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948300",
+                    "nome": "Melfi Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948300",
+                    "nome": "Melfi Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948300",
+                    "nome": "Melfi Arpab",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948300",
+                    "nome": "Melfi Arpab",
+                    "valore": 0.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948300",
+                    "nome": "Melfi Arpab",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 6.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 6.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948500",
+                    "nome": "Montalbano Jonico Arpab",
+                    "valore": 4.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948500",
+                    "nome": "Montalbano Jonico Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948500",
+                    "nome": "Montalbano Jonico Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948500",
+                    "nome": "Montalbano Jonico Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948500",
+                    "nome": "Montalbano Jonico Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948500",
+                    "nome": "Montalbano Jonico Arpab",
+                    "valore": 4.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532700",
+                    "nome": "Monte Vulture",
+                    "valore": 0.0,
+                    "data": "24/12/2025 11:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532700",
+                    "nome": "Monte Vulture",
+                    "valore": 0.2,
+                    "data": "24/12/2025 11:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532700",
+                    "nome": "Monte Vulture",
+                    "valore": 0.2,
+                    "data": "24/12/2025 11:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532700",
+                    "nome": "Monte Vulture",
+                    "valore": 0.2,
+                    "data": "24/12/2025 11:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532700",
+                    "nome": "Monte Vulture",
+                    "valore": 1.2,
+                    "data": "24/12/2025 11:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532800",
+                    "nome": "Montemilone",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532800",
+                    "nome": "Montemilone",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532800",
+                    "nome": "Montemilone",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532800",
+                    "nome": "Montemilone",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "532800",
+                    "nome": "Montemilone",
+                    "valore": 0.4,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948600",
+                    "nome": "Montemurro Arpab",
+                    "valore": 15.8,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948600",
+                    "nome": "Montemurro Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948600",
+                    "nome": "Montemurro Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948600",
+                    "nome": "Montemurro Arpab",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948600",
+                    "nome": "Montemurro Arpab",
+                    "valore": 11.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948600",
+                    "nome": "Montemurro Arpab",
+                    "valore": 15.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "481200",
+                    "nome": "Montescaglioso",
+                    "valore": 49.1,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "481200",
+                    "nome": "Montescaglioso",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "481200",
+                    "nome": "Montescaglioso",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "481200",
+                    "nome": "Montescaglioso",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "481200",
+                    "nome": "Montescaglioso",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "481200",
+                    "nome": "Montescaglioso",
+                    "valore": 49.1,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "525000",
+                    "nome": "Monticchio Bagni",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "525000",
+                    "nome": "Monticchio Bagni",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "525000",
+                    "nome": "Monticchio Bagni",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "525000",
+                    "nome": "Monticchio Bagni",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "525000",
+                    "nome": "Monticchio Bagni",
+                    "valore": 2.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "513100",
+                    "nome": "Muro Lucano",
+                    "valore": 13.8,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "513100",
+                    "nome": "Muro Lucano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "513100",
+                    "nome": "Muro Lucano",
+                    "valore": 2.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "513100",
+                    "nome": "Muro Lucano",
+                    "valore": 3.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "513100",
+                    "nome": "Muro Lucano",
+                    "valore": 11.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "513100",
+                    "nome": "Muro Lucano",
+                    "valore": 13.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54900",
+                    "nome": "Noepoli",
+                    "valore": 3.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54900",
+                    "nome": "Noepoli",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54900",
+                    "nome": "Noepoli",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54900",
+                    "nome": "Noepoli",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54900",
+                    "nome": "Noepoli",
+                    "valore": 2.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54900",
+                    "nome": "Noepoli",
+                    "valore": 3.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948700",
+                    "nome": "Oliveto Lucano Arpab",
+                    "valore": 2.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948700",
+                    "nome": "Oliveto Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948700",
+                    "nome": "Oliveto Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948700",
+                    "nome": "Oliveto Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948700",
+                    "nome": "Oliveto Lucano Arpab",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948700",
+                    "nome": "Oliveto Lucano Arpab",
+                    "valore": 2.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:19",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 10.6,
+                    "data": "24/12/2025 12:45",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.2,
+                    "data": "24/12/2025 12:45",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.2,
+                    "data": "24/12/2025 12:45",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.4,
+                    "data": "24/12/2025 12:45",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 7.2,
+                    "data": "24/12/2025 12:45",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 10.6,
+                    "data": "24/12/2025 12:45",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 14.4,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 1.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 2.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 7.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 14.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 1.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 1.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:19",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 1.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 2.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 13.7,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 17.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 6.4,
+                    "data": "24/12/2025 13:19",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 3.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 6.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 8.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 0.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 0.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 0.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 4.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 8.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 5.2,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 5.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 3.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 1.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 3.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 3.6,
+                    "data": "24/12/2025 13:19",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 0.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 1.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 3.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.4,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 15.0,
+                    "data": "24/12/2025 13:19",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 10.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 15.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 22.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 9.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 22.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 7.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 7.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 3.9,
+                    "data": "24/12/2025 12:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 6.3,
+                    "data": "24/12/2025 12:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 10.0,
+                    "data": "24/12/2025 12:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 14.9,
+                    "data": "24/12/2025 11:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 18.5,
+                    "data": "24/12/2025 12:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 7.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 7.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 3.8,
+                    "data": "24/12/2025 13:19",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 3.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 1.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 1.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699000",
+                    "nome": "Salandra",
+                    "valore": 5.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699000",
+                    "nome": "Salandra",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699000",
+                    "nome": "Salandra",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699000",
+                    "nome": "Salandra",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699000",
+                    "nome": "Salandra",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699000",
+                    "nome": "Salandra",
+                    "valore": 5.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949400",
+                    "nome": "San Giorgio Lucano Arpab",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949400",
+                    "nome": "San Giorgio Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949400",
+                    "nome": "San Giorgio Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949400",
+                    "nome": "San Giorgio Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949400",
+                    "nome": "San Giorgio Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949400",
+                    "nome": "San Giorgio Lucano Arpab",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949200",
+                    "nome": "San Severino Lucano Arpab",
+                    "valore": 19.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949200",
+                    "nome": "San Severino Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949200",
+                    "nome": "San Severino Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949200",
+                    "nome": "San Severino Lucano Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949200",
+                    "nome": "San Severino Lucano Arpab",
+                    "valore": 8.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949200",
+                    "nome": "San Severino Lucano Arpab",
+                    "valore": 19.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 8.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 1.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 1.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 4.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 8.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653000",
+                    "nome": "Sinni a Valsinni",
+                    "valore": 3.0,
+                    "data": "24/12/2025 13:08",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653000",
+                    "nome": "Sinni a Valsinni",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653000",
+                    "nome": "Sinni a Valsinni",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653000",
+                    "nome": "Sinni a Valsinni",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653000",
+                    "nome": "Sinni a Valsinni",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "653000",
+                    "nome": "Sinni a Valsinni",
+                    "valore": 3.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "203900",
+                    "nome": "Sinni SS106",
+                    "valore": 3.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "203900",
+                    "nome": "Sinni SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "203900",
+                    "nome": "Sinni SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "203900",
+                    "nome": "Sinni SS106",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "203900",
+                    "nome": "Sinni SS106",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "203900",
+                    "nome": "Sinni SS106",
+                    "valore": 3.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "767300",
+                    "nome": "Spinoso",
+                    "valore": 15.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "767300",
+                    "nome": "Spinoso",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "767300",
+                    "nome": "Spinoso",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "767300",
+                    "nome": "Spinoso",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "767300",
+                    "nome": "Spinoso",
+                    "valore": 9.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "767300",
+                    "nome": "Spinoso",
+                    "valore": 15.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 6.4,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 6.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 5.2,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 1.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 5.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 8.6,
+                    "data": "24/12/2025 13:19",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 4.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 8.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 5.4,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 5.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 14.2,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 1.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 14.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 20.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 0.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 10.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 20.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 4.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 4.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276900",
+                    "nome": "Tursi",
+                    "valore": 7.4,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276900",
+                    "nome": "Tursi",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276900",
+                    "nome": "Tursi",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276900",
+                    "nome": "Tursi",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276900",
+                    "nome": "Tursi",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "276900",
+                    "nome": "Tursi",
+                    "valore": 7.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 0.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418200",
+                    "nome": "Venosa",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:19",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418200",
+                    "nome": "Venosa",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418200",
+                    "nome": "Venosa",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418200",
+                    "nome": "Venosa",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418200",
+                    "nome": "Venosa",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "418200",
+                    "nome": "Venosa",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "529400",
+                    "nome": "Venosa ETG",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "529400",
+                    "nome": "Venosa ETG",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "529400",
+                    "nome": "Venosa ETG",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "529400",
+                    "nome": "Venosa ETG",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "529400",
+                    "nome": "Venosa ETG",
+                    "valore": 0.2,
+                    "data": "24/12/2025 12:30",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "182800",
+                    "nome": "Vietri SP",
+                    "valore": 9.8,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "182800",
+                    "nome": "Vietri SP",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "182800",
+                    "nome": "Vietri SP",
+                    "valore": 1.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "182800",
+                    "nome": "Vietri SP",
+                    "valore": 2.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "182800",
+                    "nome": "Vietri SP",
+                    "valore": 6.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                },
+                {
+                    "id": "182800",
+                    "nome": "Vietri SP",
+                    "valore": 9.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Pluviometri"
+                }
+            ]
+        },
+        "idrometria": {
+            "meta": {
+                "code": "I",
+                "label": "Idrometri",
+                "unit": "m",
+                "threshold": 2.0
+            },
+            "dati": [
+                {
+                    "id": "652900",
+                    "nome": "Agri a Roccanova",
+                    "valore": 0.07,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "647100",
+                    "nome": "Agri SS 106",
+                    "valore": -0.42,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "240400",
+                    "nome": "Basento SS 106",
+                    "valore": 0.95,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "639000",
+                    "nome": "Bradano a S. Lucia",
+                    "valore": 0.21,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "652700",
+                    "nome": "Bradano Serramarina",
+                    "valore": 2.3,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "417900",
+                    "nome": "Bradano SS106",
+                    "valore": 3.05,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "179800",
+                    "nome": "Campomaggiore",
+                    "valore": 0.51,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "275600",
+                    "nome": "Castrocucco",
+                    "valore": 1.45,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "204000",
+                    "nome": "Cavone SS106",
+                    "valore": 1.21,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "176900",
+                    "nome": "Craco Peschiera",
+                    "valore": 0.19,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "907100",
+                    "nome": "D_Pertusillo Grumentino",
+                    "valore": 0.35,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "275500",
+                    "nome": "Episcopia-Pizzutello",
+                    "valore": 1.07,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.Melandro S.Angelo Le Fratte",
+                    "valore": 0.05,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "240600",
+                    "nome": "Grassano Scalo",
+                    "valore": 1.36,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "906300",
+                    "nome": "I_Cogliandrino",
+                    "valore": 1.27,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "906100",
+                    "nome": "I_Lagonegro",
+                    "valore": 1.58,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "905400",
+                    "nome": "I_Maglia",
+                    "valore": 1.18,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "927700",
+                    "nome": "I_Pisticci Scalo Arpab",
+                    "valore": 2.12,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "905700",
+                    "nome": "I_Sciaura",
+                    "valore": 0.07,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "905900",
+                    "nome": "I_Torrente Basentello",
+                    "valore": 0.32,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "906600",
+                    "nome": "I_Torrente Serrapotamo",
+                    "valore": 0.29,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "276400",
+                    "nome": "Laino Borgo",
+                    "valore": 0.66,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "481200",
+                    "nome": "Montescaglioso",
+                    "valore": 1.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": -0.11,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "481100",
+                    "nome": "S.Demetrio",
+                    "valore": 0.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.81,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "653000",
+                    "nome": "Sinni a Valsinni",
+                    "valore": -0.42,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "203900",
+                    "nome": "Sinni SS106",
+                    "valore": 0.24,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 2.13,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "534500",
+                    "nome": "Torrente Atella",
+                    "valore": 1.12,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "539600",
+                    "nome": "Torrente Venosa",
+                    "valore": 0.94,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": -0.27,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Idrometri"
+                }
+            ]
+        },
+        "termometria": {
+            "meta": {
+                "code": "T",
+                "label": "Termometri",
+                "unit": "°C",
+                "threshold": 38.0
+            },
+            "dati": [
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 0.9,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "179900",
+                    "nome": "Albano di Lucania",
+                    "valore": 6.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "699400",
+                    "nome": "Anzi",
+                    "valore": 7.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "947000",
+                    "nome": "Atella Arpab",
+                    "valore": 9.5,
+                    "data": "24/12/2025 12:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "419800",
+                    "nome": "Balvano",
+                    "valore": 11.3,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "272700",
+                    "nome": "Bella S.Antonio Casalini",
+                    "valore": 7.5,
+                    "data": "24/12/2025 13:10",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "230600",
+                    "nome": "Bradano freatimetro",
+                    "valore": 15.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "417900",
+                    "nome": "Bradano SS106",
+                    "valore": 16.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "419900",
+                    "nome": "Brienza",
+                    "valore": 6.9,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 6.7,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "275500",
+                    "nome": "Episcopia-Pizzutello",
+                    "valore": 13.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.Melandro S.Angelo Le Fratte",
+                    "valore": 8.8,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "177100",
+                    "nome": "Ferrandina SP",
+                    "valore": 10.7,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "947500",
+                    "nome": "Francavilla in Sinni Arpab",
+                    "valore": 12.9,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "948800",
+                    "nome": "Genzano di Lucania Arpab",
+                    "valore": 9.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 5.1,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "240700",
+                    "nome": "Grassano SP",
+                    "valore": 10.5,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "947600",
+                    "nome": "Grottole Arpab",
+                    "valore": 9.1,
+                    "data": "20/12/2025 22:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "699200",
+                    "nome": "Guardia Perticara",
+                    "valore": 8.5,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "55200",
+                    "nome": "Irsina",
+                    "valore": 10.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "55100",
+                    "nome": "Lagonegro",
+                    "valore": 6.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "528600",
+                    "nome": "Lavello ETG",
+                    "valore": 12.9,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "947900",
+                    "nome": "Maratea Arpab",
+                    "valore": 13.2,
+                    "data": "23/12/2025 17:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "277300",
+                    "nome": "Marsico Nuovo",
+                    "valore": 7.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "948000",
+                    "nome": "Marsicovetere Arpab",
+                    "valore": 6.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "948100",
+                    "nome": "Maschito Arpab",
+                    "valore": 9.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "55000",
+                    "nome": "Matera",
+                    "valore": 12.4,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "532500",
+                    "nome": "Melfi",
+                    "valore": 10.9,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "948300",
+                    "nome": "Melfi Arpab",
+                    "valore": 8.6,
+                    "data": "22/12/2025 03:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 12.9,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "948500",
+                    "nome": "Montalbano Jonico Arpab",
+                    "valore": 15.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "948600",
+                    "nome": "Montemurro Arpab",
+                    "valore": 8.4,
+                    "data": "21/12/2025 19:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "525000",
+                    "nome": "Monticchio Bagni",
+                    "valore": 10.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "54900",
+                    "nome": "Noepoli",
+                    "valore": 9.1,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "948700",
+                    "nome": "Oliveto Lucano Arpab",
+                    "valore": 10.1,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 8.2,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 10.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 5.6,
+                    "data": "24/12/2025 12:45",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 2.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 10.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 11.5,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 6.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 8.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 6.1,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 13.3,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 9.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 8.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 9.7,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 9.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 12.9,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 10.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 10.1,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "699000",
+                    "nome": "Salandra",
+                    "valore": 10.3,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "949400",
+                    "nome": "San Giorgio Lucano Arpab",
+                    "valore": 14.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "949200",
+                    "nome": "San Severino Lucano Arpab",
+                    "valore": 5.7,
+                    "data": "22/12/2025 03:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 6.3,
+                    "data": "23/12/2025 23:45",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "767300",
+                    "nome": "Spinoso",
+                    "valore": 6.7,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 9.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 6.3,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 7.9,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 15.8,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 8.7,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 8.3,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 7.4,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                },
+                {
+                    "id": "418200",
+                    "nome": "Venosa",
+                    "valore": 12.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Termometri"
+                }
+            ]
+        },
+        "anemometria": {
+            "meta": {
+                "code": "VV",
+                "label": "Anemometri",
+                "unit": "m/s",
+                "threshold": 15.0
+            },
+            "dati": [
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 260.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 2.7,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 3.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 261.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 6.5,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "331200",
+                    "nome": "Castelsaraceno",
+                    "valore": 283.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 208.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 5.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 5.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 212.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 9.1,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 198.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 200.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 4.3,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 4.6,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 202.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 9.8,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 218.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 121.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 3.9,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 4.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 120.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 6.8,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 163.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 184.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 4.3,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 4.3,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 185.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 8.6,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 217.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 168.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 2.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 2.1,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 170.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 5.5,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 156.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 152.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 3.3,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 3.4,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 152.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 6.4,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Anemometri"
+                },
+                {
+                    "id": "699300",
+                    "nome": "Vaglio di Basilicata",
+                    "valore": 197.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Anemometri"
+                }
+            ]
+        },
+        "nivometria": {
+            "meta": {
+                "code": "N",
+                "label": "Nivometri",
+                "unit": "cm",
+                "threshold": 5.0
+            },
+            "dati": [
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": -6.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "alert",
+                    "tipo": "Nivometri"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 2.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Nivometri"
+                },
+                {
+                    "id": "55100",
+                    "nome": "Lagonegro",
+                    "valore": -2.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Nivometri"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": -1.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Nivometri"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.0,
+                    "data": "24/12/2025 12:45",
+                    "status": "normal",
+                    "tipo": "Nivometri"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 8.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "alert",
+                    "tipo": "Nivometri"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Nivometri"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Nivometri"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": -1.0,
+                    "data": "24/12/2025 13:15",
+                    "status": "normal",
+                    "tipo": "Nivometri"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.0,
+                    "data": "24/12/2025 13:00",
+                    "status": "normal",
+                    "tipo": "Nivometri"
+                }
+            ]
+        }
     }
 }
