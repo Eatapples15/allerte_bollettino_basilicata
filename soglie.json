@@ -59,10 +59,21 @@
     "VIETRI": { "h1": [21, 29, 40], "h3": [28, 40, 56], "h24": [46, 63, 85], "comuni": "Vietri, Sant Angelo le Fratte" }
   },
   "idrometria": {
-    "POTENZA Q.A.": { "att": 1.20, "all": 1.50 },
-    "TORRE ACCIO": { "att": 1.50, "all": 2.10 },
-    "CAMPOMAGGIORE": { "att": 3.50, "all": 4.50 },
-    "AGRI SS 106": { "att": 4.00, "all": 4.00 },
-    "SINNI SS 106": { "att": 3.50, "all": 3.50 }
+    "POTENZA QA": { "att": 1.20, "all": 1.50, "enti": "RFI, Potenza, Vaglio, Brindisi, Trivigno, Tricarico, Albano, Campomaggiore, Castelmezzano, Pietrapertosa, VVF, Provincia, Prefettura" },
+    "S. DEMETRIO": { "att": 1.40, "all": 1.80, "enti": "RFI, Vaglio, Brindisi, Trivigno, Tricarico, Albano, Campomaggiore, Castelmezzano, Pietrapertosa, VVF, Provincia, Prefettura" },
+    "CAMPOMAGGIORE": { "att": 3.50, "all": 4.00, "enti": "ANAS, Calciano, Tricarico, Grassano, Grottole, Salandra, Ferrandina, Pomarico, Pisticci, Bernalda, VVF, Provincia, Prefettura" },
+    "TORRE ACCIO": { "att": 4.00, "all": 4.00, "enti": "Pisticci, Bernalda, VVF, Provincia, Prefettura, ANAS" },
+    "BASENTO SS 106": { "att": 7.00, "all": 7.00, "enti": "Ferrandina, Pisticci, Bernalda, VVF, Provincia, Prefettura, ANAS" },
+    "CRACO PESCHIERA SS 106": { "att": 3.50, "all": 3.50, "enti": "Pisticci, Scanzano, VVF, Provincia, Prefettura, ANAS" },
+    "CAVONE SS 106": { "att": 5.00, "all": 5.00, "enti": "Pisticci, Scanzano, VVF, Provincia, Prefettura, ANAS" },
+    "TORRENTE GRAVINA A MONTESCAGLIOSO": { "att": 3.00, "all": 3.00, "enti": "Montescaglioso, Bernalda, Ginosa, CF Puglia, VVF, Provincia, Prefettura" },
+    "BRADANO S. LUCIA": { "att": 3.50, "all": 3.50, "enti": "Montescaglioso, Bernalda, Ginosa, CF Puglia, VVF, Provincia, Prefettura" },
+    "BRADANO SERRA MARINA": { "att": 6.00, "all": 6.00, "enti": "Bernalda, Ginosa, CF Puglia, VVF, Provincia, Prefettura" },
+    "PONTE BRADANO SS 106": { "att": 4.00, "all": 4.00, "enti": "Bernalda, Ginosa, CF Puglia, VVF, Provincia, Prefettura, ANAS" },
+    "AGRI SS 106": { "att": 4.00, "all": 4.00, "enti": "Scanzano Jonico, Policoro, VVF, Provincia, Prefettura" },
+    "AGRI A VALLE GANNANO": { "att": 1.40, "all": 1.40, "enti": "Tursi, Montalbano, Scanzano, Policoro, VVF, Provincia, Prefettura" },
+    "SINNI SS 106": { "att": 3.50, "all": 3.50, "enti": "Policoro, Rotondella, Nova Siri, VVF, Provincia, Prefettura, ANAS" },
+    "CASTROCUCCO": { "att": 3.30, "all": 3.30, "enti": "Trecchina, Maratea, Prefettura Potenza, C.F. Calabria, ANAS" },
+    "OFANTO A MONTICCHIO": { "att": 2.50, "all": 2.50, "enti": "Ruvo del Monte, Rionero, Melfi, Lavello, Prefettura, C.F. Puglia" }
   }
 }
