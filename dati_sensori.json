@@ -1,5 +1,5 @@
 {
-    "ultimo_aggiornamento": "26/12/2025 08:57",
+    "ultimo_aggiornamento": "26/12/2025 09:31",
     "sensori": {
         "pluviometria": {
             "meta": {
@@ -10,7 +10,7 @@
                 {
                     "id": "653100",
                     "nome": "Abriola a Sellata Pierfaone",
-                    "valore": 8.5,
+                    "valore": 5.0,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -24,13 +24,6 @@
                 {
                     "id": "653100",
                     "nome": "Abriola a Sellata Pierfaone",
-                    "valore": 0.4,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "653100",
-                    "nome": "Abriola a Sellata Pierfaone",
                     "valore": 0.6,
                     "data": "BASENTO",
                     "status": "normal"
@@ -38,98 +31,105 @@
                 {
                     "id": "653100",
                     "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 0.8,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 1.2,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "653100",
+                    "nome": "Abriola a Sellata Pierfaone",
+                    "valore": 5.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "652900",
+                    "nome": "Agri a Roccanova",
                     "valore": 1.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "653100",
-                    "nome": "Abriola a Sellata Pierfaone",
-                    "valore": 8.5,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "652900",
-                    "nome": "Agri a Roccanova",
-                    "valore": 0.6,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "652900",
                     "nome": "Agri a Roccanova",
-                    "valore": 0.0,
+                    "valore": 0.4,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "652900",
                     "nome": "Agri a Roccanova",
-                    "valore": 0.6,
+                    "valore": 1.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "652900",
                     "nome": "Agri a Roccanova",
-                    "valore": 0.6,
+                    "valore": 1.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "652900",
                     "nome": "Agri a Roccanova",
-                    "valore": 0.6,
+                    "valore": 1.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "652900",
                     "nome": "Agri a Roccanova",
-                    "valore": 0.6,
+                    "valore": 1.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "179900",
                     "nome": "Albano di Lucania",
-                    "valore": 0.2,
+                    "valore": 1.6,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "179900",
                     "nome": "Albano di Lucania",
-                    "valore": 0.2,
+                    "valore": 1.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "179900",
                     "nome": "Albano di Lucania",
-                    "valore": 0.2,
+                    "valore": 1.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "179900",
                     "nome": "Albano di Lucania",
-                    "valore": 0.2,
+                    "valore": 1.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "179900",
                     "nome": "Albano di Lucania",
-                    "valore": 0.2,
+                    "valore": 1.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "179900",
                     "nome": "Albano di Lucania",
-                    "valore": 0.2,
+                    "valore": 1.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -696,7 +696,7 @@
                 {
                     "id": "204000",
                     "nome": "Cavone SS106",
-                    "valore": 0.2,
+                    "valore": 0.0,
                     "data": "CAVONE",
                     "status": "normal"
                 },
@@ -704,6 +704,13 @@
                     "id": "204000",
                     "nome": "Cavone SS106",
                     "valore": 0.2,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "204000",
+                    "nome": "Cavone SS106",
+                    "valore": 8.4,
                     "data": "CAVONE",
                     "status": "normal"
                 },
@@ -715,13 +722,6 @@
                     "status": "normal"
                 },
                 {
-                    "id": "204000",
-                    "nome": "Cavone SS106",
-                    "valore": 9.8,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
                     "id": "176900",
                     "nome": "Craco Peschiera",
                     "valore": 6.2,
@@ -731,7 +731,7 @@
                 {
                     "id": "176900",
                     "nome": "Craco Peschiera",
-                    "valore": 0.2,
+                    "valore": 0.0,
                     "data": "CAVONE",
                     "status": "normal"
                 },
@@ -815,7 +815,7 @@
                 {
                     "id": "698800",
                     "nome": "F.Melandro S.Angelo Le Fratte",
-                    "valore": 0.2,
+                    "valore": 0.0,
                     "data": "SELE",
                     "status": "normal"
                 },
@@ -864,7 +864,7 @@
                 {
                     "id": "177100",
                     "nome": "Ferrandina SP",
-                    "valore": 0.2,
+                    "valore": 0.0,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -893,20 +893,6 @@
                     "id": "531500",
                     "nome": "Forenza",
                     "valore": 0.0,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "531500",
-                    "nome": "Forenza",
-                    "valore": 0.2,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "531500",
-                    "nome": "Forenza",
-                    "valore": 0.2,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -927,7 +913,21 @@
                 {
                     "id": "531500",
                     "nome": "Forenza",
-                    "valore": 0.6,
+                    "valore": 0.8,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "531500",
+                    "nome": "Forenza",
+                    "valore": 1.0,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "531500",
+                    "nome": "Forenza",
+                    "valore": 1.0,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -1018,42 +1018,42 @@
                 {
                     "id": "482200",
                     "nome": "Gorgoglione",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "482200",
                     "nome": "Gorgoglione",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "482200",
                     "nome": "Gorgoglione",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "482200",
                     "nome": "Gorgoglione",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "482200",
                     "nome": "Gorgoglione",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "482200",
                     "nome": "Gorgoglione",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "AGRI",
                     "status": "normal"
                 },
@@ -1061,6 +1061,13 @@
                     "id": "240700",
                     "nome": "Grassano SP",
                     "valore": 1.2,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "240700",
+                    "nome": "Grassano SP",
+                    "valore": 0.6,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -1093,13 +1100,6 @@
                     "status": "normal"
                 },
                 {
-                    "id": "240700",
-                    "nome": "Grassano SP",
-                    "valore": 1.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
                     "id": "947600",
                     "nome": "Grottole Arpab",
                     "valore": 0.2,
@@ -1319,21 +1319,14 @@
                 {
                     "id": "531800",
                     "nome": "Lagopesole",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "531800",
                     "nome": "Lagopesole",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "531800",
-                    "nome": "Lagopesole",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -1348,6 +1341,13 @@
                     "id": "531800",
                     "nome": "Lagopesole",
                     "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "531800",
+                    "nome": "Lagopesole",
+                    "valore": 0.4,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -1732,13 +1732,6 @@
                 {
                     "id": "55000",
                     "nome": "Matera",
-                    "valore": 0.2,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "55000",
-                    "nome": "Matera",
                     "valore": 0.0,
                     "data": "BRADANO",
                     "status": "normal"
@@ -1767,7 +1760,14 @@
                 {
                     "id": "55000",
                     "nome": "Matera",
-                    "valore": 0.2,
+                    "valore": 0.0,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "55000",
+                    "nome": "Matera",
+                    "valore": 0.0,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -1788,7 +1788,7 @@
                 {
                     "id": "532500",
                     "nome": "Melfi",
-                    "valore": 0.2,
+                    "valore": 0.0,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -2068,7 +2068,14 @@
                 {
                     "id": "481200",
                     "nome": "Montescaglioso",
-                    "valore": 1.2,
+                    "valore": 1.0,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "481200",
+                    "nome": "Montescaglioso",
+                    "valore": 0.0,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -2096,14 +2103,7 @@
                 {
                     "id": "481200",
                     "nome": "Montescaglioso",
-                    "valore": 0.2,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "481200",
-                    "nome": "Montescaglioso",
-                    "valore": 1.4,
+                    "valore": 1.0,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -2194,7 +2194,7 @@
                 {
                     "id": "54900",
                     "nome": "Noepoli",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
@@ -2236,7 +2236,7 @@
                 {
                     "id": "652800",
                     "nome": "Ofanto a Monticchio",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -2285,7 +2285,7 @@
                 {
                     "id": "948700",
                     "nome": "Oliveto Lucano Arpab",
-                    "valore": 0.6,
+                    "valore": 0.2,
                     "data": "CAVONE",
                     "status": "normal"
                 },
@@ -2327,7 +2327,7 @@
                 {
                     "id": "418000",
                     "nome": "Oppido Lucano",
-                    "valore": 0.2,
+                    "valore": 0.0,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -2369,735 +2369,721 @@
                 {
                     "id": "907900",
                     "nome": "P_Cancellara",
+                    "valore": 0.6,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 1.6,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 1.6,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 1.6,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_Cancellara",
+                    "valore": 1.6,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_Corleto Perticara",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_Sellata",
+                    "valore": 0.0,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.2,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.2,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.2,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.2,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.2,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_Tolve",
+                    "valore": 0.2,
+                    "data": "",
+                    "status": "normal"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "418300",
+                    "nome": "Palazzo S.Gervasio",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538000",
+                    "nome": "Pescopagano",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "419700",
+                    "nome": "Picerno",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 0.6,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 0.6,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 0.6,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 0.6,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 0.6,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "948900",
+                    "nome": "Pietrapertosa Arpab",
+                    "valore": 0.6,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.2,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.2,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.2,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.2,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "858200",
+                    "nome": "Pomarico frana",
+                    "valore": 0.2,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "83800",
+                    "nome": "Potenza",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "387900",
+                    "nome": "Potenza Q.A.",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "533300",
+                    "nome": "Ripacandida",
+                    "valore": 0.2,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "332500",
+                    "nome": "Roccanova",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 0.0,
+                    "data": "LAO",
+                    "status": "normal"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 0.0,
+                    "data": "LAO",
+                    "status": "normal"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 0.0,
+                    "data": "LAO",
+                    "status": "normal"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 0.0,
+                    "data": "LAO",
+                    "status": "normal"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 0.0,
+                    "data": "LAO",
+                    "status": "normal"
+                },
+                {
+                    "id": "699100",
+                    "nome": "Rotonda",
+                    "valore": 0.0,
+                    "data": "LAO",
+                    "status": "normal"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 2.4,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 0.2,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 2.4,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 2.4,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 2.4,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "949300",
+                    "nome": "Rotondella Arpab",
+                    "valore": 2.4,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.Fele",
+                    "valore": 0.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.Giuliano",
+                    "valore": 0.0,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 3.2,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
                     "valore": 1.4,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907900",
-                    "nome": "P_Cancellara",
-                    "valore": 1.6,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907900",
-                    "nome": "P_Cancellara",
-                    "valore": 1.6,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907900",
-                    "nome": "P_Cancellara",
-                    "valore": 1.6,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907900",
-                    "nome": "P_Cancellara",
-                    "valore": 1.6,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907700",
-                    "nome": "P_Corleto Perticara",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907700",
-                    "nome": "P_Corleto Perticara",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907700",
-                    "nome": "P_Corleto Perticara",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907700",
-                    "nome": "P_Corleto Perticara",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907700",
-                    "nome": "P_Corleto Perticara",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907700",
-                    "nome": "P_Corleto Perticara",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907800",
-                    "nome": "P_Sellata",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907800",
-                    "nome": "P_Sellata",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907800",
-                    "nome": "P_Sellata",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907800",
-                    "nome": "P_Sellata",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907800",
-                    "nome": "P_Sellata",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "907800",
-                    "nome": "P_Sellata",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "908000",
-                    "nome": "P_Tolve",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "908000",
-                    "nome": "P_Tolve",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "908000",
-                    "nome": "P_Tolve",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "908000",
-                    "nome": "P_Tolve",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "908000",
-                    "nome": "P_Tolve",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "908000",
-                    "nome": "P_Tolve",
-                    "valore": 0.0,
-                    "data": "",
-                    "status": "normal"
-                },
-                {
-                    "id": "418300",
-                    "nome": "Palazzo S.Gervasio",
-                    "valore": 0.2,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418300",
-                    "nome": "Palazzo S.Gervasio",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418300",
-                    "nome": "Palazzo S.Gervasio",
-                    "valore": 0.2,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418300",
-                    "nome": "Palazzo S.Gervasio",
-                    "valore": 0.2,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418300",
-                    "nome": "Palazzo S.Gervasio",
-                    "valore": 0.2,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418300",
-                    "nome": "Palazzo S.Gervasio",
-                    "valore": 0.2,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538000",
-                    "nome": "Pescopagano",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538000",
-                    "nome": "Pescopagano",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538000",
-                    "nome": "Pescopagano",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538000",
-                    "nome": "Pescopagano",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538000",
-                    "nome": "Pescopagano",
-                    "valore": 0.2,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538000",
-                    "nome": "Pescopagano",
-                    "valore": 0.2,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "419700",
-                    "nome": "Picerno",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "419700",
-                    "nome": "Picerno",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "419700",
-                    "nome": "Picerno",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "419700",
-                    "nome": "Picerno",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "419700",
-                    "nome": "Picerno",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "419700",
-                    "nome": "Picerno",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "948900",
-                    "nome": "Pietrapertosa Arpab",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "948900",
-                    "nome": "Pietrapertosa Arpab",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "948900",
-                    "nome": "Pietrapertosa Arpab",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "948900",
-                    "nome": "Pietrapertosa Arpab",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "948900",
-                    "nome": "Pietrapertosa Arpab",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "948900",
-                    "nome": "Pietrapertosa Arpab",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "858200",
-                    "nome": "Pomarico frana",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "858200",
-                    "nome": "Pomarico frana",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "858200",
-                    "nome": "Pomarico frana",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "858200",
-                    "nome": "Pomarico frana",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "858200",
-                    "nome": "Pomarico frana",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "858200",
-                    "nome": "Pomarico frana",
-                    "valore": 0.2,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "83800",
-                    "nome": "Potenza",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "83800",
-                    "nome": "Potenza",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "83800",
-                    "nome": "Potenza",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "83800",
-                    "nome": "Potenza",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "83800",
-                    "nome": "Potenza",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "83800",
-                    "nome": "Potenza",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "387900",
-                    "nome": "Potenza Q.A.",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "387900",
-                    "nome": "Potenza Q.A.",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "387900",
-                    "nome": "Potenza Q.A.",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "387900",
-                    "nome": "Potenza Q.A.",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "387900",
-                    "nome": "Potenza Q.A.",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "387900",
-                    "nome": "Potenza Q.A.",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "533300",
-                    "nome": "Ripacandida",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "533300",
-                    "nome": "Ripacandida",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "533300",
-                    "nome": "Ripacandida",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "533300",
-                    "nome": "Ripacandida",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "533300",
-                    "nome": "Ripacandida",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "533300",
-                    "nome": "Ripacandida",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "332500",
-                    "nome": "Roccanova",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "332500",
-                    "nome": "Roccanova",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "332500",
-                    "nome": "Roccanova",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "332500",
-                    "nome": "Roccanova",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "332500",
-                    "nome": "Roccanova",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "332500",
-                    "nome": "Roccanova",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "699100",
-                    "nome": "Rotonda",
-                    "valore": 0.0,
-                    "data": "LAO",
-                    "status": "normal"
-                },
-                {
-                    "id": "699100",
-                    "nome": "Rotonda",
-                    "valore": 0.0,
-                    "data": "LAO",
-                    "status": "normal"
-                },
-                {
-                    "id": "699100",
-                    "nome": "Rotonda",
-                    "valore": 0.0,
-                    "data": "LAO",
-                    "status": "normal"
-                },
-                {
-                    "id": "699100",
-                    "nome": "Rotonda",
-                    "valore": 0.0,
-                    "data": "LAO",
-                    "status": "normal"
-                },
-                {
-                    "id": "699100",
-                    "nome": "Rotonda",
-                    "valore": 0.0,
-                    "data": "LAO",
-                    "status": "normal"
-                },
-                {
-                    "id": "699100",
-                    "nome": "Rotonda",
-                    "valore": 0.0,
-                    "data": "LAO",
-                    "status": "normal"
-                },
-                {
-                    "id": "949300",
-                    "nome": "Rotondella Arpab",
-                    "valore": 2.4,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "949300",
-                    "nome": "Rotondella Arpab",
-                    "valore": 2.4,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "949300",
-                    "nome": "Rotondella Arpab",
-                    "valore": 2.4,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "949300",
-                    "nome": "Rotondella Arpab",
-                    "valore": 2.4,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "949300",
-                    "nome": "Rotondella Arpab",
-                    "valore": 2.4,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "949300",
-                    "nome": "Rotondella Arpab",
-                    "valore": 2.4,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "538100",
-                    "nome": "S.Fele",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538100",
-                    "nome": "S.Fele",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538100",
-                    "nome": "S.Fele",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538100",
-                    "nome": "S.Fele",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538100",
-                    "nome": "S.Fele",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "538100",
-                    "nome": "S.Fele",
-                    "valore": 0.0,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "179700",
-                    "nome": "S.Giuliano",
-                    "valore": 0.0,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "179700",
-                    "nome": "S.Giuliano",
-                    "valore": 0.0,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "179700",
-                    "nome": "S.Giuliano",
-                    "valore": 0.0,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "179700",
-                    "nome": "S.Giuliano",
-                    "valore": 0.0,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "179700",
-                    "nome": "S.Giuliano",
-                    "valore": 0.0,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "179700",
-                    "nome": "S.Giuliano",
-                    "valore": 0.0,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "417800",
-                    "nome": "S.Mauro Forte",
-                    "valore": 3.0,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "417800",
-                    "nome": "S.Mauro Forte",
-                    "valore": 1.4,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "417800",
-                    "nome": "S.Mauro Forte",
-                    "valore": 2.8,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "417800",
-                    "nome": "S.Mauro Forte",
-                    "valore": 2.8,
                     "data": "CAVONE",
                     "status": "normal"
                 },
@@ -3116,30 +3102,23 @@
                     "status": "normal"
                 },
                 {
-                    "id": "83900",
-                    "nome": "S.Nicola",
-                    "valore": 0.2,
-                    "data": "BRADANO",
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 3.2,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.Mauro Forte",
+                    "valore": 3.2,
+                    "data": "CAVONE",
                     "status": "normal"
                 },
                 {
                     "id": "83900",
                     "nome": "S.Nicola",
-                    "valore": 0.0,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "83900",
-                    "nome": "S.Nicola",
-                    "valore": 0.2,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "83900",
-                    "nome": "S.Nicola",
-                    "valore": 0.2,
+                    "valore": 0.4,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -3153,7 +3132,28 @@
                 {
                     "id": "83900",
                     "nome": "S.Nicola",
-                    "valore": 0.2,
+                    "valore": 0.4,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 0.4,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 0.4,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.Nicola",
+                    "valore": 0.4,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -3174,7 +3174,7 @@
                 {
                     "id": "699000",
                     "nome": "Salandra",
-                    "valore": 0.4,
+                    "valore": 0.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -3202,42 +3202,42 @@
                 {
                     "id": "949400",
                     "nome": "San Giorgio Lucano Arpab",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "949400",
                     "nome": "San Giorgio Lucano Arpab",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "949400",
                     "nome": "San Giorgio Lucano Arpab",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "949400",
                     "nome": "San Giorgio Lucano Arpab",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "949400",
                     "nome": "San Giorgio Lucano Arpab",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "949400",
                     "nome": "San Giorgio Lucano Arpab",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
@@ -3328,13 +3328,6 @@
                 {
                     "id": "949700",
                     "nome": "Satriano di Lucania Arpab",
-                    "valore": 0.2,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "949700",
-                    "nome": "Satriano di Lucania Arpab",
                     "valore": 0.0,
                     "data": "AGRI",
                     "status": "normal"
@@ -3363,49 +3356,56 @@
                 {
                     "id": "949700",
                     "nome": "Satriano di Lucania Arpab",
-                    "valore": 0.2,
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "949700",
+                    "nome": "Satriano di Lucania Arpab",
+                    "valore": 0.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "653000",
                     "nome": "Sinni a Valsinni",
-                    "valore": 1.0,
+                    "valore": 2.4,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "653000",
                     "nome": "Sinni a Valsinni",
-                    "valore": 0.0,
+                    "valore": 2.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "653000",
                     "nome": "Sinni a Valsinni",
-                    "valore": 0.0,
+                    "valore": 2.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "653000",
                     "nome": "Sinni a Valsinni",
-                    "valore": 0.0,
+                    "valore": 2.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "653000",
                     "nome": "Sinni a Valsinni",
-                    "valore": 0.0,
+                    "valore": 2.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "653000",
                     "nome": "Sinni a Valsinni",
-                    "valore": 0.0,
+                    "valore": 2.2,
                     "data": "SINNI",
                     "status": "normal"
                 },
@@ -3496,357 +3496,350 @@
                 {
                     "id": "54800",
                     "nome": "Stigliano",
-                    "valore": 3.4,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54800",
-                    "nome": "Stigliano",
-                    "valore": 3.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54800",
-                    "nome": "Stigliano",
-                    "valore": 3.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54800",
-                    "nome": "Stigliano",
-                    "valore": 3.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54800",
-                    "nome": "Stigliano",
-                    "valore": 3.4,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54800",
-                    "nome": "Stigliano",
-                    "valore": 3.4,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "233200",
-                    "nome": "Terra Montonata",
-                    "valore": 2.6,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "233200",
-                    "nome": "Terra Montonata",
-                    "valore": 0.0,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "233200",
-                    "nome": "Terra Montonata",
-                    "valore": 0.0,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "233200",
-                    "nome": "Terra Montonata",
-                    "valore": 0.0,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "233200",
-                    "nome": "Terra Montonata",
-                    "valore": 2.6,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "233200",
-                    "nome": "Terra Montonata",
-                    "valore": 2.6,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "276500",
-                    "nome": "Terranova di Pollino",
-                    "valore": 0.0,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "276500",
-                    "nome": "Terranova di Pollino",
-                    "valore": 0.0,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "276500",
-                    "nome": "Terranova di Pollino",
-                    "valore": 0.0,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "276500",
-                    "nome": "Terranova di Pollino",
-                    "valore": 0.0,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "276500",
-                    "nome": "Terranova di Pollino",
-                    "valore": 0.0,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "276500",
-                    "nome": "Terranova di Pollino",
-                    "valore": 0.0,
-                    "data": "SINNI",
-                    "status": "normal"
-                },
-                {
-                    "id": "420000",
-                    "nome": "Tito",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "420000",
-                    "nome": "Tito",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "420000",
-                    "nome": "Tito",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "420000",
-                    "nome": "Tito",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "420000",
-                    "nome": "Tito",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "420000",
-                    "nome": "Tito",
-                    "valore": 0.0,
-                    "data": "TANAGRO",
-                    "status": "normal"
-                },
-                {
-                    "id": "177000",
-                    "nome": "Torre Accio",
-                    "valore": 0.6,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "177000",
-                    "nome": "Torre Accio",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "177000",
-                    "nome": "Torre Accio",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "177000",
-                    "nome": "Torre Accio",
-                    "valore": 0.0,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "177000",
-                    "nome": "Torre Accio",
-                    "valore": 0.6,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "177000",
-                    "nome": "Torre Accio",
-                    "valore": 0.6,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "298400",
-                    "nome": "Tortora",
-                    "valore": 0.0,
-                    "data": "NOCE",
-                    "status": "normal"
-                },
-                {
-                    "id": "298400",
-                    "nome": "Tortora",
-                    "valore": 0.0,
-                    "data": "NOCE",
-                    "status": "normal"
-                },
-                {
-                    "id": "298400",
-                    "nome": "Tortora",
-                    "valore": 0.0,
-                    "data": "NOCE",
-                    "status": "normal"
-                },
-                {
-                    "id": "298400",
-                    "nome": "Tortora",
-                    "valore": 0.0,
-                    "data": "NOCE",
-                    "status": "normal"
-                },
-                {
-                    "id": "298400",
-                    "nome": "Tortora",
-                    "valore": 0.0,
-                    "data": "NOCE",
-                    "status": "normal"
-                },
-                {
-                    "id": "298400",
-                    "nome": "Tortora",
-                    "valore": 0.0,
-                    "data": "NOCE",
-                    "status": "normal"
-                },
-                {
-                    "id": "54700",
-                    "nome": "Tramutola",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54700",
-                    "nome": "Tramutola",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54700",
-                    "nome": "Tramutola",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54700",
-                    "nome": "Tramutola",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54700",
-                    "nome": "Tramutola",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "54700",
-                    "nome": "Tramutola",
-                    "valore": 0.0,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "698900",
-                    "nome": "Tricarico",
-                    "valore": 1.8,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "698900",
-                    "nome": "Tricarico",
-                    "valore": 0.6,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "698900",
-                    "nome": "Tricarico",
-                    "valore": 1.8,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "698900",
-                    "nome": "Tricarico",
-                    "valore": 1.8,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "698900",
-                    "nome": "Tricarico",
-                    "valore": 1.8,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "698900",
-                    "nome": "Tricarico",
-                    "valore": 1.8,
-                    "data": "BASENTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "276900",
-                    "nome": "Tursi",
-                    "valore": 6.4,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "276900",
-                    "nome": "Tursi",
                     "valore": 4.4,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 2.6,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 4.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 4.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 4.4,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "54800",
+                    "nome": "Stigliano",
+                    "valore": 4.4,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "233200",
+                    "nome": "Terra Montonata",
+                    "valore": 2.6,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "233200",
+                    "nome": "Terra Montonata",
+                    "valore": 0.0,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "233200",
+                    "nome": "Terra Montonata",
+                    "valore": 0.0,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "233200",
+                    "nome": "Terra Montonata",
+                    "valore": 0.0,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "233200",
+                    "nome": "Terra Montonata",
+                    "valore": 2.6,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "233200",
+                    "nome": "Terra Montonata",
+                    "valore": 2.6,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.0,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.0,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.0,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.0,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.0,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "276500",
+                    "nome": "Terranova di Pollino",
+                    "valore": 0.0,
+                    "data": "SINNI",
+                    "status": "normal"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "420000",
+                    "nome": "Tito",
+                    "valore": 0.0,
+                    "data": "TANAGRO",
+                    "status": "normal"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.6,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.6,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "177000",
+                    "nome": "Torre Accio",
+                    "valore": 0.6,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 0.0,
+                    "data": "NOCE",
+                    "status": "normal"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 0.0,
+                    "data": "NOCE",
+                    "status": "normal"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 0.0,
+                    "data": "NOCE",
+                    "status": "normal"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 0.0,
+                    "data": "NOCE",
+                    "status": "normal"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 0.0,
+                    "data": "NOCE",
+                    "status": "normal"
+                },
+                {
+                    "id": "298400",
+                    "nome": "Tortora",
+                    "valore": 0.0,
+                    "data": "NOCE",
+                    "status": "normal"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "54700",
+                    "nome": "Tramutola",
+                    "valore": 0.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 1.8,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 0.0,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 1.8,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 1.8,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 1.8,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "698900",
+                    "nome": "Tricarico",
+                    "valore": 1.8,
+                    "data": "BASENTO",
+                    "status": "normal"
+                },
+                {
                     "id": "276900",
                     "nome": "Tursi",
                     "valore": 6.4,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "276900",
+                    "nome": "Tursi",
+                    "valore": 0.2,
                     "data": "AGRI",
                     "status": "normal"
                 },
@@ -3872,86 +3865,93 @@
                     "status": "normal"
                 },
                 {
+                    "id": "276900",
+                    "nome": "Tursi",
+                    "valore": 6.4,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 0.4,
+                    "valore": 0.6,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 0.4,
+                    "valore": 0.6,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 0.4,
+                    "valore": 0.6,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 0.4,
+                    "valore": 0.6,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 0.4,
+                    "valore": 0.6,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 0.4,
+                    "valore": 0.6,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "418200",
                     "nome": "Venosa",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "418200",
                     "nome": "Venosa",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "418200",
                     "nome": "Venosa",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "418200",
                     "nome": "Venosa",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "418200",
                     "nome": "Venosa",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "418200",
                     "nome": "Venosa",
-                    "valore": 0.0,
+                    "valore": 0.2,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -4050,7 +4050,7 @@
                 {
                     "id": "652900",
                     "nome": "Agri a Roccanova",
-                    "valore": 0.08,
+                    "valore": 0.07,
                     "data": "AGRI",
                     "status": "normal"
                 },
@@ -4064,14 +4064,14 @@
                 {
                     "id": "647100",
                     "nome": "Agri SS 106",
-                    "valore": -0.39,
+                    "valore": -0.4,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "240400",
                     "nome": "Basento SS 106",
-                    "valore": 0.89,
+                    "valore": 0.88,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -4106,14 +4106,14 @@
                 {
                     "id": "179800",
                     "nome": "Campomaggiore",
-                    "valore": 0.49,
+                    "valore": 0.5,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "275600",
                     "nome": "Castrocucco",
-                    "valore": 1.27,
+                    "valore": 1.26,
                     "data": "NOCE",
                     "status": "normal"
                 },
@@ -4127,7 +4127,7 @@
                 {
                     "id": "176900",
                     "nome": "Craco Peschiera",
-                    "valore": 0.16,
+                    "valore": 0.18,
                     "data": "CAVONE",
                     "status": "normal"
                 },
@@ -4141,14 +4141,14 @@
                 {
                     "id": "275500",
                     "nome": "Episcopia-Pizzutello",
-                    "valore": 0.86,
+                    "valore": 0.84,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "698800",
                     "nome": "F.Melandro S.Angelo Le Fratte",
-                    "valore": 0.01,
+                    "valore": -0.03,
                     "data": "SELE",
                     "status": "normal"
                 },
@@ -4162,28 +4162,28 @@
                 {
                     "id": "240600",
                     "nome": "Grassano Scalo",
-                    "valore": 1.37,
+                    "valore": 1.33,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "275400",
                     "nome": "Grumento-Ponte La Marmora",
-                    "valore": 0.58,
+                    "valore": 0.57,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "906300",
                     "nome": "I_Cogliandrino",
-                    "valore": 1.36,
+                    "valore": 1.37,
                     "data": "",
                     "status": "normal"
                 },
                 {
                     "id": "906100",
                     "nome": "I_Lagonegro",
-                    "valore": 1.37,
+                    "valore": 1.4,
                     "data": "",
                     "status": "normal"
                 },
@@ -4211,7 +4211,7 @@
                 {
                     "id": "905800",
                     "nome": "I_Ponte Mallardo",
-                    "valore": 0.24,
+                    "valore": 0.09,
                     "data": "",
                     "status": "normal"
                 },
@@ -4246,7 +4246,7 @@
                 {
                     "id": "481200",
                     "nome": "Montescaglioso",
-                    "valore": 0.83,
+                    "valore": 0.84,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -4274,7 +4274,7 @@
                 {
                     "id": "179700",
                     "nome": "S.Giuliano",
-                    "valore": 0.81,
+                    "valore": 0.8,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -4288,7 +4288,7 @@
                 {
                     "id": "203900",
                     "nome": "Sinni SS106",
-                    "valore": 0.25,
+                    "valore": 0.24,
                     "data": "SINNI",
                     "status": "normal"
                 },
@@ -4331,21 +4331,21 @@
                 {
                     "id": "653100",
                     "nome": "Abriola a Sellata Pierfaone",
-                    "valore": 2.2,
+                    "valore": 3.0,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "179900",
                     "nome": "Albano di Lucania",
-                    "valore": 6.2,
+                    "valore": 6.3,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699400",
                     "nome": "Anzi",
-                    "valore": 6.2,
+                    "valore": 6.0,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -4359,7 +4359,7 @@
                 {
                     "id": "419800",
                     "nome": "Balvano",
-                    "valore": 4.0,
+                    "valore": 4.9,
                     "data": "SELE",
                     "status": "normal"
                 },
@@ -4373,56 +4373,56 @@
                 {
                     "id": "272700",
                     "nome": "Bella S.Antonio Casalini",
-                    "valore": 8.6,
+                    "valore": 8.5,
                     "data": "TANAGRO",
                     "status": "normal"
                 },
                 {
                     "id": "230600",
                     "nome": "Bradano freatimetro",
-                    "valore": 10.6,
+                    "valore": 12.0,
                     "data": "BRADANO",
                     "status": "normal"
                 },
                 {
                     "id": "417900",
                     "nome": "Bradano SS106",
-                    "valore": 10.6,
+                    "valore": 12.1,
                     "data": "BRADANO",
                     "status": "normal"
                 },
                 {
                     "id": "419900",
                     "nome": "Brienza",
-                    "valore": 8.7,
+                    "valore": 10.1,
                     "data": "TANAGRO",
                     "status": "normal"
                 },
                 {
                     "id": "331200",
                     "nome": "Castelsaraceno",
-                    "valore": 5.8,
+                    "valore": 5.5,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "275500",
                     "nome": "Episcopia-Pizzutello",
-                    "valore": 8.4,
+                    "valore": 8.7,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "698800",
                     "nome": "F.Melandro S.Angelo Le Fratte",
-                    "valore": 5.3,
+                    "valore": 7.8,
                     "data": "SELE",
                     "status": "normal"
                 },
                 {
                     "id": "177100",
                     "nome": "Ferrandina SP",
-                    "valore": 8.9,
+                    "valore": 9.4,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -4436,14 +4436,14 @@
                 {
                     "id": "947500",
                     "nome": "Francavilla in Sinni Arpab",
-                    "valore": 9.1,
+                    "valore": 9.3,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "948800",
                     "nome": "Genzano di Lucania Arpab",
-                    "valore": 6.9,
+                    "valore": 7.5,
                     "data": "BRADANO",
                     "status": "normal"
                 },
@@ -4464,42 +4464,42 @@
                 {
                     "id": "482200",
                     "nome": "Gorgoglione",
-                    "valore": 5.3,
+                    "valore": 5.4,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "240700",
                     "nome": "Grassano SP",
-                    "valore": 7.2,
+                    "valore": 7.5,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "947600",
                     "nome": "Grottole Arpab",
-                    "valore": 8.5,
+                    "valore": 9.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699200",
                     "nome": "Guardia Perticara",
-                    "valore": 7.5,
+                    "valore": 7.9,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "55200",
                     "nome": "Irsina",
-                    "valore": 7.7,
+                    "valore": 8.1,
                     "data": "BRADANO",
                     "status": "normal"
                 },
                 {
                     "id": "55100",
                     "nome": "Lagonegro",
-                    "valore": 8.3,
+                    "valore": 9.9,
                     "data": "NOCE",
                     "status": "normal"
                 },
@@ -4513,7 +4513,7 @@
                 {
                     "id": "528600",
                     "nome": "Lavello ETG",
-                    "valore": 8.3,
+                    "valore": 8.6,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -4527,14 +4527,14 @@
                 {
                     "id": "331900",
                     "nome": "Maratea Massa",
-                    "valore": 11.5,
+                    "valore": 11.7,
                     "data": "NOCE",
                     "status": "normal"
                 },
                 {
                     "id": "277300",
                     "nome": "Marsico Nuovo",
-                    "valore": 6.2,
+                    "valore": 9.8,
                     "data": "AGRI",
                     "status": "normal"
                 },
@@ -4555,14 +4555,14 @@
                 {
                     "id": "55000",
                     "nome": "Matera",
-                    "valore": 8.9,
+                    "valore": 9.2,
                     "data": "BRADANO",
                     "status": "normal"
                 },
                 {
                     "id": "532500",
                     "nome": "Melfi",
-                    "valore": 7.0,
+                    "valore": 7.4,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -4576,28 +4576,28 @@
                 {
                     "id": "948400",
                     "nome": "Miglionico Arpab",
-                    "valore": 7.9,
+                    "valore": 8.4,
                     "data": "BRADANO",
                     "status": "normal"
                 },
                 {
                     "id": "948500",
                     "nome": "Montalbano Jonico Arpab",
-                    "valore": 10.3,
+                    "valore": 10.7,
                     "data": "CAVONE",
                     "status": "normal"
                 },
                 {
                     "id": "948600",
                     "nome": "Montemurro Arpab",
-                    "valore": 6.8,
+                    "valore": 8.6,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "525000",
                     "nome": "Monticchio Bagni",
-                    "valore": 6.1,
+                    "valore": 6.4,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -4611,91 +4611,91 @@
                 {
                     "id": "948700",
                     "nome": "Oliveto Lucano Arpab",
-                    "valore": 7.9,
+                    "valore": 8.1,
                     "data": "CAVONE",
                     "status": "normal"
                 },
                 {
                     "id": "418000",
                     "nome": "Oppido Lucano",
-                    "valore": 6.4,
+                    "valore": 6.5,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "907900",
                     "nome": "P_Cancellara",
-                    "valore": 6.3,
+                    "valore": 6.5,
                     "data": "",
                     "status": "normal"
                 },
                 {
                     "id": "907700",
                     "nome": "P_Corleto Perticara",
-                    "valore": 7.2,
+                    "valore": 7.6,
                     "data": "",
                     "status": "normal"
                 },
                 {
                     "id": "907800",
                     "nome": "P_Sellata",
-                    "valore": 3.5,
+                    "valore": 4.2,
                     "data": "",
                     "status": "normal"
                 },
                 {
                     "id": "908000",
                     "nome": "P_Tolve",
-                    "valore": 6.7,
+                    "valore": 7.4,
                     "data": "",
                     "status": "normal"
                 },
                 {
                     "id": "418300",
                     "nome": "Palazzo S.Gervasio",
-                    "valore": 8.1,
+                    "valore": 8.0,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "538000",
                     "nome": "Pescopagano",
-                    "valore": 5.3,
+                    "valore": 5.7,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "419700",
                     "nome": "Picerno",
-                    "valore": 7.7,
+                    "valore": 8.9,
                     "data": "TANAGRO",
                     "status": "normal"
                 },
                 {
                     "id": "948900",
                     "nome": "Pietrapertosa Arpab",
-                    "valore": 6.4,
+                    "valore": 6.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "858200",
                     "nome": "Pomarico frana",
-                    "valore": 9.1,
+                    "valore": 9.4,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "83800",
                     "nome": "Potenza",
-                    "valore": 5.8,
+                    "valore": 7.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "387900",
                     "nome": "Potenza Q.A.",
-                    "valore": 5.0,
+                    "valore": 6.8,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -4709,14 +4709,14 @@
                 {
                     "id": "699100",
                     "nome": "Rotonda",
-                    "valore": 8.1,
+                    "valore": 9.1,
                     "data": "LAO",
                     "status": "normal"
                 },
                 {
                     "id": "949300",
                     "nome": "Rotondella Arpab",
-                    "valore": 8.0,
+                    "valore": 8.3,
                     "data": "SINNI",
                     "status": "normal"
                 },
@@ -4730,21 +4730,21 @@
                 {
                     "id": "417800",
                     "nome": "S.Mauro Forte",
-                    "valore": 8.3,
+                    "valore": 8.5,
                     "data": "CAVONE",
                     "status": "normal"
                 },
                 {
                     "id": "83900",
                     "nome": "S.Nicola",
-                    "valore": 7.1,
+                    "valore": 7.4,
                     "data": "BRADANO",
                     "status": "normal"
                 },
                 {
                     "id": "699000",
                     "nome": "Salandra",
-                    "valore": 7.5,
+                    "valore": 8.0,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -4758,28 +4758,28 @@
                 {
                     "id": "949500",
                     "nome": "San Martino dAgri Arpab",
-                    "valore": 7.3,
+                    "valore": 7.6,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "949200",
                     "nome": "San Severino Lucano Arpab",
-                    "valore": 6.1,
+                    "valore": 6.7,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "949700",
                     "nome": "Satriano di Lucania Arpab",
-                    "valore": 8.5,
+                    "valore": 10.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "767300",
                     "nome": "Spinoso",
-                    "valore": 7.1,
+                    "valore": 7.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
@@ -4793,49 +4793,49 @@
                 {
                     "id": "233200",
                     "nome": "Terra Montonata",
-                    "valore": 11.9,
+                    "valore": 12.6,
                     "data": "CAVONE",
                     "status": "normal"
                 },
                 {
                     "id": "276500",
                     "nome": "Terranova di Pollino",
-                    "valore": 4.6,
+                    "valore": 4.9,
                     "data": "SINNI",
                     "status": "normal"
                 },
                 {
                     "id": "420000",
                     "nome": "Tito",
-                    "valore": 7.1,
+                    "valore": 7.5,
                     "data": "TANAGRO",
                     "status": "normal"
                 },
                 {
                     "id": "177000",
                     "nome": "Torre Accio",
-                    "valore": 10.6,
+                    "valore": 11.4,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "54700",
                     "nome": "Tramutola",
-                    "valore": 6.7,
+                    "valore": 8.4,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "698900",
                     "nome": "Tricarico",
-                    "valore": 7.0,
+                    "valore": 7.1,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 5.2,
+                    "valore": 5.3,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -4857,41 +4857,48 @@
                 {
                     "id": "331200",
                     "nome": "Castelsaraceno",
-                    "valore": 100.0,
+                    "valore": 102.0,
                     "data": "AGRI",
                     "status": "alert"
                 },
                 {
                     "id": "331200",
                     "nome": "Castelsaraceno",
-                    "valore": 2.3,
+                    "valore": 3.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "331200",
                     "nome": "Castelsaraceno",
-                    "valore": 2.3,
+                    "valore": 3.1,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "331200",
                     "nome": "Castelsaraceno",
-                    "valore": 100.0,
+                    "valore": 102.0,
                     "data": "AGRI",
                     "status": "alert"
                 },
                 {
                     "id": "331200",
                     "nome": "Castelsaraceno",
-                    "valore": 3.5,
+                    "valore": 4.4,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "331200",
                     "nome": "Castelsaraceno",
+                    "valore": 103.0,
+                    "data": "AGRI",
+                    "status": "alert"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
                     "valore": 115.0,
                     "data": "AGRI",
                     "status": "alert"
@@ -4899,212 +4906,205 @@
                 {
                     "id": "482200",
                     "nome": "Gorgoglione",
-                    "valore": 125.0,
-                    "data": "AGRI",
-                    "status": "alert"
-                },
-                {
-                    "id": "482200",
-                    "nome": "Gorgoglione",
-                    "valore": 2.5,
+                    "valore": 2.2,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "482200",
                     "nome": "Gorgoglione",
-                    "valore": 2.6,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "482200",
-                    "nome": "Gorgoglione",
-                    "valore": 125.0,
-                    "data": "AGRI",
-                    "status": "alert"
-                },
-                {
-                    "id": "482200",
-                    "nome": "Gorgoglione",
-                    "valore": 3.4,
-                    "data": "AGRI",
-                    "status": "normal"
-                },
-                {
-                    "id": "482200",
-                    "nome": "Gorgoglione",
-                    "valore": 133.0,
-                    "data": "AGRI",
-                    "status": "alert"
-                },
-                {
-                    "id": "418100",
-                    "nome": "Lavello",
-                    "valore": 291.0,
-                    "data": "OFANTO",
-                    "status": "alert"
-                },
-                {
-                    "id": "418100",
-                    "nome": "Lavello",
-                    "valore": 1.1,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418100",
-                    "nome": "Lavello",
-                    "valore": 1.1,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418100",
-                    "nome": "Lavello",
-                    "valore": 290.0,
-                    "data": "OFANTO",
-                    "status": "alert"
-                },
-                {
-                    "id": "418100",
-                    "nome": "Lavello",
-                    "valore": 1.6,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418100",
-                    "nome": "Lavello",
-                    "valore": 359.0,
-                    "data": "OFANTO",
-                    "status": "alert"
-                },
-                {
-                    "id": "331900",
-                    "nome": "Maratea Massa",
-                    "valore": 53.0,
-                    "data": "NOCE",
-                    "status": "alert"
-                },
-                {
-                    "id": "331900",
-                    "nome": "Maratea Massa",
-                    "valore": 8.8,
-                    "data": "NOCE",
-                    "status": "normal"
-                },
-                {
-                    "id": "331900",
-                    "nome": "Maratea Massa",
-                    "valore": 9.1,
-                    "data": "NOCE",
-                    "status": "normal"
-                },
-                {
-                    "id": "331900",
-                    "nome": "Maratea Massa",
-                    "valore": 53.0,
-                    "data": "NOCE",
-                    "status": "alert"
-                },
-                {
-                    "id": "331900",
-                    "nome": "Maratea Massa",
-                    "valore": 13.1,
-                    "data": "NOCE",
-                    "status": "normal"
-                },
-                {
-                    "id": "331900",
-                    "nome": "Maratea Massa",
-                    "valore": 58.0,
-                    "data": "NOCE",
-                    "status": "alert"
-                },
-                {
-                    "id": "948400",
-                    "nome": "Miglionico Arpab",
-                    "valore": 300.0,
-                    "data": "BRADANO",
-                    "status": "alert"
-                },
-                {
-                    "id": "948400",
-                    "nome": "Miglionico Arpab",
-                    "valore": 2.5,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "948400",
-                    "nome": "Miglionico Arpab",
-                    "valore": 2.6,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "948400",
-                    "nome": "Miglionico Arpab",
-                    "valore": 301.0,
-                    "data": "BRADANO",
-                    "status": "alert"
-                },
-                {
-                    "id": "948400",
-                    "nome": "Miglionico Arpab",
-                    "valore": 3.5,
-                    "data": "BRADANO",
-                    "status": "normal"
-                },
-                {
-                    "id": "948400",
-                    "nome": "Miglionico Arpab",
-                    "valore": 289.0,
-                    "data": "BRADANO",
-                    "status": "alert"
-                },
-                {
-                    "id": "418000",
-                    "nome": "Oppido Lucano",
-                    "valore": 32.0,
-                    "data": "OFANTO",
-                    "status": "alert"
-                },
-                {
-                    "id": "418000",
-                    "nome": "Oppido Lucano",
-                    "valore": 1.7,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418000",
-                    "nome": "Oppido Lucano",
-                    "valore": 1.8,
-                    "data": "OFANTO",
-                    "status": "normal"
-                },
-                {
-                    "id": "418000",
-                    "nome": "Oppido Lucano",
-                    "valore": 32.0,
-                    "data": "OFANTO",
-                    "status": "alert"
-                },
-                {
-                    "id": "418000",
-                    "nome": "Oppido Lucano",
                     "valore": 2.3,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 116.0,
+                    "data": "AGRI",
+                    "status": "alert"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 4.0,
+                    "data": "AGRI",
+                    "status": "normal"
+                },
+                {
+                    "id": "482200",
+                    "nome": "Gorgoglione",
+                    "valore": 98.0,
+                    "data": "AGRI",
+                    "status": "alert"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 340.0,
+                    "data": "OFANTO",
+                    "status": "alert"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 1.0,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 1.1,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 339.0,
+                    "data": "OFANTO",
+                    "status": "alert"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 2.1,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "418100",
+                    "nome": "Lavello",
+                    "valore": 301.0,
+                    "data": "OFANTO",
+                    "status": "alert"
+                },
+                {
+                    "id": "331900",
+                    "nome": "Maratea Massa",
+                    "valore": 52.0,
+                    "data": "NOCE",
+                    "status": "alert"
+                },
+                {
+                    "id": "331900",
+                    "nome": "Maratea Massa",
+                    "valore": 7.9,
+                    "data": "NOCE",
+                    "status": "normal"
+                },
+                {
+                    "id": "331900",
+                    "nome": "Maratea Massa",
+                    "valore": 8.1,
+                    "data": "NOCE",
+                    "status": "normal"
+                },
+                {
+                    "id": "331900",
+                    "nome": "Maratea Massa",
+                    "valore": 52.0,
+                    "data": "NOCE",
+                    "status": "alert"
+                },
+                {
+                    "id": "331900",
+                    "nome": "Maratea Massa",
+                    "valore": 14.1,
+                    "data": "NOCE",
+                    "status": "normal"
+                },
+                {
+                    "id": "331900",
+                    "nome": "Maratea Massa",
+                    "valore": 51.0,
+                    "data": "NOCE",
+                    "status": "alert"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 305.0,
+                    "data": "BRADANO",
+                    "status": "alert"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 2.2,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 2.2,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 305.0,
+                    "data": "BRADANO",
+                    "status": "alert"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 3.6,
+                    "data": "BRADANO",
+                    "status": "normal"
+                },
+                {
+                    "id": "948400",
+                    "nome": "Miglionico Arpab",
+                    "valore": 303.0,
+                    "data": "BRADANO",
+                    "status": "alert"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 35.0,
+                    "data": "OFANTO",
+                    "status": "alert"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 2.1,
                     "data": "OFANTO",
                     "status": "normal"
                 },
                 {
                     "id": "418000",
                     "nome": "Oppido Lucano",
-                    "valore": 13.0,
+                    "valore": 2.2,
                     "data": "OFANTO",
                     "status": "normal"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 37.0,
+                    "data": "OFANTO",
+                    "status": "alert"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 2.6,
+                    "data": "OFANTO",
+                    "status": "normal"
+                },
+                {
+                    "id": "418000",
+                    "nome": "Oppido Lucano",
+                    "valore": 42.0,
+                    "data": "OFANTO",
+                    "status": "alert"
                 },
                 {
                     "id": "949700",
@@ -5116,65 +5116,51 @@
                 {
                     "id": "949700",
                     "nome": "Satriano di Lucania Arpab",
-                    "valore": 0.9,
+                    "valore": 0.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "949700",
                     "nome": "Satriano di Lucania Arpab",
-                    "valore": 1.0,
+                    "valore": 0.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "949700",
                     "nome": "Satriano di Lucania Arpab",
-                    "valore": 137.0,
+                    "valore": 213.0,
                     "data": "AGRI",
                     "status": "alert"
                 },
                 {
                     "id": "949700",
                     "nome": "Satriano di Lucania Arpab",
-                    "valore": 2.0,
+                    "valore": 0.0,
                     "data": "AGRI",
                     "status": "normal"
                 },
                 {
                     "id": "949700",
                     "nome": "Satriano di Lucania Arpab",
-                    "valore": 102.0,
+                    "valore": 157.0,
                     "data": "AGRI",
                     "status": "alert"
                 },
                 {
                     "id": "233200",
                     "nome": "Terra Montonata",
-                    "valore": 218.0,
+                    "valore": 202.0,
                     "data": "CAVONE",
                     "status": "alert"
                 },
                 {
                     "id": "233200",
                     "nome": "Terra Montonata",
-                    "valore": 2.9,
+                    "valore": 2.7,
                     "data": "CAVONE",
                     "status": "normal"
-                },
-                {
-                    "id": "233200",
-                    "nome": "Terra Montonata",
-                    "valore": 3.0,
-                    "data": "CAVONE",
-                    "status": "normal"
-                },
-                {
-                    "id": "233200",
-                    "nome": "Terra Montonata",
-                    "valore": 218.0,
-                    "data": "CAVONE",
-                    "status": "alert"
                 },
                 {
                     "id": "233200",
@@ -5186,49 +5172,63 @@
                 {
                     "id": "233200",
                     "nome": "Terra Montonata",
-                    "valore": 204.0,
+                    "valore": 203.0,
+                    "data": "CAVONE",
+                    "status": "alert"
+                },
+                {
+                    "id": "233200",
+                    "nome": "Terra Montonata",
+                    "valore": 4.0,
+                    "data": "CAVONE",
+                    "status": "normal"
+                },
+                {
+                    "id": "233200",
+                    "nome": "Terra Montonata",
+                    "valore": 205.0,
                     "data": "CAVONE",
                     "status": "alert"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 68.0,
+                    "valore": 47.0,
                     "data": "BASENTO",
                     "status": "alert"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 1.8,
+                    "valore": 2.1,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 1.9,
+                    "valore": 2.2,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 68.0,
+                    "valore": 47.0,
                     "data": "BASENTO",
                     "status": "alert"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 2.9,
+                    "valore": 4.1,
                     "data": "BASENTO",
                     "status": "normal"
                 },
                 {
                     "id": "699300",
                     "nome": "Vaglio di Basilicata",
-                    "valore": 128.0,
+                    "valore": 35.0,
                     "data": "BASENTO",
                     "status": "alert"
                 }
@@ -5243,7 +5243,7 @@
                 {
                     "id": "653100",
                     "nome": "Abriola a Sellata Pierfaone",
-                    "valore": -4.0,
+                    "valore": -5.0,
                     "data": "BASENTO",
                     "status": "normal"
                 },
@@ -5257,14 +5257,14 @@
                 {
                     "id": "55100",
                     "nome": "Lagonegro",
-                    "valore": -1.0,
+                    "valore": 0.0,
                     "data": "NOCE",
                     "status": "normal"
                 },
                 {
                     "id": "418000",
                     "nome": "Oppido Lucano",
-                    "valore": -1.0,
+                    "valore": 0.0,
                     "data": "OFANTO",
                     "status": "normal"
                 },
@@ -5278,14 +5278,14 @@
                 {
                     "id": "932200",
                     "nome": "P_Ruvo Del Monte",
-                    "valore": -3.0,
+                    "valore": -2.0,
                     "data": "",
                     "status": "normal"
                 },
                 {
                     "id": "907800",
                     "nome": "P_Sellata",
-                    "valore": 6.0,
+                    "valore": 10.0,
                     "data": "",
                     "status": "alert"
                 },
