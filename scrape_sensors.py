@@ -12,13 +12,13 @@ from bs4 import BeautifulSoup
 JSON_FILENAME = "dati_sensori.json"
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
 
-# Mappa categorie: Label JSON -> Codice Sito -> Soglia di alert generica
+# Categorie incluse Nivometria (N) e Anemometria (VV)
 SENSORI = {
-    "pluviometria": {"code": "P", "label": "Pluviometri", "unit": "mm", "threshold": 40.0},
-    "idrometria": {"code": "I", "label": "Idrometri", "unit": "m", "threshold": 2.0},
-    "termometria": {"code": "T", "label": "Termometri", "unit": "°C", "threshold": 38.0},
-    "anemometria": {"code": "VV", "label": "Anemometri", "unit": "m/s", "threshold": 15.0},
-    "nivometria": {"code": "N", "label": "Nivometri", "unit": "cm", "threshold": 5.0}
+    "pluviometria": {"code": "P", "label": "Pluviometri", "threshold": 40.0},
+    "idrometria": {"code": "I", "label": "Idrometri", "threshold": 2.0},
+    "termometria": {"code": "T", "label": "Termometri", "threshold": 38.0},
+    "anemometria": {"code": "VV", "label": "Anemometri", "threshold": 15.0},
+    "nivometria": {"code": "N", "label": "Nivometri", "threshold": 5.0}
 }
 
 def clean_text(text):
@@ -27,31 +27,30 @@ def clean_text(text):
 
 def parse_value(val_str):
     try:
-        if not val_str: return None
+        if not val_str: return 0.0
         clean = val_str.replace(",", ".")
-        match = re.search(r'-?\d+(\.\d+)?', clean)
-        return float(match.group(0)) if match else None
+        match = re.search(r'[-+]?\d+(\.\d+)?', clean)
+        return float(match.group(0)) if match else 0.0
     except:
-        return None
+        return 0.0
 
 def setup_driver():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
-    chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
     service = Service(ChromeDriverManager().install())
     return webdriver.Chrome(service=service, options=chrome_options)
 
-def scrape_with_selenium(driver, sensor_key, config):
+def scrape_category(driver, sensor_key, config):
     url = f"{BASE_URL}?st={config['code']}"
-    print(f"📡 Navigazione: {config['label']}...")
+    print(f"📡 Acquisizione: {config['label']}...")
     data_list = []
     
     try:
         driver.get(url)
-        time.sleep(6) # Tempo per il caricamento del JS regionale
+        time.sleep(7) # Tempo per il caricamento delle tabelle JS
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         all_rows = soup.find_all("tr")
 
@@ -59,42 +58,36 @@ def scrape_with_selenium(driver, sensor_key, config):
             cols = row.find_all("td")
             if len(cols) < 4: continue
             
-            raw_cols = [clean_text(c.text) for c in cols]
-            nome_stazione = raw_cols[0]
+            # Col 0: Stazione, Col 1: Ora, Col 2: Comune, Col 3: Valore
+            nome_stazione = clean_text(cols[0].text)
             
-            # Filtro nomi validi
-            if not nome_stazione or "Stazione" in nome_stazione: continue
-            if any(u in nome_stazione.lower() for u in ["mm", " m", "°c"]): continue
+            # Filtro per evitare di catturare righe di intestazione o errori di parsing
+            if not nome_stazione or any(u in nome_stazione.lower() for u in ["mm", "°c", " m "]):
+                continue
 
-            valore_num = parse_value(raw_cols[3])
-            data_ora = raw_cols[4] if len(raw_cols) > 4 else ""
+            valore_num = parse_value(cols[3].text)
+            data_ora = clean_text(cols[1].text)
 
-            if valore_num is None: continue
-
-            # Estrazione ID
+            # Estrazione ID Stazione dal link
             link = cols[0].find("a")
             station_id = ""
             if link and 'href' in link.attrs:
                 match = re.search(r'id=(\d+)', link['href'])
                 if match: station_id = match.group(1)
 
-            # Fix Data
+            # Fix Data breve (HH:mm -> DD/MM/YYYY HH:mm)
             if len(data_ora) <= 5 and ":" in data_ora:
                 data_ora = f"{datetime.datetime.now().strftime('%d/%m/%Y')} {data_ora}"
-
-            status = "normal"
-            if abs(valore_num) >= config['threshold']: status = "alert"
 
             data_list.append({
                 "id": station_id,
                 "nome": nome_stazione,
                 "valore": valore_num,
                 "data": data_ora,
-                "status": status,
-                "tipo": config['label']
+                "status": "alert" if valore_num >= config['threshold'] else "normal"
             })
     except Exception as e:
-        print(f"❌ Errore Selenium su {sensor_key}: {e}")
+        print(f"❌ Errore su {sensor_key}: {e}")
     
     return data_list
 
@@ -105,22 +98,19 @@ def main():
         "sensori": {}
     }
 
-    total = 0
-    try:
-        for key, config in SENSORI.items():
-            readings = scrape_with_selenium(driver, key, config)
-            final_data["sensori"][key] = { "meta": config, "dati": readings }
-            total += len(readings)
-            print(f"✅ Estratti {len(readings)} record per {key}")
-    finally:
-        driver.quit()
+    for key, config in SENSORI.items():
+        readings = scrape_category(driver, key, config)
+        final_data["sensori"][key] = {
+            "meta": {"label": config['label'], "code": config['code']},
+            "dati": readings
+        }
+        print(f"✅ {config['label']}: {len(readings)} record.")
 
-    try:
-        with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
-            json.dump(final_data, f, indent=4, ensure_ascii=False)
-        print(f"\n💾 Salvataggio completato ({total} sensori live)")
-    except Exception as e:
-        print(f"❌ Errore scrittura file: {e}")
+    driver.quit()
+
+    with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
+        json.dump(final_data, f, indent=4, ensure_ascii=False)
+    print(f"\n💾 Database sensori aggiornato.")
 
 if __name__ == "__main__":
     main()
