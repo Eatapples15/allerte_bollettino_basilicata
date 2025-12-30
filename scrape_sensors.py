@@ -1,105 +1,96 @@
 import json
 import datetime
 import re
-import requests
+import time
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
 JSON_FILENAME = "dati_sensori.json"
-ANAGRAFICA_URL = "https://raw.githubusercontent.com/Eatapples15/allerte_bollettino_basilicata/main/anagrafica_stazioni.json"
-# URL diretto che restituisce la tabella completa
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
 
 SENSORI = {
-    "pluviometria": "P",
-    "anemometria": "VV",
-    "idrometria": "I",
-    "termometria": "T"
+    "pluviometria": {"code": "P", "threshold": 40.0},
+    "idrometria": {"code": "I", "threshold": 2.0},
+    "termometria": {"code": "T", "threshold": 38.0},
+    "anemometria": {"code": "VV", "threshold": 15.0},
+    "nivometria": {"code": "N", "threshold": 5.0}
 }
 
-def super_clean(text):
+def clean_text(text):
     if not text: return ""
-    t = text.upper()
-    t = re.sub(r'\b(A|IN|PRESSO|FIUME|TORRENTE|CANALE|S\.|SAN|SS\d+)\b', '', t)
-    t = re.sub(r'[^A-Z0-9]', '', t)
-    return t.strip()
+    return re.sub(r'\s+', ' ', text.replace("\xa0", " ")).strip()
 
-def scrape():
-    # 1. Carico Anagrafica
+def setup_driver():
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
+    service = Service(ChromeDriverManager().install())
+    return webdriver.Chrome(service=service, options=chrome_options)
+
+def scrape_category(driver, sensor_key, config):
+    url = f"{BASE_URL}?st={config['code']}"
+    # Usiamo un dizionario per raggruppare i sensori multipli della stessa stazione
+    grouped_data = {}
+    
     try:
-        r_ana = requests.get(ANAGRAFICA_URL)
-        anagrafica_raw = r_ana.json()
-    except:
-        print("Errore anagrafica")
-        return
+        driver.get(url)
+        time.sleep(7)
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        rows = soup.find_all("tr")
 
-    stazioni_finali = {}
-
-    # 2. Ciclo sui sensori con richieste dirette (No Selenium!)
-    for cat, code in SENSORI.items():
-        try:
-            print(f"Lettura dati {cat}...")
-            # Questa chiamata simula la scelta del sensore e forza la visualizzazione di 500 righe
-            response = requests.post(BASE_URL, data={'st': code}, timeout=20)
-            soup = BeautifulSoup(response.text, 'html.parser')
+        for row in rows:
+            cols = row.find_all("td")
+            if len(cols) < 4: continue
             
-            rows = soup.find_all("tr")
-            print(f"Trovate {len(rows)} righe per {code}")
+            raw_full_text = clean_text(cols[0].text)
+            if not raw_full_text or any(u in raw_full_text.lower() for u in ["mm", "°c"]): continue
 
-            for row in rows:
-                cols = row.find_all("td")
-                if len(cols) < 4: continue
-                
-                raw_name = cols[0].get_text(strip=True)
-                valore = cols[3].get_text(strip=True)
-                
-                if not raw_name or valore in ["", "-", "n.d."]: continue
+            # Estrazione Nome e ID
+            st_name = raw_full_text.split(' - ')[0].split(' (')[0].strip().upper()
+            link = cols[0].find("a")
+            st_id = ""
+            if link and 'href' in link.attrs:
+                m = re.search(r'id=(\d+)', link['href'])
+                if m: st_id = m.group(1)
+            
+            if not st_id: continue
 
-                # Identificazione stazione
-                found_id = None
-                id_match = re.search(r'\((\d+)\)', raw_name)
-                if id_match: found_id = id_match.group(1)
-                
-                norm_site = super_clean(raw_name)
-                if not found_id:
-                    for a in anagrafica_raw:
-                        if super_clean(a.get('stazione','')) in norm_site:
-                            found_id = str(a['id'])
-                            break
+            valore_str = clean_text(cols[3].text)
+            
+            if st_id not in grouped_data:
+                grouped_data[st_id] = {
+                    "id": st_id,
+                    "nome": st_name,
+                    "valore": valore_str, # Il primo valore trovato (solitamente istantaneo o cumulata)
+                    "serie": [],
+                    "data": clean_text(cols[1].text)
+                }
+            
+            # Aggiungiamo il valore alla serie (utile per pluviometria: ist, 1h, 3h, 6h, 12h, 24h)
+            grouped_data[st_id]["serie"].append(valore_str)
 
-                s_key = found_id if found_id else f"UNKNOWN_{norm_site}"
+    except Exception as e:
+        print(f"Errore su {sensor_key}: {e}")
+    
+    return list(grouped_data.values())
 
-                if s_key not in stazioni_finali:
-                    geo = next((a for a in anagrafica_raw if str(a['id']) == found_id), None)
-                    stazioni_finali[s_key] = {
-                        "id": found_id,
-                        "nome": raw_name.split('(')[0].strip().upper(),
-                        "lat": geo['lat'] if geo else None,
-                        "lon": geo['lon'] if geo else None,
-                        "dati": {"pioggia": {}, "idro": None, "temp": None, "vento": None}
-                    }
-
-                st = stazioni_finali[s_key]
-                low = raw_name.lower()
-                if code == "P":
-                    if "1 ora" in low or "1h" in low: st["dati"]["pioggia"]["h1"] = valore
-                    elif "24 ore" in low or "24h" in low: st["dati"]["pioggia"]["h24"] = valore
-                elif code == "I": st["dati"]["idro"] = valore
-                elif code == "T": st["dati"]["temp"] = valore
-                elif code == "VV": st["dati"]["vento"] = valore
-
-        except Exception as e:
-            print(f"Salto {cat} per errore: {e}")
-
-    # 3. Salvataggio
-    output = {
+def main():
+    driver = setup_driver()
+    final_data = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "stazioni": list(stazioni_finali.values())
+        "sensori": {}
     }
 
+    for key, config in SENSORI.items():
+        final_data["sensori"][key] = {"dati": scrape_category(driver, key, config)}
+
+    driver.quit()
     with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
-        json.dump(output, f, indent=4, ensure_ascii=False)
-    
-    print(f"Fine! Totale stazioni salvate: {len(stazioni_finali)}")
+        json.dump(final_data, f, indent=4, ensure_ascii=False)
 
 if __name__ == "__main__":
-    scrape()
+    main()
