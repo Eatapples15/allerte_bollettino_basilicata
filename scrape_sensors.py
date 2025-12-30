@@ -38,39 +38,62 @@ def scrape_category(driver, sensor_key, config):
             cols = row.find_all("td")
             if len(cols) < 4: continue
             
-            # Testo integrale della prima colonna (es: "Castelsaraceno - Velocità vento raffica")
-            raw_name = " ".join(cols[0].get_text(separator=" ", strip=True).split())
+            raw_full_text = " ".join(cols[0].get_text(separator=" ", strip=True).split())
             timestamp = cols[1].get_text(strip=True)
             value_str = cols[3].get_text(strip=True)
             
-            if not raw_name or value_str == "": continue
+            if not raw_full_text or value_str == "": continue
 
-            # Estrazione Nome Stazione (Prima parte della stringa)
-            st_name = raw_name.split(' - ')[0].split(' (')[0].strip()
+            # --- ESTRAZIONE NOME STAZIONE ---
+            st_name = raw_full_text.split(' - ')[0].split(' (')[0].strip()
+
+            # --- ESTRAZIONE PERIODO/TIPO SENSORI ---
+            label = "Dato"
+            text_lower = raw_full_text.lower()
             
-            # Identificazione del Tipo di Sensore (Seconda parte della stringa)
-            # Se non c'è il trattino, usiamo il nome intero
-            sensor_type = raw_name.replace(st_name, "").replace("-", "").strip()
-            if not sensor_type: sensor_type = "Istantaneo"
+            # Logica Pioggia
+            if sensor_key == "pluviometria":
+                if "1 ora" in text_lower or "1h" in text_lower: label = "t1"
+                elif "3 ore" in text_lower or "3h" in text_lower: label = "t3"
+                elif "6 ore" in text_lower or "6h" in text_lower: label = "t6"
+                elif "12 ore" in text_lower or "12h" in text_lower: label = "t12"
+                elif "24 ore" in text_lower or "24h" in text_lower: label = "t24"
+                elif "cumulate" in text_lower: label = "Cumulata"
+                else: label = "Istantaneo"
+            
+            # Logica Vento
+            elif sensor_key == "anemometria":
+                if "vettoriale" in text_lower:
+                    label = "DIR VETT" if "direzione" in text_lower else "VEL VETT"
+                elif "scalare" in text_lower:
+                    label = "DIR SCAL" if "direzione" in text_lower else "VEL SCAL"
+                elif "raffica" in text_lower:
+                    label = "DIR RAFF" if "direzione" in text_lower else "VEL RAFF"
 
+            # Logica Altri
+            elif sensor_key == "termometria": label = "TEMP"
+            elif sensor_key == "idrometria": label = "IDRO"
+            elif sensor_key == "nivometria": label = "NEVE"
+
+            # --- LOGICA ALERT ---
             val_clean = value_str.replace(",", ".")
             num_match = re.search(r'[-+]?\d+(\.\d+)?', val_clean)
             valore_num = float(num_match.group(0)) if num_match else 0.0
 
-            # Alert logic (escludendo le direzioni in gradi)
             is_alert = False
-            if valore_num >= config['threshold'] and "direzione" not in raw_name.lower() and "grado" not in raw_name.lower():
-                is_alert = True
+            # Alert attivo solo se NON è una direzione (gradi) e supera la soglia
+            if "DIR" not in label and "°" not in value_str:
+                if valore_num >= config['threshold']:
+                    is_alert = True
 
             data_list.append({
                 "stazione": st_name,
-                "sensore": sensor_type,
+                "sensore": label,
                 "valore": value_str,
-                "valore_num": valore_num,
                 "orario": timestamp,
                 "status": "alert" if is_alert else "normal"
             })
-    except Exception as e: print(f"Errore su {sensor_key}: {e}")
+    except Exception as e: print(f"Errore: {e}")
     return data_list
 
 def main():
