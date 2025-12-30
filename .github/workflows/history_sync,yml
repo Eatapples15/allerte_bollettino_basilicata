@@ -1,0 +1,19 @@
+name: Sync Daily to History
+on:
+  schedule:
+    - cron: '0 13 * * *' # 14:00 italiane
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Sync
+        run: python daily_sync.py
+      - name: Commit Changes
+        run: |
+          git config user.name "HistoryBot"
+          git add .
+          git commit -m "Sync storico $(date)" || exit 0
+          git push
