@@ -21,37 +21,13 @@ LIST_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.
 PDF_FILENAME = "bollettino.pdf"
 JSON_FILENAME = "dati_bollettino.json"
 
-USER_AGENTS = [
-    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
-    "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Firefox/119.0"
-]
-
-BOLLETTINO_OGGI_TROVATO = False
-DATA_ULTIMO_CONTROLLO = ""
-
-def get_wait_time():
-    global BOLLETTINO_OGGI_TROVATO, DATA_ULTIMO_CONTROLLO
-    now = datetime.datetime.now()
-    hour = now.hour
-    minute = now.minute
-    today_str = now.strftime("%d/%m/%Y")
-
-    if DATA_ULTIMO_CONTROLLO != today_str:
-        BOLLETTINO_OGGI_TROVATO = False
-        DATA_ULTIMO_CONTROLLO = today_str
-
-    # Logica di attesa
-    if (11 <= hour <= 14) and not BOLLETTINO_OGGI_TROVATO:
-        print("-> Stato: RICERCA (Controllo frequente per il bollettino odierno...)")
-        wait = 10 * 60
-    elif 15 <= hour < 19:
-        print("-> Stato: MONITORAGGIO (Vigilanza pomeridiana)")
-        wait = 60 * 60
-    else:
-        print("-> Stato: RIPOSO (Frequenza ridotta)")
-        wait = 120 * 60 
-
-    return wait + random.randint(60, 240)
+# Dizionario traduzione colori e icone
+COLOR_MAP = {
+    "green": {"nome": "VERDE", "icona": "🟢", "desc": "Criticità Assente"},
+    "yellow": {"nome": "GIALLO", "icona": "🟡", "desc": "Criticità Ordinaria"},
+    "orange": {"nome": "ARANCIONE", "icona": "🟠", "desc": "Criticità Moderata"},
+    "red": {"nome": "ROSSO", "icona": "🔴", "desc": "Criticità Elevata"}
+}
 
 def parse_alert_color(text):
     if not text: return "green"
@@ -66,10 +42,9 @@ def analizza_riga_rischi(celle):
     max_score = 0
     final_color = "green"
     descrizione_parts = []
-    
     scores = {"green": 0, "yellow": 1, "orange": 2, "red": 3}
     
-    for i in range(1, 4): # Colonne rischi
+    for i in range(1, 4):
         if i >= len(celle): break
         colore = parse_alert_color(celle[i])
         score = scores.get(colore, 0)
@@ -81,21 +56,27 @@ def analizza_riga_rischi(celle):
             elif score == max_score:
                 descrizione_parts.append(tipo)
                 
-    return final_color, (" + ".join(descrizione_parts) if descrizione_parts else "Nessuna criticità")
+    return final_color, (" + ".join(descrizione_parts) if descrizione_parts else "Assenza di fenomeni significativi")
 
 def get_pdf_url():
-    try:
-        r = requests.get(LIST_URL, headers={"User-Agent": random.choice(USER_AGENTS)}, timeout=25)
-        soup = BeautifulSoup(r.text, 'html.parser')
-        for a in soup.find_all('a', href=True):
-            if "Bollettino_Criticita" in a['href']:
-                return BASE_URL + a['href'] if not a['href'].startswith('http') else a['href']
-    except: return None
+    # Rafforziamo la lettura provando fino a 3 volte in caso di timeout
+    for attempt in range(3):
+        try:
+            headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/119.0.0.0 Safari/537.36"}
+            r = requests.get(LIST_URL, headers=headers, timeout=25)
+            r.raise_for_status()
+            soup = BeautifulSoup(r.text, 'html.parser')
+            for a in soup.find_all('a', href=True):
+                if "Bollettino_Criticita" in a['href']:
+                    full_url = BASE_URL + a['href'] if not a['href'].startswith('http') else a['href']
+                    return full_url
+        except Exception as e:
+            print(f"Tentativo {attempt+1} fallito: {e}")
+            time.sleep(5)
+    return None
 
 def send_telegram_message(message, file_path=None, custom_filename=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_IDS: return
-    
-    # Prepara link WhatsApp (rimuovendo Markdown per evitare link rotti)
     clean_text = message.replace('*', '').replace('_', '')
     whatsapp_encoded = urllib.parse.quote(clean_text)
     full_message = message + f"\n\n📲 [Condividi su WhatsApp](https://wa.me/?text={whatsapp_encoded})"
@@ -112,26 +93,25 @@ def send_telegram_message(message, file_path=None, custom_filename=None):
         except Exception as e: print(f"Errore Telegram: {e}")
 
 def scrape_and_notify():
-    global BOLLETTINO_OGGI_TROVATO
     pdf_url = get_pdf_url()
-    if not pdf_url: return
+    if not pdf_url: 
+        print("Impossibile recuperare l'URL del PDF.")
+        return
 
     r = requests.get(pdf_url, timeout=60)
     with open(PDF_FILENAME, 'wb') as f: f.write(r.content)
 
-    extracted = {"data_bollettino": "", "zone": {}}
+    extracted = {"data_bollettino": "", "zone": {}, "url_bollettino": pdf_url}
 
     with pdfplumber.open(PDF_FILENAME) as pdf:
         p1_text = pdf.pages[0].extract_text()
         d_match = re.search(r"DEL\s+(\d{2}/\d{2}/\d{4})", p1_text)
         extracted["data_bollettino"] = d_match.group(1) if d_match else datetime.date.today().strftime("%d/%m/%Y")
         
-        if extracted["data_bollettino"] == datetime.date.today().strftime("%d/%m/%Y"):
-            BOLLETTINO_OGGI_TROVATO = True
-
         tables = []
         for page in pdf.pages:
-            for table in page.extract_tables():
+            found_tables = page.extract_tables()
+            for table in found_tables:
                 if any("BASI" in str(row[0]) for row in table if row and row[0]):
                     tables.append(table)
 
@@ -140,51 +120,57 @@ def scrape_and_notify():
             day_key = giorni[i]
             for row in table:
                 if row and len(row) > 1 and "BASI" in str(row[0]):
-                    zona = str(row[0]).strip()
+                    zona = str(row[0]).strip().replace("\n", " ")
                     colore, desc = analizza_riga_rischi(row)
-                    if zona not in extracted["zone"]:
-                        extracted["zone"][zona] = {}
+                    if zona not in extracted["zone"]: extracted["zone"][zona] = {}
                     extracted["zone"][zona][day_key] = colore
                     extracted["zone"][zona][f"rischio_{day_key}"] = desc
 
-    # Controllo se inviare
-    is_new = True
+    # --- LOGICA ANTI-RIPETIZIONE ---
+    # Controlliamo se abbiamo già inviato questo specifico bollettino (per data e URL)
+    sent_key = f"{extracted['data_bollettino']}_{os.path.basename(pdf_url)}"
+    already_sent = False
+    
     if os.path.exists(JSON_FILENAME):
         with open(JSON_FILENAME, 'r') as f:
-            if json.load(f).get("data_bollettino") == extracted["data_bollettino"]:
-                is_new = False
+            old_data = json.load(f)
+            # Se la data e l'URL coincidono, il bollettino è identico
+            if old_data.get("last_sent_key") == sent_key:
+                already_sent = True
 
-    if is_new or FORCE_SEND:
-        with open(JSON_FILENAME, 'w') as f: json.dump(extracted, f)
+    if not already_sent or FORCE_SEND:
+        extracted["last_sent_key"] = sent_key
+        with open(JSON_FILENAME, 'w') as f: json.dump(extracted, f, indent=4)
         
         data_b = extracted['data_bollettino']
         msg = f"🚨 *BOLLETTINO PROTEZIONE CIVILE - {data_b}*\n\n"
         
+        # Oggi
         msg += f"📋 *SITUAZIONE OGGI:*\n"
         for z in sorted(extracted["zone"].keys()):
             d = extracted["zone"][z]
-            icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(d.get("oggi"),"⚪")
-            msg += f"{icon} *{z}*: {d.get('oggi', 'N/D').upper()}\n"
+            c_info = COLOR_MAP.get(d.get("oggi"), COLOR_MAP["green"])
+            msg += f"{c_info['icona']} *{z}*: {c_info['nome']}\n"
             if d.get("oggi") != "green": msg += f"   ⚠️ _{d.get('rischio_oggi')}_\n"
 
+        # Domani
         msg += f"\n🔮 *PREVISIONE DOMANI:*\n"
         ha_crit_domani = False
         for z in sorted(extracted["zone"].keys()):
             d = extracted["zone"][z]
             if d.get("domani") != "green":
                 ha_crit_domani = True
-                icon = {"green":"🟢","yellow":"🟡","orange":"🟠","red":"🔴"}.get(d.get("domani"),"⚪")
-                msg += f"{icon} *{z}*: {d.get('domani').upper()}\n   ⚠️ _{d.get('rischio_domani')}_\n"
+                c_info = COLOR_MAP.get(d.get("domani"))
+                msg += f"{c_info['icona']} *{z}*: {c_info['nome']}\n   ⚠️ _{d.get('rischio_domani')}_\n"
         
         if not ha_crit_domani: msg += "🟢 Nessuna criticità prevista.\n"
         
         msg += f"\n🔗 [Scarica PDF originale]({pdf_url})"
+        
         send_telegram_message(msg, PDF_FILENAME, f"Bollettino_{data_b.replace('/', '-')}.pdf")
+        print(f"Bollettino {sent_key} inviato.")
+    else:
+        print(f"Bollettino {sent_key} già inviato in precedenza. Salto.")
 
 if __name__ == "__main__":
-    while True:
-        try: scrape_and_notify()
-        except Exception as e: print(f"Errore: {e}")
-        wait = get_wait_time()
-        print(f"In attesa per {wait // 60} minuti...")
-        time.sleep(wait)
+    scrape_and_notify()
