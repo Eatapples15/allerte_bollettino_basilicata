@@ -2,33 +2,25 @@ name: Update Valanghe Basilicata
 
 on:
   schedule:
-    # Esegue alle 14:00 italiane (13:00 UTC)
-    - cron: '0 13 * * *'
-  workflow_dispatch: # Ti permette di avviarlo manualmente per testare
+    - cron: '0 13 * * *' # Ore 14:00 italiane
+  workflow_dispatch:
 
 jobs:
   run-scraper:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-
-      - name: Setup Python
-        uses: actions/setup-python@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-
-      - name: Installa librerie necessarie
-        # Aggiungiamo 'requests' qui per risolvere l'errore
-        run: pip install requests 
-
-      - name: Esecuzione Scraper
+      - name: Install dependencies
+        run: pip install requests feedparser
+      - name: Run Scraper
         run: python scraper_val.py
-
-      - name: Salva e pubblica i dati
+      - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add valanghe.json
-          git commit -m "Aggiornamento automatico dati Meteomont" || exit 0
+          git commit -m "Update dati completi Appennino Lucano" || exit 0
           git push
