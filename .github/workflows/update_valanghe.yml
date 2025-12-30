@@ -1,0 +1,33 @@
+name: Aggiornamento Automatico Bollettino Basilicata
+
+on:
+  schedule:
+    # Esegue ogni giorno alle 13:00 UTC (14:00 in Italia con ora solare)
+    - cron: '0 13 * * *'
+  workflow_dispatch: # Ti permette di avviare l'aggiornamento a mano per test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Installazione dipendenze
+        run: pip install feedparser
+
+      - name: Esecuzione Scraper
+        run: python scraper_val.py
+
+      - name: Commit e Push dei dati aggiornati
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add valanghe.json
+          git commit -m "Aggiornamento automatico bollettino [skip ci]" || echo "Nessuna modifica rilevata"
+          git push
