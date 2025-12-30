@@ -44,17 +44,21 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Gestione robusta dei conflitti
-          git add dati_bollettino.json last_notified.txt || true
+          # Gestione dei conflitti e della cache locale
+          git add dati_bollettino.json 2>/dev/null || true
           git stash || echo "Nulla da mettere in stash"
           git pull origin main --rebase
-          git stash pop || echo "Nulla da ripristinare dallo stash"
+          git stash pop || echo "Nulla da ripristinare"
           
-          git add dati_bollettino.json last_notified.txt
+          # Aggiunta sicura dei file (non crasha se mancano)
+          if [ -f dati_bollettino.json ]; then git add dati_bollettino.json; fi
+          if [ -f last_notified.txt ]; then git add last_notified.txt; fi
           
+          # Commit solo se ci sono cambiamenti reali
           if git diff --staged --quiet; then
-            echo "Nessuna modifica rilevata."
+            echo "Nessuna modifica rilevata. L'App è già aggiornata."
           else
+            echo "Modifiche rilevate. Procedo al caricamento."
             git commit -m "Aggiornamento dati bollettino $(date +'%d/%m/%Y %H:%M')"
             git push origin main
           fi
