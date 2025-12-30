@@ -1,26 +1,59 @@
-- name: Commit e Push dei cambiamenti
+name: Aggiornamento Bollettino PDF
+
+on:
+  schedule:
+    - cron: '30 10-17 * * *'
+  workflow_dispatch:
+    inputs:
+      force_send:
+        description: 'Forza invio Notifiche (true/false)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 
+
+      - name: Imposta Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Installa dipendenze
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests pdfplumber beautifulsoup4
+
+      - name: Esegui Script Bollettino
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          FORCE_SEND: ${{ github.event.inputs.force_send || 'false' }}
+        run: python main.py
+
+      - name: Commit e Push dei cambiamenti
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 1. Scarichiamo eventuali aggiornamenti remoti prima di toccare i file
-          git pull origin main --rebase
-
-          # 2. Eseguiamo lo script qui (se preferisci farlo dentro lo step di commit per sicurezza)
-          # In alternativa, lasciamo lo step precedente ma usiamo git add prima del pull.
-          # La via più semplice è aggiungere i file prima del pull:
-          
+          # Gestione robusta dei conflitti
           git add dati_bollettino.json last_notified.txt || true
-          
-          # Se il pull fallisce ancora, usiamo lo stash temporaneo
-          git stash || true
+          git stash || echo "Nulla da mettere in stash"
           git pull origin main --rebase
-          git stash pop || true
+          git stash pop || echo "Nulla da ripristinare dallo stash"
           
           git add dati_bollettino.json last_notified.txt
           
           if git diff --staged --quiet; then
-            echo "Nessuna modifica."
+            echo "Nessuna modifica rilevata."
           else
             git commit -m "Aggiornamento dati bollettino $(date +'%d/%m/%Y %H:%M')"
             git push origin main
