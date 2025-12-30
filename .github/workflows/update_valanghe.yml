@@ -1,16 +1,16 @@
-name: Aggiornamento Automatico Bollettino Basilicata
+name: Update Valanghe Basilicata
 
 on:
   schedule:
-    # Esegue ogni giorno alle 13:00 UTC (14:00 in Italia con ora solare)
+    # Esegue alle 14:00 italiane (13:00 UTC)
     - cron: '0 13 * * *'
-  workflow_dispatch: # Ti permette di avviare l'aggiornamento a mano per test
+  workflow_dispatch: # Ti permette di avviarlo manualmente per testare
 
 jobs:
-  build:
+  run-scraper:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout del codice
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Setup Python
@@ -18,16 +18,17 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Installazione dipendenze
-        run: pip install feedparser
+      - name: Installa librerie necessarie
+        # Aggiungiamo 'requests' qui per risolvere l'errore
+        run: pip install requests 
 
       - name: Esecuzione Scraper
         run: python scraper_val.py
 
-      - name: Commit e Push dei dati aggiornati
+      - name: Salva e pubblica i dati
         run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
           git add valanghe.json
-          git commit -m "Aggiornamento automatico bollettino [skip ci]" || echo "Nessuna modifica rilevata"
+          git commit -m "Aggiornamento automatico dati Meteomont" || exit 0
           git push
