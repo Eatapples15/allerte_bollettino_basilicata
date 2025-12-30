@@ -8,17 +8,19 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
+from selenium.webdriver.support.ui import Select
+from selenium.webdriver.common.by import By
 
 JSON_FILENAME = "dati_sensori.json"
 ANAGRAFICA_URL = "https://raw.githubusercontent.com/Eatapples15/allerte_bollettino_basilicata/main/anagrafica_stazioni.json"
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
 
+# Configurazione sensori
 SENSORI = {
-    "pluviometria": {"code": "P", "threshold": 40.0},
-    "anemometria": {"code": "VV", "threshold": 15.0},
-    "idrometria": {"code": "I", "threshold": 2.0},
-    "termometria": {"code": "T", "threshold": 38.0},
-    "nivometria": {"code": "N", "threshold": 5.0}
+    "pluviometria": {"code": "P"},
+    "anemometria": {"code": "VV"},
+    "idrometria": {"code": "I"},
+    "termometria": {"code": "T"}
 }
 
 def setup_driver():
@@ -30,12 +32,9 @@ def setup_driver():
     return webdriver.Chrome(service=service, options=chrome_options)
 
 def super_clean(text):
-    """Rimuove tutto tranne le lettere e numeri essenziali per il confronto"""
     if not text: return ""
     t = text.upper()
-    # Rimuove parole di disturbo
     t = re.sub(r'\b(A|IN|PRESSO|FIUME|TORRENTE|CANALE|S\.|SAN|SS\d+)\b', '', t)
-    # Rimuove punteggiatura e spazi doppi
     t = re.sub(r'[^A-Z0-9]', '', t)
     return t.strip()
 
@@ -52,12 +51,27 @@ def scrape():
     
     for cat, config in SENSORI.items():
         try:
-            print(f"Scraping {cat}...")
+            print(f"Scraping integrale {cat}...")
             driver.get(f"{BASE_URL}?st={config['code']}")
-            time.sleep(7)
+            time.sleep(5)
+
+            # FORZA IL CARICAMENTO DI TUTTE LE RIGHE (Importante!)
+            try:
+                # Cerca il selettore "Mostra X voci" (solitamente DataTables usa 'length')
+                select_element = driver.find_element(By.NAME, "DataTables_Table_0_length")
+                select = Select(select_element)
+                select.select_by_value("-1") # -1 solitamente indica "Tutte"
+                time.sleep(3)
+            except:
+                print(f"Selettore 'Tutte' non trovato per {cat}, procedo con vista standard.")
+
             soup = BeautifulSoup(driver.page_source, 'html.parser')
-            rows = soup.find_all("tr")
+            table = soup.find("table")
+            if not table: continue
             
+            rows = table.find_all("tr")
+            print(f"Trovate {len(rows)} righe per {cat}")
+
             for row in rows:
                 cols = row.find_all("td")
                 if len(cols) < 4: continue
@@ -67,20 +81,15 @@ def scrape():
                 
                 if not raw_full_name or valore_str in ["", "-", "n.d."]: continue
 
-                # LOGICA DI MATCHING AGGRESSIVA
+                # Matching ID o Nome
                 found_id = None
-                norm_site = super_clean(raw_full_name)
-                
-                # Prova 1: Match ID tra parentesi
                 id_match = re.search(r'\((\d+)\)', raw_full_name)
-                if id_match:
-                    found_id = id_match.group(1)
+                if id_match: found_id = id_match.group(1)
                 
-                # Prova 2: Match per nome pulito
+                norm_site = super_clean(raw_full_name)
                 if not found_id:
                     for a in anagrafica_raw:
-                        norm_ana = super_clean(a.get('stazione', ''))
-                        if norm_ana in norm_site or norm_site in norm_ana:
+                        if super_clean(a.get('stazione','')) in norm_site:
                             found_id = str(a['id'])
                             break
 
@@ -89,11 +98,10 @@ def scrape():
                 if station_key not in stazioni_finali:
                     geo = next((a for a in anagrafica_raw if str(a['id']) == found_id), None)
                     stazioni_finali[station_key] = {
-                        "id": found_id if found_id else "N/D",
-                        "nome": raw_full_name.split('-')[0].split('(')[0].strip().upper(),
+                        "id": found_id,
+                        "nome": raw_full_name.split('(')[0].strip().upper(),
                         "lat": geo['lat'] if geo else None,
                         "lon": geo['lon'] if geo else None,
-                        "alert": False,
                         "dati": {"pioggia": {}, "idro": None, "temp": None, "vento": None}
                     }
 
@@ -103,23 +111,23 @@ def scrape():
                 if cat == "pluviometria":
                     if "1 ora" in low_n or "1h" in low_n: st["dati"]["pioggia"]["h1"] = valore_str
                     elif "24 ore" in low_n or "24h" in low_n: st["dati"]["pioggia"]["h24"] = valore_str
-                    elif "cumulate" in low_n: st["dati"]["pioggia"]["cum"] = valore_str
                 elif cat == "idrometria": st["dati"]["idro"] = valore_str
                 elif cat == "termometria": st["dati"]["temp"] = valore_str
-                elif cat == "anemometria" and "raffica" in low_n and "direzione" not in low_n:
-                    st["dati"]["vento"] = valore_str
+                elif cat == "anemometria": st["dati"]["vento"] = valore_str
 
-        except Exception as e: print(f"Errore {cat}: {e}")
+        except Exception as e:
+            print(f"Errore durante {cat}: {e}")
 
     driver.quit()
 
     output = {
         "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "stazioni": [s for s in stazioni_finali.values()] # Includiamo tutto per debug
+        "stazioni": list(stazioni_finali.values())
     }
 
     with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
         json.dump(output, f, indent=4, ensure_ascii=False)
+    print(f"Scraping completato: {len(stazioni_finali)} stazioni salvate.")
 
 if __name__ == "__main__":
     scrape()
