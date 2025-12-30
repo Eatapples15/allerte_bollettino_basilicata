@@ -8,21 +8,16 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from bs4 import BeautifulSoup
 
-# CONFIGURAZIONE
 JSON_FILENAME = "dati_sensori.json"
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/sensoriTempoReale.php"
 
 SENSORI = {
     "pluviometria": {"code": "P", "label": "Pluviometri", "threshold": 40.0},
+    "anemometria": {"code": "VV", "label": "Anemometri", "threshold": 15.0},
     "idrometria": {"code": "I", "label": "Idrometri", "threshold": 2.0},
     "termometria": {"code": "T", "label": "Termometri", "threshold": 38.0},
-    "anemometria": {"code": "VV", "label": "Anemometri", "threshold": 15.0},
     "nivometria": {"code": "N", "label": "Nivometri", "threshold": 5.0}
 }
-
-def clean_text(text):
-    if not text: return ""
-    return re.sub(r'\s+', ' ', text.replace("\xa0", " ")).strip()
 
 def setup_driver():
     chrome_options = Options()
@@ -34,12 +29,12 @@ def setup_driver():
 
 def scrape_category(driver, sensor_key, config):
     url = f"{BASE_URL}?st={config['code']}"
-    print(f"📡 Acquisizione estesa: {config['label']}...")
+    print(f"📡 Scansione parametri avanzati per {config['label']}...")
     data_list = []
     
     try:
         driver.get(url)
-        time.sleep(8) # Tempo aumentato per caricamento tabelle dinamiche
+        time.sleep(10) 
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         rows = soup.find_all("tr")
 
@@ -47,40 +42,48 @@ def scrape_category(driver, sensor_key, config):
             cols = row.find_all("td")
             if len(cols) < 4: continue
             
-            # Estrazione Nome Completo (include il tipo di sensore es. "Pioggia 1h")
-            full_name = clean_text(cols[0].text)
-            timestamp = clean_text(cols[1].text)
-            valore_raw = clean_text(cols[3].text)
+            full_text = " ".join(cols[0].get_text(separator=" ", strip=True).split())
+            timestamp = cols[1].get_text(strip=True)
+            value_str = cols[3].get_text(strip=True)
 
-            if not full_name or valore_raw == "": continue
+            if not full_text or value_str == "": continue
 
-            # Determina il periodo/tipo dal testo
+            # LOGICA DI RICONOSCIMENTO PARAMETRI VENTO
             periodo = "Istantaneo"
-            for p in ["1h", "3h", "6h", "12h", "24h", "Raffica", "Scalare", "Vettoriale", "Direzione"]:
-                if p.lower() in full_name.lower():
-                    periodo = p
-                    break
+            if config['code'] == "VV":
+                if "Velocità Vento Vettoriale" in full_text: periodo = "VEL VETT"
+                elif "Direzione Vento Vettoriale" in full_text: periodo = "DIR VETT"
+                elif "Velocità Vento Scalare" in full_text: periodo = "VEL SCAL"
+                elif "Direzione Vento Scalare" in full_text: periodo = "DIR SCAL"
+                elif "Velocità Vento Raffica" in full_text: periodo = "RAFFICA"
+                elif "Direzione Vento Raffica" in full_text: periodo = "DIR RAFF"
+            
+            # LOGICA PIOGGIA
+            elif config['code'] == "P":
+                if "1h" in full_text: periodo = "1h"
+                elif "3h" in full_text: periodo = "3h"
+                elif "6h" in full_text: periodo = "6h"
+                elif "12h" in full_text: periodo = "12h"
+                elif "24h" in full_text: periodo = "24h"
+                else: periodo = "Cumulata"
 
-            # Gestione ID Stazione
-            link = cols[0].find("a")
-            station_id = ""
-            if link and 'href' in link.attrs:
-                id_match = re.search(r'id=(\d+)', link['href'])
-                if id_match: station_id = id_match.group(1)
+            # Pulizia Nome Stazione
+            st_name = full_text.split(' - ')[0].split(' (')[0]
+            for term in ["Velocità", "Direzione", "Vento", "Vettoriale", "Scalare", "Raffica", "Pioggia", "1h", "3h", "6h", "12h", "24h"]:
+                st_name = st_name.replace(term, "")
+            st_name = st_name.strip()
 
-            # Parsing valore numerico (gestisce m/s, mm, ° e virgole)
-            val_clean = valore_raw.replace(",", ".")
+            val_clean = value_str.replace(",", ".")
             num_match = re.search(r'[-+]?\d+(\.\d+)?', val_clean)
             valore_num = float(num_match.group(0)) if num_match else 0.0
 
             data_list.append({
-                "id": station_id,
-                "nome": full_name,
+                "stazione": st_name,
                 "periodo": periodo,
-                "valore": valore_raw, # Salviamo la stringa originale per unità di misura
+                "valore": value_str,
                 "valore_num": valore_num,
                 "data": timestamp,
-                "status": "alert" if valore_num >= config['threshold'] and "direzione" not in full_name.lower() else "normal"
+                "status": "alert" if (valore_num >= config['threshold'] and "DIR" not in periodo) else "normal"
             })
     except Exception as e:
         print(f"❌ Errore: {e}")
@@ -89,24 +92,13 @@ def scrape_category(driver, sensor_key, config):
 
 def main():
     driver = setup_driver()
-    final_data = {
-        "ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"),
-        "sensori": {}
-    }
-
+    final_data = {"ultimo_aggiornamento": datetime.datetime.now().strftime("%d/%m/%Y %H:%M"), "sensori": {}}
     for key, config in SENSORI.items():
         readings = scrape_category(driver, key, config)
-        final_data["sensori"][key] = {
-            "meta": {"label": config['label'], "code": config['code']},
-            "dati": readings
-        }
-        print(f"✅ {config['label']}: {len(readings)} sensori letti.")
-
+        final_data["sensori"][key] = {"meta": {"label": config['label'], "code": config['code']}, "dati": readings}
     driver.quit()
-
     with open(JSON_FILENAME, 'w', encoding='utf-8') as f:
         json.dump(final_data, f, indent=4, ensure_ascii=False)
-    print(f"\n💾 JSON salvato correttamente.")
 
 if __name__ == "__main__":
     main()
