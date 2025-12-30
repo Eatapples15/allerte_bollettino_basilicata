@@ -20,6 +20,7 @@ BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/"
 LIST_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.php?lt=A"
 PDF_FILENAME = "bollettino.pdf"
 JSON_FILENAME = "dati_bollettino.json"
+LAST_NOTIFIED_FILE = "last_notified.txt"
 
 COLOR_MAP = {
     "green": {"nome": "VERDE", "icona": "🟢"},
@@ -114,21 +115,23 @@ def main():
                     if zona not in extracted["zone"]: extracted["zone"][zona] = {}
                     extracted["zone"][zona][day_key], extracted["zone"][zona][f"rischio_{day_key}"] = colore, desc
 
-    sent_key = f"{extracted['data_bollettino']}_{os.path.basename(pdf_url)}"
-    already_sent = False
-    if os.path.exists(JSON_FILENAME):
-        try:
-            with open(JSON_FILENAME, 'r') as f:
-                old_json = json.load(f)
-                if old_json.get("last_sent_key") == sent_key: already_sent = True
-        except: pass
+    # CHIAVE IDENTIFICATIVA DEL BOLLETTINO ATTUALE
+    current_key = f"{extracted['data_bollettino']}_{os.path.basename(pdf_url)}"
+    extracted["last_sent_key"] = current_key
+    extracted["ultimo_aggiornamento"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
 
-    if not already_sent or FORCE_SEND:
-        extracted["last_sent_key"] = sent_key
-        extracted["ultimo_aggiornamento"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-        with open(JSON_FILENAME, 'w') as f:
-            json.dump(extracted, f, indent=4)
-        
+    # --- AZIONE 1: AGGIORNA SEMPRE IL JSON ---
+    with open(JSON_FILENAME, 'w') as f:
+        json.dump(extracted, f, indent=4)
+    print(f"File {JSON_FILENAME} aggiornato con i dati correnti.")
+
+    # --- AZIONE 2: INVIO NOTIFICA SOLO SE NUOVO RISPETTO ALL'ULTIMO INVIATO ---
+    last_notified_key = ""
+    if os.path.exists(LAST_NOTIFIED_FILE):
+        with open(LAST_NOTIFIED_FILE, "r") as f:
+            last_notified_key = f.read().strip()
+
+    if current_key != last_notified_key or FORCE_SEND:
         header = f"🚨 BOLLETTINO PROTEZIONE CIVILE - {extracted['data_bollettino']}\n"
         validity = f"🕒 Validità: {extracted['validita_inizio']} - {extracted['validita_fine']}\n\n"
         body = "📋 SITUAZIONE OGGI:\n"
@@ -148,7 +151,16 @@ def main():
         if not ha_crit: footer += "🟢 Nessuna criticità prevista.\n"
         
         links = f"\n📍 Mappa: https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html\n🔗 PDF: {pdf_url}"
+        
+        # Invio
         send_telegram_message(f"*{header}*{validity}{body}{footer}{links}", f"{header}{validity}{body}{footer}{links}", PDF_FILENAME, f"Bollettino_{extracted['data_bollettino'].replace('/', '-')}.pdf")
+        
+        # Salva la chiave per evitare duplicati futuri
+        with open(LAST_NOTIFIED_FILE, "w") as f:
+            f.write(current_key)
+        print("Notifica Telegram inviata e chiave registrata.")
+    else:
+        print(f"Bollettino già notificato in precedenza ({current_key}). Notifica Telegram saltata.")
 
 if __name__ == "__main__":
     main()
