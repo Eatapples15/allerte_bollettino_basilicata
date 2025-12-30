@@ -23,6 +23,7 @@ def setup_driver():
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
     service = Service(ChromeDriverManager().install())
     return webdriver.Chrome(service=service, options=chrome_options)
 
@@ -44,56 +45,48 @@ def scrape_category(driver, sensor_key, config):
             
             if not raw_full_text or value_str == "": continue
 
-            # --- ESTRAZIONE NOME STAZIONE ---
+            # Estrazione Stazione
             st_name = raw_full_text.split(' - ')[0].split(' (')[0].strip()
 
-            # --- ESTRAZIONE PERIODO/TIPO SENSORI ---
+            # Mappatura Etichette
             label = "Dato"
-            text_lower = raw_full_text.lower()
+            low_txt = raw_full_text.lower()
             
-            # Logica Pioggia
             if sensor_key == "pluviometria":
-                if "1 ora" in text_lower or "1h" in text_lower: label = "t1"
-                elif "3 ore" in text_lower or "3h" in text_lower: label = "t3"
-                elif "6 ore" in text_lower or "6h" in text_lower: label = "t6"
-                elif "12 ore" in text_lower or "12h" in text_lower: label = "t12"
-                elif "24 ore" in text_lower or "24h" in text_lower: label = "t24"
-                elif "cumulate" in text_lower: label = "Cumulata"
-                else: label = "Istantaneo"
+                if "1 ora" in low_txt or "1h" in low_txt: label = "t1"
+                elif "3 ore" in low_txt or "3h" in low_txt: label = "t3"
+                elif "6 ore" in low_txt or "6h" in low_txt: label = "t6"
+                elif "12 ore" in low_txt or "12h" in low_txt: label = "t12"
+                elif "24 ore" in low_txt or "24h" in low_txt: label = "t24"
+                elif "cumulate" in low_txt: label = "Cumulata"
+                else: label = "Ist."
             
-            # Logica Vento
             elif sensor_key == "anemometria":
-                if "vettoriale" in text_lower:
-                    label = "DIR VETT" if "direzione" in text_lower else "VEL VETT"
-                elif "scalare" in text_lower:
-                    label = "DIR SCAL" if "direzione" in text_lower else "VEL SCAL"
-                elif "raffica" in text_lower:
-                    label = "DIR RAFF" if "direzione" in text_lower else "VEL RAFF"
-
-            # Logica Altri
+                if "vettoriale" in low_txt: label = "DIR VETT" if "direzione" in low_txt else "VEL VETT"
+                elif "scalare" in low_txt: label = "DIR SCAL" if "direzione" in low_txt else "VEL SCAL"
+                elif "raffica" in low_txt: label = "DIR RAFF" if "direzione" in low_txt else "VEL RAFF"
+            
             elif sensor_key == "termometria": label = "TEMP"
             elif sensor_key == "idrometria": label = "IDRO"
             elif sensor_key == "nivometria": label = "NEVE"
 
-            # --- LOGICA ALERT ---
+            # Logica Allerta (Esclude Gradi e Direzioni)
             val_clean = value_str.replace(",", ".")
             num_match = re.search(r'[-+]?\d+(\.\d+)?', val_clean)
             valore_num = float(num_match.group(0)) if num_match else 0.0
 
             is_alert = False
-            # Alert attivo solo se NON è una direzione (gradi) e supera la soglia
-            if "DIR" not in label and "°" not in value_str:
-                if valore_num >= config['threshold']:
-                    is_alert = True
+            if valore_num >= config['threshold'] and "DIR" not in label and "°" not in value_str:
+                is_alert = True
 
             data_list.append({
                 "stazione": st_name,
                 "sensore": label,
-                "valore": value_str,
+                "valore": value_str, # Contiene già l'unità di misura dal sito
                 "orario": timestamp,
                 "status": "alert" if is_alert else "normal"
             })
-    except Exception as e: print(f"Errore: {e}")
+    except Exception as e: print(f"Errore {sensor_key}: {e}")
     return data_list
 
 def main():
