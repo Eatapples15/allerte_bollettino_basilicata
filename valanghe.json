@@ -1,21 +1,26 @@
 {
-    "regione": "Basilicata",
-    "zona": "Appennino Lucano",
-    "stazione_nome": "Monte Pierfaone (PZ)",
-    "quota_stazione": "1732 m",
-    "data_osservazione": "N/D",
-    "meteo": {
-        "neve_suolo": 0,
-        "neve_fresca_24h": 0,
-        "temperatura": "N/D",
-        "vento_vel": "N/D",
-        "vento_dir": "N/D"
+    "testata": {
+        "regione": "Basilicata",
+        "settore": "Appennino Lucano",
+        "stazione": "Monte Pierfaone (PZ)",
+        "data_bollettino": "Wed, 24 Dec 2025 13:41:38 +0100",
+        "ultima_lettura_api": "30/12/2025 17:07"
     },
     "pericolo": {
-        "grado": "N/D",
-        "tendenza": "N/D",
-        "problema": "N/D",
-        "testo_quota": "N/D"
+        "grado": 0,
+        "tendenza": "stazionaria",
+        "problema": "non specificato",
+        "quota": "n/d"
     },
-    "aggiornamento_sistema": "30/12/2025 13:30"
+    "meteo_reale": {
+        "neve_al_suolo": 0,
+        "neve_fresca_24h": 0,
+        "temperatura": "n/d",
+        "vento_velocita": 0,
+        "vento_direzione": "n/d"
+    },
+    "dettagli": {
+        "sintesi": "24/12/2025 - Bollettino Settore: \"APPENNINO MERIDIONALE\" - Sotto Settore: \"APPENNINO CALABRO\"",
+        "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/3/cl/2025-12-24"
+    }
 }
