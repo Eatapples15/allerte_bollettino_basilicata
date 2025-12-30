@@ -115,22 +115,26 @@ def main():
                     if zona not in extracted["zone"]: extracted["zone"][zona] = {}
                     extracted["zone"][zona][day_key], extracted["zone"][zona][f"rischio_{day_key}"] = colore, desc
 
-    # CHIAVE IDENTIFICATIVA DEL BOLLETTINO ATTUALE
     current_key = f"{extracted['data_bollettino']}_{os.path.basename(pdf_url)}"
     extracted["last_sent_key"] = current_key
     extracted["ultimo_aggiornamento"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
 
-    # --- AZIONE 1: AGGIORNA SEMPRE IL JSON ---
-    with open(JSON_FILENAME, 'w') as f:
-        json.dump(extracted, f, indent=4)
-    print(f"File {JSON_FILENAME} aggiornato con i dati correnti.")
-
-    # --- AZIONE 2: INVIO NOTIFICA SOLO SE NUOVO RISPETTO ALL'ULTIMO INVIATO ---
+    # --- CONTROLLO CHIAVE PRECEDENTE ---
     last_notified_key = ""
     if os.path.exists(LAST_NOTIFIED_FILE):
         with open(LAST_NOTIFIED_FILE, "r") as f:
             last_notified_key = f.read().strip()
+    elif os.path.exists(JSON_FILENAME):
+        try:
+            with open(JSON_FILENAME, "r") as f:
+                last_notified_key = json.load(f).get("last_sent_key", "")
+        except: pass
 
+    # --- AZIONE 1: AGGIORNA SEMPRE IL JSON ---
+    with open(JSON_FILENAME, 'w') as f:
+        json.dump(extracted, f, indent=4)
+
+    # --- AZIONE 2: INVIO TELEGRAM ---
     if current_key != last_notified_key or FORCE_SEND:
         header = f"🚨 BOLLETTINO PROTEZIONE CIVILE - {extracted['data_bollettino']}\n"
         validity = f"🕒 Validità: {extracted['validita_inizio']} - {extracted['validita_fine']}\n\n"
@@ -152,15 +156,13 @@ def main():
         
         links = f"\n📍 Mappa: https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html\n🔗 PDF: {pdf_url}"
         
-        # Invio
         send_telegram_message(f"*{header}*{validity}{body}{footer}{links}", f"{header}{validity}{body}{footer}{links}", PDF_FILENAME, f"Bollettino_{extracted['data_bollettino'].replace('/', '-')}.pdf")
         
-        # Salva la chiave per evitare duplicati futuri
         with open(LAST_NOTIFIED_FILE, "w") as f:
             f.write(current_key)
-        print("Notifica Telegram inviata e chiave registrata.")
+        print(f"Messaggio inviato per {current_key}")
     else:
-        print(f"Bollettino già notificato in precedenza ({current_key}). Notifica Telegram saltata.")
+        print("Bollettino già notificato. Solo JSON aggiornato.")
 
 if __name__ == "__main__":
     main()
