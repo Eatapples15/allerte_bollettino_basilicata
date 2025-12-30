@@ -63,15 +63,17 @@ def get_pdf_url():
         except: time.sleep(5)
     return None
 
-def send_telegram_message(message, file_path=None, custom_filename=None):
+def send_telegram_message(message_tg, message_wa, file_path=None, custom_filename=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_IDS: return
-    clean_msg = message.replace('*', '').replace('_', '')
-    whatsapp_url = f"https://wa.me/?text={urllib.parse.quote(clean_msg)}"
-    full_message = f"{message}\n\n📲 [Condividi su WhatsApp]({whatsapp_url})"
+    
+    # Generazione link WhatsApp pre-compilato
+    whatsapp_url = f"https://wa.me/?text={urllib.parse.quote(message_wa)}"
+    full_message_tg = f"{message_tg}\n\n📲 [COPIA E CONDIVIDI SU WHATSAPP]({whatsapp_url})"
+    
     for chat_id in TELEGRAM_CHAT_IDS:
         try:
             requests.post(f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage", 
-                         data={"chat_id": chat_id, "text": full_message, "parse_mode": "Markdown", "disable_web_page_preview": True})
+                         data={"chat_id": chat_id, "text": full_message_tg, "parse_mode": "Markdown", "disable_web_page_preview": True})
             if file_path:
                 with open(file_path, 'rb') as f:
                     requests.post(f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument", 
@@ -81,11 +83,17 @@ def send_telegram_message(message, file_path=None, custom_filename=None):
 def main():
     pdf_url = get_pdf_url()
     if not pdf_url: return
-    
     r = requests.get(pdf_url, timeout=60)
     with open(PDF_FILENAME, 'wb') as f: f.write(r.content)
 
-    extracted = {"data_bollettino": "", "zone": {}, "url_bollettino": pdf_url}
+    extracted = {
+        "data_bollettino": "",
+        "validita_inizio": "N/D",
+        "validita_fine": "N/D",
+        "zone": {},
+        "url_bollettino": pdf_url
+    }
+
     with pdfplumber.open(PDF_FILENAME) as pdf:
         p1_text = pdf.pages[0].extract_text()
         s_match = re.search(r"Inizio validit[àa][:.]?\s*(.*?)(?:\n|$)", p1_text, re.IGNORECASE)
@@ -109,52 +117,55 @@ def main():
                     if zona not in extracted["zone"]: extracted["zone"][zona] = {}
                     extracted["zone"][zona][day_key], extracted["zone"][zona][f"rischio_{day_key}"] = colore, desc
 
-    # CHIAVE DI CONTROLLO UNICA: Data del bollettino + Nome del file PDF
     sent_key = f"{extracted['data_bollettino']}_{os.path.basename(pdf_url)}"
-    
     already_sent = False
     if os.path.exists(JSON_FILENAME):
         try:
             with open(JSON_FILENAME, 'r') as f:
-                old_data = json.load(f)
-                if old_data.get("last_sent_key") == sent_key:
-                    already_sent = True
+                old_json = json.load(f)
+                if old_json.get("last_sent_key") == sent_key: already_sent = True
         except: pass
 
-    # Invia solo se è nuovo o se forzato manualmente
     if not already_sent or FORCE_SEND:
         extracted["last_sent_key"] = sent_key
         extracted["ultimo_aggiornamento"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-        
         with open(JSON_FILENAME, 'w') as f:
             json.dump(extracted, f, indent=4)
         
-        msg = f"🚨 *BOLLETTINO PROTEZIONE CIVILE - {extracted['data_bollettino']}*\n"
-        msg += f"🕒 Validità: {extracted['validita_inizio']} - {extracted['validita_fine']}\n\n"
-        msg += "📋 *SITUAZIONE OGGI:*\n"
+        # --- COSTRUZIONE MESSAGGI ---
+        # tg = Markdown, wa = Plain Text senza asterischi
+        header = f"🚨 BOLLETTINO PROTEZIONE CIVILE - {extracted['data_bollettino']}\n"
+        validity = f"🕒 Validità: {extracted['validita_inizio']} - {extracted['validita_fine']}\n\n"
+        
+        body = "📋 SITUAZIONE OGGI:\n"
         for z in sorted(extracted["zone"].keys()):
             d = extracted["zone"][z]
             c = COLOR_MAP.get(d.get("oggi"), COLOR_MAP["green"])
-            msg += f"{c['icona']} *{z}*: {c['nome']}\n"
-            if d.get("oggi") != "green": msg += f"   ⚠️ _{d.get('rischio_oggi')}_\n"
+            line = f"{c['icona']} {z}: {c['nome']}\n"
+            if d.get("oggi") != "green": line += f"   ⚠️ {d.get('rischio_oggi')}\n"
+            body += line
 
-        msg += "\n🔮 *PREVISIONE DOMANI:*\n"
+        footer = "\n🔮 PREVISIONE DOMANI:\n"
         ha_crit = False
         for z in sorted(extracted["zone"].keys()):
             d = extracted["zone"][z]
             if d.get("domani") != "green":
                 ha_crit = True
                 c = COLOR_MAP.get(d.get("domani"))
-                msg += f"{c['icona']} *{z}*: {c['nome']}\n   ⚠️ _{d.get('rischio_domani')}_\n"
-        if not ha_crit: msg += "🟢 Nessuna criticità prevista.\n"
+                footer += f"{c['icona']} {z}: {c['nome']}\n   ⚠️ {d.get('rischio_domani')}\n"
+        if not ha_crit: footer += "🟢 Nessuna criticità prevista.\n"
         
-        msg += f"\n📍 *Consulta la mappa:* https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html"
-        msg += f"\n🔗 [Scarica PDF originale]({pdf_url})"
+        map_link = f"\n📍 Consulta la mappa: https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html"
+
+        # Messaggio Telegram (con Markdown)
+        msg_tg = f"*{header}*{validity}{body}{footer}{map_link}"
+        # Messaggio WhatsApp (senza Markdown per copia pulita)
+        msg_wa = f"{header}{validity}{body}{footer}{map_link}"
         
-        send_telegram_message(msg, PDF_FILENAME, f"Bollettino_{extracted['data_bollettino'].replace('/', '-')}.pdf")
-        print(f"Bollettino inviato: {sent_key}")
+        send_telegram_message(msg_tg, msg_wa, PDF_FILENAME, f"Bollettino_{extracted['data_bollettino'].replace('/', '-')}.pdf")
+        print("Inviato.")
     else:
-        print(f"Bollettino già inviato oggi ({sent_key}). Nessuna azione necessaria.")
+        print("Già inviato.")
 
 if __name__ == "__main__":
     main()
