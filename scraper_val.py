@@ -1,79 +1,57 @@
-import feedparser
+
+import requests
 import json
-import re
 import datetime
-import os
-
-def estrai_dati_avanzati(testo):
-    testo_low = testo.lower()
-    dati = {
-        "tendenza": "stazionaria",
-        "problema_principale": "non specificato",
-        "quota_critica": "n/d",
-        "neve_fresca_24h": "0 cm",
-        "temperature": {"min": "n/d", "max": "n/d"}
-    }
-    
-    # 1. Tendenza
-    if "aumento" in testo_low: dati["tendenza"] = "in aumento 📈"
-    elif "diminuzione" in testo_low: dati["tendenza"] = "in diminuzione 📉"
-    
-    # 2. Problema tipico
-    if "neve fresca" in testo_low: dati["problema_principale"] = "Neve fresca"
-    elif "lastroni" in testo_low: dati["problema_principale"] = "Lastroni da vento"
-    elif "neve bagnata" in testo_low: dati["problema_principale"] = "Neve bagnata"
-    elif "ghiaccio" in testo_low: dati["problema_principale"] = "Ghiaccio / Croste"
-
-    # 3. Quota critica (es. oltre i 1500m)
-    quota = re.search(r"oltre i (\d+)\s*m", testo_low)
-    if quota: dati["quota_critica"] = quota.group(1) + " m"
-
-    # 4. Neve fresca (es. 10-15 cm)
-    neve = re.search(r"(\d+)\s*cm di neve fresca", testo_low)
-    if neve: dati["neve_fresca_24h"] = neve.group(1) + " cm"
-
-    # 5. Temperature (cerca pattern come -5°C o +2°C)
-    temp = re.findall(r"([+-]?\d+)\s*°", testo_low)
-    if len(temp) >= 2:
-        # Ordiniamo per trovare min e max tra i valori estratti
-        valori = sorted([int(t) for t in temp])
-        dati["temperature"]["min"] = f"{valori[0]}°C"
-        dati["temperature"]["max"] = f"{valori[-1]}°C"
-        
-    return dati
 
 def scrape():
-    url = "https://servizimeteomont.csifa.carabinieri.it/api/news/rss/bollettino/i/13"
-    feed = feedparser.parse(url)
+    # Endpoint forniti
+    url_stazione = "https://servizimeteomont.csifa.carabinieri.it/api/news/json/datistazione/17"
+    url_pericolo = "https://servizimeteomont.csifa.carabinieri.it/api/news/json/gradopericolo/13"
     
-    if not feed.entries:
-        print("Errore: Feed non raggiungibile.")
-        return
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    
+    try:
+        # 1. Recupero dati stazione (Neve al suolo, Temp, Vento)
+        res_stazione = requests.get(url_stazione, headers=headers)
+        dati_stazione = res_stazione.json()[0] if res_stazione.json() else {}
 
-    item = feed.entries[0]
-    testo_completo = item.summary.replace('\n', ' ').strip()
-    
-    # Analisi del testo
-    analisi = estrai_dati_avanzati(testo_completo)
-    
-    # Grado di pericolo
-    match_pericolo = re.search(r"pericolo (\d)", testo_completo.lower())
-    grado = int(match_pericolo.group(1)) if match_pericolo else 0
+        # 2. Recupero grado pericolo strutturato
+        res_pericolo = requests.get(url_pericolo, headers=headers)
+        dati_pericolo = res_pericolo.json()[0] if res_pericolo.json() else {}
 
-    json_finale = {
-        "stazione": "Appennino Lucano",
-        "data_aggiornamento": item.published,
-        "grado_pericolo": grado,
-        "info_rapide": analisi,
-        "sintesi_testuale": testo_completo,
-        "link_pdf": item.link,
-        "timestamp_invio": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-    }
+        # 3. Assemblaggio JSON finale
+        json_finale = {
+            "settore": "Appennino Lucano",
+            "stazione_riferimento": dati_stazione.get("nomeStazione", "N/D"),
+            "data_osservazione": dati_stazione.get("dataOraOsservazione", "N/D"),
+            
+            # Dati Neve e Meteo (dalla stazione ID 17)
+            "meteo": {
+                "neve_suolo_cm": dati_stazione.get("altezzaNeveAlSuolo", 0),
+                "neve_fresca_cm": dati_stazione.get("altezzaNeveFresca24h", 0),
+                "temp_aria": dati_stazione.get("temperaturaAria", "N/D"),
+                "vento_velocita": dati_stazione.get("velocitaVento", "N/D"),
+                "vento_direzione": dati_stazione.get("direzioneVento", "N/D")
+            },
+            
+            # Dati Pericolo (dall'ID 13)
+            "valanghe": {
+                "grado_pericolo": dati_pericolo.get("gradoPericolo", "N/D"),
+                "tendenza": dati_pericolo.get("tendenza", "N/D"),
+                "problema": dati_pericolo.get("problemaValanghivo", "N/D"),
+                "quota": dati_pericolo.get("quota", "N/D")
+            },
+            
+            "last_update": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+        }
 
-    with open('valanghe.json', 'w', encoding='utf-8') as f:
-        json.dump(json_finale, f, indent=4, ensure_ascii=False)
-    
-    print("Scraping completato con successo.")
+        with open('valanghe.json', 'w', encoding='utf-8') as f:
+            json.dump(json_finale, f, indent=4, ensure_ascii=False)
+        
+        print("Sincronizzazione API completata.")
+
+    except Exception as e:
+        print(f"Errore durante lo scraping: {e}")
 
 if __name__ == "__main__":
     scrape()
