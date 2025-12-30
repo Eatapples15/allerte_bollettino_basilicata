@@ -66,8 +66,10 @@ def get_pdf_url():
 
 def send_telegram_message(message_tg, message_wa, file_path=None, custom_filename=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_IDS: return
+    # Generazione link WhatsApp pre-compilato (senza Markdown)
     whatsapp_url = f"https://wa.me/?text={urllib.parse.quote(message_wa)}"
     full_message_tg = f"{message_tg}\n\n📲 [COPIA E CONDIVIDI SU WHATSAPP]({whatsapp_url})"
+    
     for chat_id in TELEGRAM_CHAT_IDS:
         try:
             requests.post(f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage", 
@@ -115,11 +117,16 @@ def main():
                     if zona not in extracted["zone"]: extracted["zone"][zona] = {}
                     extracted["zone"][zona][day_key], extracted["zone"][zona][f"rischio_{day_key}"] = colore, desc
 
+    # CHIAVE IDENTIFICATIVA
     current_key = f"{extracted['data_bollettino']}_{os.path.basename(pdf_url)}"
     extracted["last_sent_key"] = current_key
     extracted["ultimo_aggiornamento"] = datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
 
-    # --- CONTROLLO CHIAVE PRECEDENTE ---
+    # --- AZIONE 1: AGGIORNA SEMPRE IL JSON PER L'APP ---
+    with open(JSON_FILENAME, 'w') as f:
+        json.dump(extracted, f, indent=4)
+
+    # --- AZIONE 2: INVIO TELEGRAM (CON LINK IPERTESTUALI) ---
     last_notified_key = ""
     if os.path.exists(LAST_NOTIFIED_FILE):
         with open(LAST_NOTIFIED_FILE, "r") as f:
@@ -130,14 +137,10 @@ def main():
                 last_notified_key = json.load(f).get("last_sent_key", "")
         except: pass
 
-    # --- AZIONE 1: AGGIORNA SEMPRE IL JSON ---
-    with open(JSON_FILENAME, 'w') as f:
-        json.dump(extracted, f, indent=4)
-
-    # --- AZIONE 2: INVIO TELEGRAM ---
     if current_key != last_notified_key or FORCE_SEND:
         header = f"🚨 BOLLETTINO PROTEZIONE CIVILE - {extracted['data_bollettino']}\n"
         validity = f"🕒 Validità: {extracted['validita_inizio']} - {extracted['validita_fine']}\n\n"
+        
         body = "📋 SITUAZIONE OGGI:\n"
         for z in sorted(extracted["zone"].keys()):
             d = extracted["zone"][z]
@@ -154,15 +157,24 @@ def main():
                 footer += f"{c['icona']} {z}: {c['nome']}\n   ⚠️ {d.get('rischio_domani')}\n"
         if not ha_crit: footer += "🟢 Nessuna criticità prevista.\n"
         
-        links = f"\n📍 Mappa: https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html\n🔗 PDF: {pdf_url}"
+        map_url = "https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html"
+        # Link Ipertestuali (Markdown per Telegram)
+        links_tg = f"\n📍 [Consulta la Mappa]({map_url})\n🔗 [Scarica PDF Originale]({pdf_url})"
+        # Link in chiaro (per WhatsApp)
+        links_wa = f"\n📍 Mappa: {map_url}\n🔗 PDF: {pdf_url}"
         
-        send_telegram_message(f"*{header}*{validity}{body}{footer}{links}", f"{header}{validity}{body}{footer}{links}", PDF_FILENAME, f"Bollettino_{extracted['data_bollettino'].replace('/', '-')}.pdf")
+        send_telegram_message(
+            f"*{header}*{validity}{body}{footer}{links_tg}", 
+            f"{header}{validity}{body}{footer}{links_wa}", 
+            PDF_FILENAME, 
+            f"Bollettino_{extracted['data_bollettino'].replace('/', '-')}.pdf"
+        )
         
         with open(LAST_NOTIFIED_FILE, "w") as f:
             f.write(current_key)
-        print(f"Messaggio inviato per {current_key}")
+        print(f"Notifica inviata: {current_key}")
     else:
-        print("Bollettino già notificato. Solo JSON aggiornato.")
+        print("Solo JSON aggiornato. Notifica già inviata.")
 
 if __name__ == "__main__":
     main()
