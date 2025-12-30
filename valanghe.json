@@ -1,10 +1,18 @@
 {
-    "settore": "Appennino Lucano",
-    "regione": "Basilicata",
-    "ultimo_aggiornamento": "Tue, 23 Dec 2025 13:48:14 +0100",
-    "grado_pericolo": "N/D",
-    "titolo": "23/12/2025 - Bollettino Settore: \"APPENNINO MERIDIONALE\" - Sotto Settore: \"APPENNINO CAMPANO\"",
-    "descrizione_sintetica": "23/12/2025 - Bollettino Settore: \"APPENNINO MERIDIONALE\" - Sotto Settore: \"APPENNINO CAMPANO\"",
-    "url_bollettino": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/1/cl/2025-12-23",
-    "timestamp_esecuzione": "2025-12-30 11:11:16.153157"
+    "stazione": "Appennino Lucano",
+    "data_aggiornamento": "Tue, 23 Dec 2025 13:48:14 +0100",
+    "grado_pericolo": 0,
+    "info_rapide": {
+        "tendenza": "stazionaria",
+        "problema_principale": "non specificato",
+        "quota_critica": "n/d",
+        "neve_fresca_24h": "0 cm",
+        "temperature": {
+            "min": "n/d",
+            "max": "n/d"
+        }
+    },
+    "sintesi_testuale": "23/12/2025 - Bollettino Settore: \"APPENNINO MERIDIONALE\" - Sotto Settore: \"APPENNINO CAMPANO\"",
+    "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/1/cl/2025-12-23",
+    "timestamp_invio": "30/12/2025 11:24"
 }
