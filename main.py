@@ -65,11 +65,8 @@ def get_pdf_url():
 
 def send_telegram_message(message_tg, message_wa, file_path=None, custom_filename=None):
     if not TELEGRAM_TOKEN or not TELEGRAM_CHAT_IDS: return
-    
-    # Generazione link WhatsApp pre-compilato
     whatsapp_url = f"https://wa.me/?text={urllib.parse.quote(message_wa)}"
     full_message_tg = f"{message_tg}\n\n📲 [COPIA E CONDIVIDI SU WHATSAPP]({whatsapp_url})"
-    
     for chat_id in TELEGRAM_CHAT_IDS:
         try:
             requests.post(f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage", 
@@ -132,18 +129,13 @@ def main():
         with open(JSON_FILENAME, 'w') as f:
             json.dump(extracted, f, indent=4)
         
-        # --- COSTRUZIONE MESSAGGI ---
-        # tg = Markdown, wa = Plain Text senza asterischi
         header = f"🚨 BOLLETTINO PROTEZIONE CIVILE - {extracted['data_bollettino']}\n"
         validity = f"🕒 Validità: {extracted['validita_inizio']} - {extracted['validita_fine']}\n\n"
-        
         body = "📋 SITUAZIONE OGGI:\n"
         for z in sorted(extracted["zone"].keys()):
             d = extracted["zone"][z]
             c = COLOR_MAP.get(d.get("oggi"), COLOR_MAP["green"])
-            line = f"{c['icona']} {z}: {c['nome']}\n"
-            if d.get("oggi") != "green": line += f"   ⚠️ {d.get('rischio_oggi')}\n"
-            body += line
+            body += f"{c['icona']} {z}: {c['nome']}\n" + (f"   ⚠️ {d.get('rischio_oggi')}\n" if d.get("oggi") != "green" else "")
 
         footer = "\n🔮 PREVISIONE DOMANI:\n"
         ha_crit = False
@@ -155,17 +147,8 @@ def main():
                 footer += f"{c['icona']} {z}: {c['nome']}\n   ⚠️ {d.get('rischio_domani')}\n"
         if not ha_crit: footer += "🟢 Nessuna criticità prevista.\n"
         
-        map_link = f"\n📍 Consulta la mappa: https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html"
-
-        # Messaggio Telegram (con Markdown)
-        msg_tg = f"*{header}*{validity}{body}{footer}{map_link}"
-        # Messaggio WhatsApp (senza Markdown per copia pulita)
-        msg_wa = f"{header}{validity}{body}{footer}{map_link}"
-        
-        send_telegram_message(msg_tg, msg_wa, PDF_FILENAME, f"Bollettino_{extracted['data_bollettino'].replace('/', '-')}.pdf")
-        print("Inviato.")
-    else:
-        print("Già inviato.")
+        links = f"\n📍 Mappa: https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html\n🔗 PDF: {pdf_url}"
+        send_telegram_message(f"*{header}*{validity}{body}{footer}{links}", f"{header}{validity}{body}{footer}{links}", PDF_FILENAME, f"Bollettino_{extracted['data_bollettino'].replace('/', '-')}.pdf")
 
 if __name__ == "__main__":
     main()
