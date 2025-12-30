@@ -2,8 +2,7 @@ name: Aggiornamento Bollettino PDF
 
 on:
   schedule:
-    # Esegue ogni ora (al minuto 30) dalle 11:30 alle 18:30 italiane
-    # (UTC 10:30 - 17:30)
+    # Esegue ogni ora al minuto 30 (11:30 - 18:30 italiane)
     - cron: '30 10-17 * * *'
   
   workflow_dispatch:
@@ -24,7 +23,7 @@ jobs:
       - name: Checkout del codice
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0 # Recupera tutta la cronologia per evitare conflitti di commit
+          fetch-depth: 0 
 
       - name: Imposta Python
         uses: actions/setup-python@v4
@@ -40,13 +39,26 @@ jobs:
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          # Legge correttamente l'input manuale del workflow
           FORCE_SEND: ${{ github.event.inputs.force_send || 'false' }}
         run: python main.py
 
       - name: Commit e Push dei cambiamenti
         run: |
-          git config --global user.name "Bollettino Bot"
-          git config --global user.email "bot@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Sincronizza il repository locale con eventuali modifiche remote (es. sensori)
+          git pull origin main --rebase
+
+          # Aggiunge il file generato
           git add dati_bollettino.json
-          # Esegue il commit solo se il file dati_bollettino.json è effettivamente cambiato
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento Bollettino $(date +'%d/%m/%Y')" && git push)
+          
+          # Verifica modifiche reali prima di procedere
+          if git diff --staged --quiet; then
+            echo "Nessuna modifica rilevata nel file JSON. Esco senza errori."
+          else
+            echo "Modifiche rilevate. Eseguo commit e push."
+            git commit -m "Aggiornamento automatico Bollettino: $(date +'%d/%m/%Y %H:%M')"
+            git push origin main
+          fi
