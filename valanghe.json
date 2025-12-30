@@ -1,18 +1,21 @@
 {
-    "stazione": "Appennino Lucano",
-    "data_aggiornamento": "Tue, 23 Dec 2025 13:48:14 +0100",
-    "grado_pericolo": 0,
-    "info_rapide": {
-        "tendenza": "stazionaria",
-        "problema_principale": "non specificato",
-        "quota_critica": "n/d",
-        "neve_fresca_24h": "0 cm",
-        "temperature": {
-            "min": "n/d",
-            "max": "n/d"
-        }
+    "regione": "Basilicata",
+    "zona": "Appennino Lucano",
+    "stazione_nome": "Monte Pierfaone (PZ)",
+    "quota_stazione": "1732 m",
+    "data_osservazione": "N/D",
+    "meteo": {
+        "neve_suolo": 0,
+        "neve_fresca_24h": 0,
+        "temperatura": "N/D",
+        "vento_vel": "N/D",
+        "vento_dir": "N/D"
     },
-    "sintesi_testuale": "23/12/2025 - Bollettino Settore: \"APPENNINO MERIDIONALE\" - Sotto Settore: \"APPENNINO CAMPANO\"",
-    "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/1/cl/2025-12-23",
-    "timestamp_invio": "30/12/2025 11:24"
+    "pericolo": {
+        "grado": "N/D",
+        "tendenza": "N/D",
+        "problema": "N/D",
+        "testo_quota": "N/D"
+    },
+    "aggiornamento_sistema": "30/12/2025 13:30"
 }
