@@ -1,10 +1,9 @@
 {
     "testata": {
         "regione": "Basilicata",
-        "settore": "Appennino Lucano",
-        "stazione": "Monte Pierfaone (PZ)",
-        "data_bollettino": "Wed, 24 Dec 2025 13:41:38 +0100",
-        "ultima_lettura_api": "30/12/2025 17:07"
+        "stazione_monitorata": "PASSO LE FORCHE",
+        "data_bollettino": "Thu, 25 Dec 2025 12:43:56 +0100",
+        "ultima_lettura_api": "31/12/2025 13:27"
     },
     "pericolo": {
         "grado": 0,
@@ -16,11 +15,10 @@
         "neve_al_suolo": 0,
         "neve_fresca_24h": 0,
         "temperatura": "n/d",
-        "vento_velocita": 0,
-        "vento_direzione": "n/d"
+        "vento": "0 km/h "
     },
     "dettagli": {
-        "sintesi": "24/12/2025 - Bollettino Settore: \"APPENNINO MERIDIONALE\" - Sotto Settore: \"APPENNINO CALABRO\"",
-        "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/3/cl/2025-12-24"
+        "sintesi": "25/12/2025 - Bollettino Settore: \"APPENNINO MERIDIONALE\" - Sotto Settore: \"APPENNINO LUCANO\"",
+        "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2025-12-25"
     }
 }
