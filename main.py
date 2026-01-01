@@ -15,9 +15,8 @@ TELEGRAM_CHAT_IDS = [cid.strip() for cid in RAW_CHAT_IDS.split(",") if cid.strip
 
 BASE_URL = "https://centrofunzionale.regione.basilicata.it/it/"
 LIST_URL = "https://centrofunzionale.regione.basilicata.it/it/bollettini-avvisi.php?lt=A"
-PDF_FILENAME = "bollettino.pdf"
+PDF_TEMP_NAME = "bollettino_temp.pdf"
 JSON_FILENAME = "dati_bollettino.json"
-# File locale che tiene traccia dell'ultimo invio
 LAST_NOTIFIED_FILE = "last_notified.txt"
 
 COLOR_MAP = {
@@ -62,22 +61,18 @@ def get_pdf_url():
         print(f"Errore ricerca PDF: {e}")
     return None
 
-def send_telegram(msg_tg, msg_wa, pdf_path):
+def send_telegram(msg_tg, msg_wa, pdf_path, filename_custom):
     if not TELEGRAM_TOKEN: return
-    
-    # Prepariamo il link WhatsApp per il tasto di condivisione
     wa_link = f"https://wa.me/?text={urllib.parse.quote(msg_wa)}"
     formatted_msg = f"{msg_tg}\n\n📲 [CONDIVIDI SU WHATSAPP]({wa_link})"
     
     for chat_id in TELEGRAM_CHAT_IDS:
         try:
-            # 1. Invia il testo
             requests.post(f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage", 
                          data={"chat_id": chat_id, "text": formatted_msg, "parse_mode": "Markdown", "disable_web_page_preview": True})
-            # 2. Invia il file PDF
             with open(pdf_path, 'rb') as f:
                 requests.post(f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendDocument", 
-                             data={"chat_id": chat_id}, files={'document': f})
+                             data={"chat_id": chat_id}, files={'document': (filename_custom, f)})
             print(f"✅ Inviato correttamente a {chat_id}")
         except Exception as e:
             print(f"❌ Errore invio a {chat_id}: {e}")
@@ -86,19 +81,17 @@ def main():
     pdf_url = get_pdf_url()
     if not pdf_url: return
 
-    # Scarica il PDF
     r = requests.get(pdf_url)
-    with open(PDF_FILENAME, 'wb') as f: f.write(r.content)
+    with open(PDF_TEMP_NAME, 'wb') as f: f.write(r.content)
 
-    extracted = {"zone": {}}
+    extracted = {"zone": {}, "url_bollettino": pdf_url}
     
-    with pdfplumber.open(PDF_FILENAME) as pdf:
+    with pdfplumber.open(PDF_TEMP_NAME) as pdf:
         text = pdf.pages[0].extract_text()
         extracted["data_bollettino"] = re.search(r"DEL\s+(\d{2}/\d{2}/\d{4})", text).group(1)
         extracted["validita_inizio"] = re.search(r"Inizio validità[:]?\s*(.*)", text, re.I).group(1).split('\n')[0]
         extracted["validita_fine"] = re.search(r"Fine validità[:]?\s*(.*)", text, re.I).group(1).split('\n')[0]
         
-        # Estrazione tabelle (Oggi/Domani)
         found_tables = []
         for p in pdf.pages:
             for t in p.extract_tables():
@@ -114,23 +107,22 @@ def main():
                         extracted["zone"][z][day] = col
                         extracted["zone"][z][f"rischio_{day}"] = desc
 
-    # LOGICA DI CONTROLLO INVIO
+    # CONTROLLO NOTIFICA
     current_key = f"{extracted['data_bollettino']}_{os.path.basename(pdf_url)}"
-    
     last_notified = ""
     if os.path.exists(LAST_NOTIFIED_FILE):
         with open(LAST_NOTIFIED_FILE, "r") as f: last_notified = f.read().strip()
 
-    # Salviamo sempre il JSON (per la mappa)
+    # Salviamo sempre il JSON per la mappa
     with open(JSON_FILENAME, 'w') as f: json.dump(extracted, f, indent=4)
 
-    # Inviamo Telegram SOLO se la chiave è diversa
     if current_key != last_notified:
-        print(f"🚀 Nuovo bollettino! Invio in corso...")
+        print(f"🚀 Elaborazione nuovo bollettino del {extracted['data_bollettino']}")
         
         msg_header = f"🚨 *BOLLETTINO BASILICATA* - {extracted['data_bollettino']}\n"
         msg_val = f"🕒 Validità: {extracted['validita_inizio']} - {extracted['validita_fine']}\n\n"
         
+        # Sezione OGGI
         msg_body = "📋 *SITUAZIONE OGGI:*\n"
         for z in sorted(extracted["zone"].keys()):
             d = extracted["zone"][z]
@@ -138,19 +130,34 @@ def main():
             msg_body += f"{c['icona']} {z}: {c['nome']}\n"
             if d['oggi'] != 'green': msg_body += f"   ⚠️ {d['rischio_oggi']}\n"
 
-        map_link = "https://www.formazionesicurezza.org/protezionecivile/bollettino/map_emb.html"
-        links = f"\n📍 [VEDI MAPPA INTERATTIVA]({map_link})\n🔗 [DOWNLOAD PDF]({pdf_url})"
+        # Sezione DOMANI (Solo se critico)
+        msg_tomorrow = "\n🔮 *PREVISIONE DOMANI:*\n"
+        ha_criticita_domani = False
+        for z in sorted(extracted["zone"].keys()):
+            d = extracted["zone"][z]
+            if d.get('domani', 'green') != 'green':
+                ha_criticita_domani = True
+                c = COLOR_MAP[d['domani']]
+                msg_tomorrow += f"{c['icona']} {z}: {c['nome']}\n   ⚠️ {d['rischio_domani']}\n"
         
-        # Testo per WA (senza Markdown)
+        if not ha_criticita_domani:
+            msg_tomorrow += "🟢 Nessuna criticità prevista.\n"
+
+        map_link = "https://www.formazionesicurezza.org/protezionecivile/bollettino/map_emb.html"
+        links = f"\n📍 [MAPPA INTERATTIVA]({map_link})\n🔗 [PDF ORIGINALE]({pdf_url})"
+        
+        # Testo WhatsApp
         msg_wa = f"BOLLETTINO BASILICATA {extracted['data_bollettino']}\nConsulta qui: {map_link}"
 
-        send_telegram(f"{msg_header}{msg_val}{msg_body}{links}", msg_wa, PDF_FILENAME)
+        # Nome file PDF personalizzato
+        pdf_display_name = f"Bollettino_del_{extracted['data_bollettino'].replace('/', '_')}.pdf"
+
+        send_telegram(f"{msg_header}{msg_val}{msg_body}{msg_tomorrow}{links}", msg_wa, PDF_TEMP_NAME, pdf_display_name)
         
-        # Aggiorna il file di controllo
         with open(LAST_NOTIFIED_FILE, "w") as f: f.write(current_key)
     else:
-        print("✅ Bollettino già inviato in precedenza.")
+        print(f"✅ Bollettino del {extracted['data_bollettino']} già notificato.")
 
 if __name__ == "__main__":
     main()
-
+    
