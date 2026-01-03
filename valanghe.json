@@ -1,24 +1,22 @@
 {
     "testata": {
-        "regione": "Basilicata",
-        "stazione_monitorata": "PASSO LE FORCHE",
-        "data_bollettino": "Sat, 27 Dec 2025 13:24:49 +0100",
-        "ultima_lettura_api": "02/01/2026 13:27"
+        "settore": "Appennino Lucano",
+        "stazione": "PASSO LE FORCHE",
+        "data_bollettino": "Sun, 28 Dec 2025 13:03:41 +0100",
+        "ultima_lettura": "03/01/2026 13:23"
     },
-    "pericolo": {
-        "grado": 0,
-        "tendenza": "stazionaria",
-        "problema": "non specificato",
-        "quota": "n/d"
+    "bollettino_tecnico": {
+        "grado_pericolo": 1,
+        "situazione_tipo": "Neve a debole coesione e vento",
+        "manto_nevoso": "Stabilità discreta su pochi punti per isolati pendii.",
+        "avvertenze": "Attenzione all'intensità del vento ed effetto wind-chill."
     },
-    "meteo_reale": {
-        "neve_al_suolo": 0,
-        "neve_fresca_24h": 0,
-        "temperatura": "n/d",
-        "vento": "0 km/h "
+    "meteo_dettaglio": {
+        "temp_reale": "0°C",
+        "temp_percepita": "0°C",
+        "vento": "0 km/h ",
+        "neve_suolo": 0,
+        "neve_fresca": 0
     },
-    "dettagli": {
-        "sintesi": "27/12/2025 - Bollettino Settore: \"APPENNINO MERIDIONALE\" - Sotto Settore: \"APPENNINO LUCANO\"",
-        "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2025-12-27"
-    }
+    "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2025-12-28"
 }
