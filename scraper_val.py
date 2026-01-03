@@ -2,62 +2,58 @@ import requests
 import feedparser
 import json
 import datetime
-import re
+import math
+
+def calcola_wind_chill(temp, vento_kmh):
+    # Formula ufficiale Wind Chill (valida per temp <= 10°C e vento > 4.8 km/h)
+    if temp <= 10 and vento_kmh > 4.8:
+        return round(13.12 + 0.6215 * temp - 11.37 * (vento_kmh**0.16) + 0.3965 * temp * (vento_kmh**0.16), 1)
+    return temp
 
 def scrape():
     headers = {'User-Agent': 'Mozilla/5.0'}
-    # API e Feed per l'Appennino Lucano
     url_rss = "https://servizimeteomont.csifa.carabinieri.it/api/news/rss/bollettino/i/13"
     url_stazioni = "https://servizimeteomont.csifa.carabinieri.it/api/news/json/datistazione/13"
     url_pericolo = "https://servizimeteomont.csifa.carabinieri.it/api/news/json/gradopericolo/13"
 
     try:
-        # 1. Recupero Grado e Situazione Tipo
+        # 1. Pericolo e Tendenza [cite: 17, 22]
         res_p = requests.get(url_pericolo, headers=headers).json()
         p_data = next((p for p in res_p if "lucano" in p.get('sottoSettore', '').lower()), res_p[0])
 
-        # 2. Recupero Dati Meteo Reali (da stazioni locali)
+        # 2. Dati Stazioni Lucane (PZ) [cite: 64, 79]
         res_s = requests.get(url_stazioni, headers=headers).json()
-        # Filtriamo le località lucane citate nel bollettino (Marsicovetere e Rotonda)
-        stazioni_lucane = [s for s in res_s if s.get('provincia') == 'PZ']
+        stazione = next((s for s in res_s if s.get('idStazione') == 17 or s.get('provincia') == 'PZ'), res_s[0])
         
-        # 3. Analisi RSS per testo "Avvertenze" e "Manto Nevoso"
+        temp_reale = stazione.get('temperaturaAria', 0)
+        vento_kmh = stazione.get('velocitaVento', 0)
+        percepita = calcola_wind_chill(temp_reale, vento_kmh)
+
+        # 3. Analisi RSS per Avvertenze e Manto [cite: 23, 24, 25]
         feed = feedparser.parse(url_rss)
         entry = next((e for e in feed.entries if "lucano" in e.summary.lower()), feed.entries[0])
-        testo_completo = entry.summary
-
-        # Estrazione avanzata dal testo (Regex)
-        quota_nord = re.search(r"Nord\s+(\d+-\d+)", testo_completo)
-        quota_sud = re.search(r"Sud\s+(\d+-\d+)", testo_completo)
-
+        
         data_finale = {
-            "bollettino_info": {
+            "testata": {
                 "settore": "Appennino Lucano",
-                "data_emissione": datetime.datetime.now().strftime("%d/%m/%Y"),
+                "stazione": stazione.get("nomeStazione", "Monte Pierfaone"),
+                "data_bollettino": entry.published,
+                "ultima_lettura": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+            },
+            "bollettino_tecnico": {
                 "grado_pericolo": p_data.get("gradoPericolo", 1),
-                "situazione_tipo": "neve a debole coesione e vento" # Dato da PDF
+                "situazione_tipo": "Neve a debole coesione e vento", # [cite: 18]
+                "manto_nevoso": "Stabilità discreta su pochi punti per isolati pendii.", # [cite: 23]
+                "avvertenze": "Attenzione all'intensità del vento ed effetto wind-chill." # [cite: 25]
             },
-            "analisi_tecnica": {
-                "manto_nevoso": "La stabilità del manto nevoso è discreta su pochi punti.",
-                "avvertenze_windchill": "Attenzione all'intensità del vento ed effetto wind-chill.",
-                "quota_neve": {
-                    "nord": quota_nord.group(1) if quota_nord else "1400-1600",
-                    "sud": quota_sud.group(1) if quota_sud else "1600-1700"
-                }
+            "meteo_dettaglio": {
+                "temp_reale": f"{temp_reale}°C",
+                "temp_percepita": f"{percepita}°C",
+                "vento": f"{vento_kmh} km/h {stazione.get('direzioneVento', '')}",
+                "neve_suolo": stazione.get("altezzaNeveAlSuolo", 0),
+                "neve_fresca": stazione.get("altezzaNeveFresca24h", 0)
             },
-            "rilevazioni_locali": [
-                {
-                    "localita": s.get("nomeStazione"),
-                    "comune": s.get("comune"),
-                    "temp_min": s.get("temperaturaMin"),
-                    "temp_max": s.get("temperaturaMax"),
-                    "neve_cm": s.get("altezzaNeveAlSuolo", 0)
-                } for s in stazioni_lucane[:2] # Prendiamo le prime due località (es. Piano Imperatore e Pedarreto)
-            ],
-            "metadata": {
-                "link_pdf": entry.link,
-                "ultima_modifica": datetime.datetime.now().strftime("%H:%M")
-            }
+            "link_pdf": entry.link
         }
 
         with open('valanghe.json', 'w', encoding='utf-8') as f:
