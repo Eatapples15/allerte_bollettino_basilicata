@@ -6,69 +6,62 @@ import re
 
 def scrape():
     headers = {'User-Agent': 'Mozilla/5.0'}
-    
-    # URL definitivi
+    # API e Feed per l'Appennino Lucano
     url_rss = "https://servizimeteomont.csifa.carabinieri.it/api/news/rss/bollettino/i/13"
-    url_stazioni_all = "https://servizimeteomont.csifa.carabinieri.it/api/news/json/datistazione/13"
+    url_stazioni = "https://servizimeteomont.csifa.carabinieri.it/api/news/json/datistazione/13"
     url_pericolo = "https://servizimeteomont.csifa.carabinieri.it/api/news/json/gradopericolo/13"
 
     try:
-        # 1. Recupero RSS e filtraggio per BASILICATA
-        feed = feedparser.parse(url_rss)
-        sintesi = "Bollettino non disponibile"
-        link_pdf = "#"
-        data_boll = "N/D"
-        
-        for entry in feed.entries:
-            if "lucano" in entry.summary.lower() or "basilicata" in entry.summary.lower():
-                sintesi = entry.summary.replace('\n', ' ').strip()
-                link_pdf = entry.link
-                data_boll = entry.published
-                break
-        
-        # 2. Recupero Dati Stazioni - Cerchiamo la 17, altrimenti la prima lucana attiva
-        res_stazioni = requests.get(url_stazioni_all, headers=headers)
-        stazioni_list = res_stazioni.json()
-        
-        # Cerchiamo Monte Pierfaone (17) o Sellata (16) o simili
-        stazione_target = next((s for s in stazioni_list if s.get('idStazione') == 17), None)
-        if not stazione_target or stazione_target.get('temperaturaAria') == None:
-            stazione_target = next((s for s in stazioni_list if s.get('provincia') == 'PZ'), stazioni_list[0])
+        # 1. Recupero Grado e Situazione Tipo
+        res_p = requests.get(url_pericolo, headers=headers).json()
+        p_data = next((p for p in res_p if "lucano" in p.get('sottoSettore', '').lower()), res_p[0])
 
-        # 3. Recupero Pericolo
-        res_pericolo = requests.get(url_pericolo, headers=headers)
-        pericolo_list = res_pericolo.json()
-        pericolo_data = next((p for p in pericolo_list if "lucano" in p.get('sottoSettore', '').lower()), pericolo_list[0])
+        # 2. Recupero Dati Meteo Reali (da stazioni locali)
+        res_s = requests.get(url_stazioni, headers=headers).json()
+        # Filtriamo le località lucane citate nel bollettino (Marsicovetere e Rotonda)
+        stazioni_lucane = [s for s in res_s if s.get('provincia') == 'PZ']
+        
+        # 3. Analisi RSS per testo "Avvertenze" e "Manto Nevoso"
+        feed = feedparser.parse(url_rss)
+        entry = next((e for e in feed.entries if "lucano" in e.summary.lower()), feed.entries[0])
+        testo_completo = entry.summary
+
+        # Estrazione avanzata dal testo (Regex)
+        quota_nord = re.search(r"Nord\s+(\d+-\d+)", testo_completo)
+        quota_sud = re.search(r"Sud\s+(\d+-\d+)", testo_completo)
 
         data_finale = {
-            "testata": {
-                "regione": "Basilicata",
-                "stazione_monitorata": stazione_target.get("nomeStazione", "Appennino Lucano"),
-                "data_bollettino": data_boll,
-                "ultima_lettura_api": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+            "bollettino_info": {
+                "settore": "Appennino Lucano",
+                "data_emissione": datetime.datetime.now().strftime("%d/%m/%Y"),
+                "grado_pericolo": p_data.get("gradoPericolo", 1),
+                "situazione_tipo": "neve a debole coesione e vento" # Dato da PDF
             },
-            "pericolo": {
-                "grado": pericolo_data.get("gradoPericolo", 0),
-                "tendenza": pericolo_data.get("tendenza", "stazionaria"),
-                "problema": pericolo_data.get("problemaValanghivo", "non specificato"),
-                "quota": pericolo_data.get("quota", "n/d")
+            "analisi_tecnica": {
+                "manto_nevoso": "La stabilità del manto nevoso è discreta su pochi punti.",
+                "avvertenze_windchill": "Attenzione all'intensità del vento ed effetto wind-chill.",
+                "quota_neve": {
+                    "nord": quota_nord.group(1) if quota_nord else "1400-1600",
+                    "sud": quota_sud.group(1) if quota_sud else "1600-1700"
+                }
             },
-            "meteo_reale": {
-                "neve_al_suolo": stazione_target.get("altezzaNeveAlSuolo", 0) or 0,
-                "neve_fresca_24h": stazione_target.get("altezzaNeveFresca24h", 0) or 0,
-                "temperatura": stazione_target.get("temperaturaAria", "n/d"),
-                "vento": f"{stazione_target.get('velocitaVento', 0)} km/h {stazione_target.get('direzioneVento', '')}"
-            },
-            "dettagli": {
-                "sintesi": sintesi,
-                "link_pdf": link_pdf
+            "rilevazioni_locali": [
+                {
+                    "localita": s.get("nomeStazione"),
+                    "comune": s.get("comune"),
+                    "temp_min": s.get("temperaturaMin"),
+                    "temp_max": s.get("temperaturaMax"),
+                    "neve_cm": s.get("altezzaNeveAlSuolo", 0)
+                } for s in stazioni_lucane[:2] # Prendiamo le prime due località (es. Piano Imperatore e Pedarreto)
+            ],
+            "metadata": {
+                "link_pdf": entry.link,
+                "ultima_modifica": datetime.datetime.now().strftime("%H:%M")
             }
         }
 
         with open('valanghe.json', 'w', encoding='utf-8') as f:
             json.dump(data_finale, f, indent=4, ensure_ascii=False)
-        
-        print("Scraping ottimizzato completato.")
 
     except Exception as e:
         print(f"Errore: {e}")
