@@ -4,72 +4,92 @@ import os
 import time
 from datetime import datetime
 
-# Import critici con controllo
+# Import scientifici
 try:
     import xarray as xr
     import pandas as pd
     import cfgrib
 except ImportError as e:
-    print(f"❌ Errore: Librerie mancanti nel requirements.txt! ({e})")
+    print(f"❌ Librerie scientifiche mancanti: {e}")
     exit(1)
 
-# URL principali
-GRIB_URL = "https://meteohub.agenziaitaliameteo.it/api/v1/datasets/radar_dpc/latest"
+# CONFIGURAZIONE API MISTRAL/METEO-HUB
+# Usiamo l'endpoint di ricerca per trovare l'ultimo run disponibile
+SEARCH_URL = "https://meteohub.agenziaitaliameteo.it/api/v1/datasets/radar_dpc/search"
 OUTPUT_FILE = "radar_data.json"
 
-def download_file(url, max_retries=3):
-    """Tenta il download con sistema di retry per evitare l'errore 404 momentaneo"""
-    for i in range(max_retries):
-        try:
-            print(f"📥 Tentativo {i+1}: Download file GRIB...")
-            r = requests.get(url, timeout=120, headers={"User-Agent": "Mozilla/5.0"})
-            
-            if r.status_code == 200 and len(r.content) > 10000:
-                with open("temp_radar.grib", "wb") as f:
-                    f.write(r.content)
-                print(f"✅ File scaricato con successo ({len(r.content)} bytes)")
+def get_latest_radar_url():
+    """Interroga l'indice di Meteo-Hub per trovare l'URL del file più recente"""
+    try:
+        print("🔍 Ricerca ultimo dataset radar disponibile...")
+        # Cerchiamo gli ultimi dataset caricati
+        r = requests.get(SEARCH_URL, params={"limit": 1}, timeout=30)
+        if r.status_code == 200:
+            data = r.json()
+            if data and len(data) > 0:
+                # Estraiamo l'ID dell'ultimo file
+                latest_id = data[0]['id']
+                download_url = f"https://meteohub.agenziaitaliameteo.it/api/v1/datasets/radar_dpc/{latest_id}/download"
+                print(f"✅ Trovato dataset: {latest_id}")
+                return download_url
+    except Exception as e:
+        print(f"⚠️ Errore durante la ricerca: {e}")
+    
+    # Fallback all'URL generico se la ricerca fallisce
+    return "https://meteohub.agenziaitaliameteo.it/api/v1/datasets/radar_dpc/latest"
+
+def download_radar(url):
+    print(f"📥 Download in corso da: {url}")
+    try:
+        r = requests.get(url, timeout=120, stream=True)
+        if r.status_code == 200:
+            with open("temp_radar.grib", "wb") as f:
+                f.write(r.content)
+            if os.path.getsize("temp_radar.grib") > 10000:
+                print(f"✅ File scaricato ({os.path.getsize('temp_radar.grib')} bytes)")
                 return True
-            else:
-                print(f"⚠️ Risposta server: {r.status_code}. Il file potrebbe non essere pronto.")
-        except Exception as e:
-            print(f"❌ Errore durante il download: {e}")
-        
-        if i < max_retries - 1:
-            print("Wait 15 secondi e riprovo...")
-            time.sleep(15)
+        print(f"⚠️ Errore download: Status {r.status_code}")
+    except Exception as e:
+        print(f"❌ Eccezione download: {e}")
     return False
 
 def process():
-    if not download_file(GRIB_URL):
-        print("❌ Impossibile scaricare il file dopo vari tentativi. Salto questo run.")
+    # 1. Trova l'URL dinamico
+    target_url = get_latest_radar_url()
+    
+    # 2. Scarica (con un piccolo retry)
+    success = False
+    for attempt in range(2):
+        if download_radar(target_url):
+            success = True
+            break
+        print("Riprovo tra 10 secondi...")
+        time.sleep(10)
+    
+    if not success:
+        print("❌ Impossibile ottenere dati validi. Esco.")
         return
 
+    # 3. Elaborazione scientifica (Ritaglio per RAM)
     try:
-        print("⚙️ Analisi GRIB in corso...")
-        # Apertura dataset
+        print("⚙️ Analisi GRIB con xarray...")
         ds = xr.open_dataset("temp_radar.grib", engine="cfgrib", backend_kwargs={'indexpath': ''})
         
-        # Identificazione variabile
         var_name = list(ds.data_vars)[0]
-        print(f"🔍 Variabile rilevata: {var_name}")
-
-        # Coordinate Basilicata (Ritaglio per RAM)
         lat_min, lat_max = 39.9, 41.2
         lon_min, lon_max = 15.2, 17.2
 
         lat_key = 'latitude' if 'latitude' in ds.coords else 'lat'
         lon_key = 'longitude' if 'longitude' in ds.coords else 'lon'
 
-        # Ritaglio area prima della conversione
+        # Slice geografico
         ds_cropped = ds.sel({
             lat_key: slice(lat_max, lat_min), 
             lon_key: slice(lon_min, lon_max)
         })
 
-        # Conversione in DataFrame
         df = ds_cropped[var_name].to_dataframe().reset_index()
-        
-        # Filtro pioggia > 0.2 mm/h
+        # Filtro pioggia significativa (> 0.2 mm/h)
         df_filtered = df[df[var_name] > 0.2].dropna()
 
         radar_points = []
@@ -89,20 +109,19 @@ def process():
         with open(OUTPUT_FILE, "w", encoding='utf-8') as f:
             json.dump(output, f, indent=2)
 
-        print(f"✅ Successo! Trovati {len(radar_points)} punti pioggia.")
+        print(f"✅ Successo! Generati {len(radar_points)} punti radar.")
 
     except Exception as e:
-        print(f"❌ Errore durante l'elaborazione: {e}")
-        # Creiamo un file minimo per evitare errori nei workflow successivi
+        print(f"❌ Errore elaborazione: {e}")
+        # Struttura minima per evitare crash della mappa
         if not os.path.exists(OUTPUT_FILE):
             with open(OUTPUT_FILE, "w") as f:
-                json.dump({"last_update": datetime.now().strftime("%d/%m/%Y %H:%M"), "points": []}, f)
+                json.dump({"last_update": "N/D", "points": []}, f)
     
     finally:
-        # Pulizia file temporanei
-        for f in ["temp_radar.grib", "temp_radar.grib.923a8.idx"]:
-            if os.path.exists(f):
-                os.remove(f)
+        # Pulizia
+        for tmp in ["temp_radar.grib", "temp_radar.grib.923a8.idx"]:
+            if os.path.exists(tmp): os.remove(tmp)
 
 if __name__ == "__main__":
     process()
