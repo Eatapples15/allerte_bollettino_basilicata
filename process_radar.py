@@ -2,91 +2,91 @@ import requests
 import json
 import os
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
-# Import scientifici
 try:
     import xarray as xr
     import pandas as pd
     import cfgrib
 except ImportError as e:
-    print(f"❌ Librerie scientifiche mancanti: {e}")
+    print(f"❌ Librerie mancanti: {e}")
     exit(1)
 
-# CONFIGURAZIONE METEOHUB
+# CONFIGURAZIONE
 DATASET_ID = "radar_dpc"
-LIST_URL = f"https://meteohub.agenziaitaliameteo.it/api/datasets/{DATASET_ID}/opendata"
-DOWNLOAD_BASE = "https://meteohub.agenziaitaliameteo.it/api/opendata"
+API_BASE = "https://meteohub.agenziaitaliameteo.it/api/v1"
 OUTPUT_FILE = "radar_data.json"
 
-def get_latest_opendata_filename():
-    """Interroga l'elenco opendata e gestisce la risposta complessa (lista di dizionari)"""
+def get_latest_file_url():
+    """Prova diverse strategie per trovare l'ultimo file GRIB disponibile"""
+    headers = {"User-Agent": "Mozilla/5.0", "Accept": "application/json"}
+    
+    # STRATEGIA 1: Interrogazione Catalogo File (La più precisa)
     try:
-        print(f"🔍 Recupero elenco file opendata per {DATASET_ID}...")
-        r = requests.get(LIST_URL, timeout=30)
+        print(f"🔍 Strategia 1: Ricerca nel catalogo file per {DATASET_ID}...")
+        url = f"{API_BASE}/datasets/{DATASET_ID}/files"
+        # Cerchiamo file completati, ordinati per creazione
+        params = {"limit": 5, "sort": "-created", "status": "COMPLETED"}
+        r = requests.get(url, params=params, headers=headers, timeout=20)
+        
         if r.status_code == 200:
-            files_data = r.json() 
-            
-            if not files_data or not isinstance(files_data, list):
-                print("⚠️ Risposta API vuota o formato non valido.")
-                return None
-
-            # MeteoHub restituisce dizionari: [{"name": "...", "created": "..."}, ...]
-            # Ordiniamo per la chiave 'name' o 'created' se disponibile
-            try:
-                # Proviamo a ordinare per nome del file che contiene il timestamp
-                # Assumiamo che la chiave sia 'name' come da standard Mistral
-                files_data.sort(key=lambda x: x.get('name', ''), reverse=True)
-                latest_entry = files_data[0]
-                latest_filename = latest_entry.get('name')
-                
-                if latest_filename:
-                    print(f"✅ Ultimo file rilevato: {latest_filename}")
-                    return latest_filename
-            except Exception as sort_err:
-                print(f"⚠️ Errore durante l'ordinamento dei file: {sort_err}")
-                
+            files = r.json()
+            if files and len(files) > 0:
+                f_id = files[0]['id']
+                print(f"✅ File trovato nel catalogo: {f_id}")
+                return f"{API_BASE}/datasets/{DATASET_ID}/files/{f_id}/download"
     except Exception as e:
-        print(f"⚠️ Errore ricerca file: {e}")
-    return None
+        print(f"⚠️ Strategia 1 fallita: {e}")
 
-def download_file(filename):
-    url = f"{DOWNLOAD_BASE}/{filename}"
-    print(f"📥 Download in corso: {url}")
+    # STRATEGIA 2: Elenco OpenData (Quella che usavi tu, ma con correzione)
     try:
-        # User-agent necessario per evitare blocchi
-        headers = {"User-Agent": "Mozilla/5.0"}
-        r = requests.get(url, timeout=120, stream=True, headers=headers)
+        print(f"🔍 Strategia 2: Ricerca in opendata list...")
+        url = f"https://meteohub.agenziaitaliameteo.it/api/datasets/{DATASET_ID}/opendata"
+        r = requests.get(url, headers=headers, timeout=20)
+        if r.status_code == 200:
+            data = r.json()
+            if isinstance(data, list) and len(data) > 0:
+                # Se è una lista di dizionari, prendi il 'name' dell'ultimo
+                data.sort(key=lambda x: x.get('name', '') if isinstance(x, dict) else x, reverse=True)
+                item = data[0]
+                fname = item.get('name') if isinstance(item, dict) else item
+                print(f"✅ File trovato in opendata: {fname}")
+                return f"https://meteohub.agenziaitaliameteo.it/api/opendata/{fname}"
+    except Exception as e:
+        print(f"⚠️ Strategia 2 fallita: {e}")
+
+    # STRATEGIA 3: Fallback Ultima Spiaggia (Latest)
+    print("⚠️ Strategia 3: Tentativo link generico 'latest'...")
+    return f"{API_BASE}/datasets/{DATASET_ID}/latest/download"
+
+def download_radar(url):
+    print(f"📥 Download da: {url}")
+    try:
+        r = requests.get(url, timeout=120, stream=True, headers={"User-Agent": "Mozilla/5.0"})
         if r.status_code == 200:
             with open("temp_radar.grib", "wb") as f:
                 f.write(r.content)
             size = os.path.getsize("temp_radar.grib")
-            print(f"📦 Download completato ({size} bytes)")
-            return size > 10000
-        else:
-            print(f"❌ Errore HTTP: {r.status_code}")
+            if size > 15000:
+                print(f"✅ Download OK: {size} bytes")
+                return True
+        print(f"⚠️ Errore download: Status {r.status_code}")
     except Exception as e:
-        print(f"❌ Errore download: {e}")
+        print(f"❌ Eccezione download: {e}")
     return False
 
 def process():
-    filename = get_latest_opendata_filename()
+    target_url = get_latest_file_url()
     
-    if not filename:
-        print("❌ Nessun file trovato nell'elenco opendata.")
-        return
-
-    if not download_file(filename):
-        print("❌ Impossibile scaricare il file selezionato.")
+    if not download_radar(target_url):
+        print("❌ Nessun dato radar recuperato. Probabile manutenzione server DPC.")
         return
 
     try:
         print("⚙️ Analisi GRIB con xarray...")
         ds = xr.open_dataset("temp_radar.grib", engine="cfgrib", backend_kwargs={'indexpath': ''})
-        
         var_name = list(ds.data_vars)[0]
-        print(f"📊 Analisi variabile: {var_name}")
-
+        
         # Area Basilicata
         lat_min, lat_max = 39.9, 41.2
         lon_min, lon_max = 15.2, 17.2
@@ -94,15 +94,13 @@ def process():
         lat_key = 'latitude' if 'latitude' in ds.coords else 'lat'
         lon_key = 'longitude' if 'longitude' in ds.coords else 'lon'
 
-        # Slice geografico per risparmiare RAM
+        # Slice geografico
         ds_cropped = ds.sel({
             lat_key: slice(lat_max, lat_min), 
             lon_key: slice(lon_min, lon_max)
         })
 
         df = ds_cropped[var_name].to_dataframe().reset_index()
-        
-        # Filtro pioggia (SRI > 0.2 mm/h)
         df_filtered = df[df[var_name] > 0.2].dropna()
 
         radar_points = []
@@ -115,7 +113,6 @@ def process():
 
         output = {
             "last_update": datetime.now().strftime("%d/%m/%Y %H:%M"),
-            "source_file": filename,
             "count": len(radar_points),
             "points": radar_points
         }
@@ -123,7 +120,7 @@ def process():
         with open(OUTPUT_FILE, "w", encoding='utf-8') as f:
             json.dump(output, f, indent=2)
 
-        print(f"✅ Successo! Generati {len(radar_points)} punti radar.")
+        print(f"✅ Completato! Punti rilevati: {len(radar_points)}")
 
     except Exception as e:
         print(f"❌ Errore analisi: {e}")
