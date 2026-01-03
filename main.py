@@ -143,7 +143,7 @@ def main():
         if not ha_criticita_domani:
             msg_tomorrow += "🟢 Nessuna criticità prevista.\n"
 
-        map_link = "https://www.formazionesicurezza.org/protezionecivile/bollettino/map_emb.html"
+        map_link = "https://www.formazionesicurezza.org/protezionecivile/bollettino/mappa.html"
         links = f"\n📍 [MAPPA INTERATTIVA]({map_link})\n🔗 [PDF ORIGINALE]({pdf_url})"
         
         # Testo WhatsApp
