@@ -29,12 +29,11 @@ def scrape_bollettino():
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
         resp = requests.get(url_pagina, headers=headers)
-        # Cerchiamo il link al PDF più recente
         match_pdf = re.findall(r'href="(.*?Bollettino_(\d{4}-\d{2}-\d{2})\.pdf)"', resp.text)
         if not match_pdf: return print("Nessun PDF trovato.")
         
         pdf_url, data_bollettino = match_pdf[-1]
-        print(f"Analisi PDF del {data_bollettino}")
+        print(f"Analisi PDF: {pdf_url}")
         
         pdf_res = requests.get(pdf_url, headers=headers)
         with pdfplumber.open(io.BytesIO(pdf_res.content)) as pdf:
@@ -42,72 +41,83 @@ def scrape_bollettino():
             lines = text.split('\n')
             
             nuovi_dati = []
-            # Lista dighe con i loro volumi massimi teorici per calcolare la % se mancano dati
-            target_dighe = {
-                "COTUGNO": 480700000, "PERTUSILLO": 155000000, "CAMASTRA": 18418128,
-                "BASENTELLO": 33039968, "CONZA": 61813380, "SAETTA": 3480000,
-                "GIULIANO": 94081021, "GANNANO": 2762000, "ACERENZA": 8887800, "GENZANO": 3100000
+            # Database capacità massime per calcoli e validazione
+            info_invasi = {
+                "COTUGNO": {"max_v": 480700000, "max_q": 252.0},
+                "PERTUSILLO": {"max_v": 155000000, "max_q": 531.0},
+                "CAMASTRA": {"max_v": 18418128, "max_q": 531.6},
+                "BASENTELLO": {"max_v": 33039968, "max_q": 269.0},
+                "CONZA": {"max_v": 61813380, "max_q": 434.8},
+                "SAETTA": {"max_v": 3480000, "max_q": 951.24},
+                "GIULIANO": {"max_v": 94081021, "max_q": 101.0},
+                "GANNANO": {"max_v": 2762000, "max_q": 99.0},
+                "ACERENZA": {"max_v": 8887800, "max_q": 432.0},
+                "GENZANO": {"max_v": 3100000, "max_q": 402.0}
             }
 
             for line in lines:
                 line_u = line.upper()
-                diga_nome = next((d for d in target_dighe.keys() if d in line_u), None)
+                diga_match = next((name for name in info_invasi if name in line_u), None)
                 
-                if diga_nome:
-                    # Estraiamo TUTTI i numeri della riga
+                if diga_match:
+                    # Estraiamo TUTTI i numeri presenti nella riga
                     numeri = [clean_numeric(n) for n in re.findall(r'[\d\.,]+', line)]
-                    # Rimuoviamo gli zeri iniziali che spesso sono residui di formattazione
-                    numeri = [n for n in numeri if n != 0 or '0' in line]
-                    
-                    if len(numeri) < 4: continue
+                    # Se la riga è povera di numeri, passiamo alla successiva
+                    if len(numeri) < 5: continue
 
                     try:
-                        # LOGICA DI ASSEGNAZIONE INTELLIGENTE
-                        # La quota max è solitamente il primo numero < 2000
-                        quota_max = numeri[0]
-                        # Il volume lordo max è il numero più grande all'inizio
-                        v_max_lordo = target_dighe[diga_nome]
-                        
-                        # Il volume NETTO attuale è l'ultimo numero molto grande (> 1000)
-                        # prima dei dati meteo (che sono gli ultimi due)
-                        volumi_grandi = [n for n in numeri if n > 1000]
-                        v_netto_attuale = volumi_grandi[-1] if volumi_grandi else 0
-                        
-                        # La quota attuale è il numero < 2000 che precede il trend
-                        # (solitamente a metà lista numeri)
-                        quote = [n for n in numeri if 50 < n < 1500]
-                        quota_attuale = quote[-1] if quote else 0
-                        
-                        # Trend e Meteo
-                        trend = numeri[-3] if len(numeri) >= 9 else 0
-                        pioggia = numeri[-2] if len(numeri) >= 2 else 0
-                        neve = numeri[-1] if len(numeri) >= 1 else 0
-                        
+                        # MAPPATURA INTELLIGENTE
+                        # 1. Pioggia e Neve sono sempre gli ultimi due
+                        pioggia = numeri[-2]
+                        neve = numeri[-1]
+
+                        # 2. Il volume netto attuale nel PDF 2026 è solitamente il numero 
+                        # prima della pioggia (o penultimo dei volumi grandi)
+                        volumi_grandi = [n for n in numeri if n > 1000 and n != info_invasi[diga_match]["max_v"]]
+                        v_netto = volumi_grandi[-1] if volumi_grandi else 0
+
+                        # 3. La quota attuale è un numero tra 50 e 1000, escludendo la quota max
+                        quote_possibili = [n for n in numeri if 50 <= n <= 1000 and n != info_invasi[diga_match]["max_q"]]
+                        q_attuale = quote_possibili[-1] if quote_possibili else 0
+
+                        # 4. Il trend è solitamente tra la quota attuale e il volume
+                        # Lo cerchiamo come numero piccolo (spesso < 100) vicino alla quota
+                        trend = 0
+                        if len(numeri) > 7:
+                            # Cerchiamo un numero con segno o vicino alla posizione tipica (indice 7)
+                            trend = numeri[7] if abs(numeri[7]) < 500 else 0
+
                         d = {
-                            "diga": diga_nome,
-                            "quota_max_slm": quota_max,
-                            "volume_max_lordo_mc": v_max_lordo,
-                            "quota_attuale_slm": quota_attuale,
+                            "diga": diga_match,
+                            "quota_max_slm": info_invasi[diga_match]["max_q"],
+                            "volume_max_lordo_mc": info_invasi[diga_match]["max_v"],
+                            "quota_attuale_slm": q_attuale,
                             "trend_variazione_cm": trend,
-                            "volume_netto_attuale_mc": v_netto_attuale,
+                            "volume_netto_attuale_mc": v_netto,
                             "pioggia_mm": pioggia,
                             "neve_cm": neve,
-                            "percentuale_riempimento": round((v_netto_attuale / v_max_lordo * 100), 2) if v_max_lordo > 0 else 0
+                            "percentuale_riempimento": round((v_netto / info_invasi[diga_match]["max_v"] * 100), 2) if v_netto > 0 else 0
                         }
                         nuovi_dati.append(d)
-                    except: continue
+                    except Exception as e:
+                        print(f"Errore su {diga_match}: {e}")
 
             if nuovi_dati:
+                # Caricamento e pulizia del file JSON esistente (rimozione date sporche)
                 storico = {}
                 if os.path.exists(FILE_JSON):
                     with open(FILE_JSON, 'r') as f:
-                        try: storico = json.load(f)
+                        try:
+                            storico = json.load(f)
+                            # Rimuoviamo chiavi non standard come "05-01-2026" se presenti
+                            storico = {k: v for k, v in storico.items() if len(k) == 10 and k.startswith("20")}
                         except: storico = {}
                 
                 storico[data_bollettino] = {"scraped_at": datetime.now().isoformat(), "dati": nuovi_dati}
+                
                 with open(FILE_JSON, 'w') as f:
                     json.dump(storico, f, indent=4)
-                print(f"Successo: {len(nuovi_dati)} dighe mappate.")
+                print(f"Successo: {len(nuovi_dati)} dighe salvate.")
 
     except Exception as e: print(f"Errore: {e}")
 
