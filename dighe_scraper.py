@@ -10,11 +10,9 @@ FILE_JSON = "storico_invasi.json"
 
 def clean_numeric(value):
     if not value: return 0.0
-    # Teniamo i punti se servono a ricostruire numeri grandi, ma togliamo asterischi
     s = str(value).replace(' ', '').replace('----------', '0').strip()
     s = re.sub(r'[^\d,.-]', '', s)
     try:
-        # Gestione speciale: se ci sono più punti (es 60.143.000), li rimuoviamo tutti tranne l'ultimo se funge da decimale
         if s.count('.') > 1: s = s.replace('.', '')
         if ',' in s: s = s.replace('.', '').replace(',', '.')
         return float(s)
@@ -39,8 +37,7 @@ def scrape_bollettino():
         
         with pdfplumber.open(io.BytesIO(pdf_res.content)) as pdf:
             page = pdf.pages[0]
-            width = page.width
-            words = page.extract_words(horizontal_ltr=True, x_tolerance=2, y_tolerance=2)
+            words = page.extract_words(horizontal_ltr=True, x_tolerance=3, y_tolerance=3)
             
             info_invasi = {
                 "COTUGNO": {"max_v": 480700000, "max_q": 252.0},
@@ -58,21 +55,20 @@ def scrape_bollettino():
             nuovi_dati = []
 
             for name, info in info_invasi.items():
-                # Match flessibile del nome
+                # Cerchiamo la riga della diga
                 diga_objs = [w for w in words if name in w['text'].upper()]
                 if not diga_objs: continue
                 
                 target_y = diga_objs[0]['top']
-                # Prendiamo tutto ciò che sta sulla riga a destra del nome
-                row_words = [w for w in words if abs(w['top'] - target_y) < 6 and w['x0'] > width * 0.15]
+                # Prendiamo TUTTA la riga per catturare tutti i numeri
+                row_words = [w for w in words if abs(w['top'] - target_y) < 8]
                 row_words.sort(key=lambda x: x['x0'])
                 
-                # Ricostruzione token (uniamo pezzi di numeri separati da punti/spazi)
+                # Ricostruzione token
                 tokens = []
                 if row_words:
                     current = row_words[0]['text']
                     for i in range(1, len(row_words)):
-                        # Se sono molto vicini o se il token attuale finisce con un punto, uniamo
                         if row_words[i]['x0'] - row_words[i-1]['x1'] < 5 or current.endswith('.'):
                             current += row_words[i]['text']
                         else:
@@ -80,39 +76,36 @@ def scrape_bollettino():
                             current = row_words[i]['text']
                     tokens.append(current)
 
-                numeri = [clean_numeric(t) for t in tokens if clean_numeric(t) != 0 or '0' in t]
-                print(f"DEBUG {name} TOKENS: {tokens} -> NUMS: {numeri}")
-
-                if len(numeri) >= 3:
+                numeri = [clean_numeric(t) for t in tokens if (clean_numeric(t) != 0 or '0' in t) and not any(c.isalpha() for c in t)]
+                
+                # Dal tuo debug abbiamo visto che i dati 2026 sono sempre nelle posizioni finali
+                # Ordine tipico: [V_Max, Q_Max, ... , Q_Oggi, Trend, V_Lordo_Oggi, V_Netto_Oggi, Pioggia, Neve]
+                if len(numeri) >= 8:
                     try:
-                        # Identificazione per Valore/Posizione
-                        # Quota attuale: tra 50 e 1000, non uguale alla max
-                        q_attuale = next((n for n in numeri if 50 <= n <= 1000 and n != info["max_q"]), 0)
-                        
-                        # Volume netto: il numero più grande > 1000 (dopo aver pulito i punti)
-                        v_netto = max([n for n in numeri if n > 1000 and n != info["max_v"]], default=0)
-                        
-                        # Pioggia e Neve: ultimi due
-                        pioggia = numeri[-2] if len(numeri) >= 2 else 0
-                        neve = numeri[-1] if len(numeri) >= 1 else 0
-                        
-                        # Trend: tra quota e volume
-                        trend = 0
-                        if q_attuale in numeri:
-                            idx = numeri.index(q_attuale)
-                            if len(numeri) > idx + 1 and numeri[idx+1] != v_netto:
-                                trend = numeri[idx+1]
+                        pioggia = numeri[-2]
+                        neve = numeri[-1]
+                        v_netto = numeri[-3]
+                        trend = numeri[-5] # Il trend è solitamente 2 posizioni prima del netto
+                        q_attuale = numeri[-6] # La quota è solitamente prima del trend
+
+                        # Validazione quote (devono essere sensate)
+                        if not (50 <= q_attuale <= 1000):
+                            # Se la posizione -6 fallisce, cerchiamo il primo numero "quota" da destra
+                            for n in reversed(numeri[:-3]):
+                                if 50 <= n <= 1000:
+                                    q_attuale = n
+                                    break
 
                         nuovi_dati.append({
                             "diga": name,
                             "quota_max_slm": info["max_q"],
                             "volume_max_lordo_mc": info["max_v"],
                             "quota_attuale_slm": q_attuale,
-                            "trend_variazione_cm": trend,
+                            "trend_variazione_cm": trend if abs(trend) < 500 else 0, # Protezione contro volumi scambiati per trend
                             "volume_netto_attuale_mc": v_netto,
                             "pioggia_mm": pioggia,
                             "neve_cm": neve,
-                            "percentuale_riempimento": round((v_netto / info["max_v"] * 100), 2) if v_netto > 0 else 0
+                            "percentuale_riempimento": round((v_netto / info["max_v"] * 100), 2)
                         })
                     except: continue
 
