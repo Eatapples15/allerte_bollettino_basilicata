@@ -2,8 +2,11 @@ name: Aggiornamento Bollettino Dighe
 
 on:
   schedule:
-    - cron: '0 10 * * *' # Gira ogni mattina alle 10:00 UTC (11:00 italiane)
-  workflow_dispatch:
+    - cron: '0 10 * * *' 
+  workflow_dispatch: # Permette l'avvio manuale per testare
+
+permissions:
+  contents: write # Fondamentale per permettere il push
 
 jobs:
   run-scraper:
@@ -18,14 +21,21 @@ jobs:
           python-version: '3.9'
 
       - name: Installazione librerie
-        run: pip install requests beautifulsoup4 pandas pdfplumber
+        run: pip install requests beautifulsoup4 pdfplumber
 
       - name: Esecuzione Scraper
-        run: python dighe_scraper.py
+        run: python dighe_scraper.py # Assicurati che il file si chiami esattamente così
 
-      - name: Salvataggio Dati
+      - name: Salvataggio Dati e Pagina HTML
         run: |
-          git config --global user.name "Scraper Bot"
-          git config --global user.email "bot@github.com"
-          git add storico_invasi_basilicata.csv
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Update bollettino $(date +'%Y-%m-%d')" && git push)
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          # Aggiungiamo sia il JSON che l'HTML
+          git add storico_invasi.json index.html
+          # Commit e Push solo se ci sono cambiamenti
+          if git diff --staged --quiet; then
+            echo "Nessuna modifica trovata."
+          else
+            git commit -m "Update dati e dashboard: $(date +'%Y-%m-%d %H:%M')"
+            git push
+          fi
