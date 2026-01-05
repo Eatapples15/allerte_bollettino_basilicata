@@ -29,12 +29,12 @@ def scrape_bollettino():
     try:
         headers = {'User-Agent': 'Mozilla/5.0'}
         resp = requests.get(url_pagina, headers=headers)
-        # Trova il link del PDF
+        # Cerchiamo il link al PDF più recente
         match_pdf = re.findall(r'href="(.*?Bollettino_(\d{4}-\d{2}-\d{2})\.pdf)"', resp.text)
         if not match_pdf: return print("Nessun PDF trovato.")
         
         pdf_url, data_bollettino = match_pdf[-1]
-        print(f"Analisi PDF del {data_bollettino}: {pdf_url}")
+        print(f"Analisi PDF del {data_bollettino}")
         
         pdf_res = requests.get(pdf_url, headers=headers)
         with pdfplumber.open(io.BytesIO(pdf_res.content)) as pdf:
@@ -42,32 +42,58 @@ def scrape_bollettino():
             lines = text.split('\n')
             
             nuovi_dati = []
-            target_dighe = ["COTUGNO", "PERTUSILLO", "CAMASTRA", "BASENTELLO", "CONZA", "SAETTA", "GIULIANO", "GANNANO", "ACERENZA", "GENZANO"]
+            # Lista dighe con i loro volumi massimi teorici per calcolare la % se mancano dati
+            target_dighe = {
+                "COTUGNO": 480700000, "PERTUSILLO": 155000000, "CAMASTRA": 18418128,
+                "BASENTELLO": 33039968, "CONZA": 61813380, "SAETTA": 3480000,
+                "GIULIANO": 94081021, "GANNANO": 2762000, "ACERENZA": 8887800, "GENZANO": 3100000
+            }
 
             for line in lines:
                 line_u = line.upper()
-                diga_nome = next((d for d in target_dighe if d in line_u), None)
+                diga_nome = next((d for d in target_dighe.keys() if d in line_u), None)
                 
                 if diga_nome:
-                    numeri = [clean_numeric(n) for n in re.findall(r'[\d\.,]+', line) if clean_numeric(n) != 0 or '0' in n]
+                    # Estraiamo TUTTI i numeri della riga
+                    numeri = [clean_numeric(n) for n in re.findall(r'[\d\.,]+', line)]
+                    # Rimuoviamo gli zeri iniziali che spesso sono residui di formattazione
+                    numeri = [n for n in numeri if n != 0 or '0' in line]
+                    
                     if len(numeri) < 4: continue
 
                     try:
-                        # Mappatura specifica per i bollettini 2026
-                        v_max_lordo = numeri[1]
-                        v_netto_attuale = numeri[-3] if len(numeri) >= 9 else numeri[-1]
+                        # LOGICA DI ASSEGNAZIONE INTELLIGENTE
+                        # La quota max è solitamente il primo numero < 2000
+                        quota_max = numeri[0]
+                        # Il volume lordo max è il numero più grande all'inizio
+                        v_max_lordo = target_dighe[diga_nome]
+                        
+                        # Il volume NETTO attuale è l'ultimo numero molto grande (> 1000)
+                        # prima dei dati meteo (che sono gli ultimi due)
+                        volumi_grandi = [n for n in numeri if n > 1000]
+                        v_netto_attuale = volumi_grandi[-1] if volumi_grandi else 0
+                        
+                        # La quota attuale è il numero < 2000 che precede il trend
+                        # (solitamente a metà lista numeri)
+                        quote = [n for n in numeri if 50 < n < 1500]
+                        quota_attuale = quote[-1] if quote else 0
+                        
+                        # Trend e Meteo
+                        trend = numeri[-3] if len(numeri) >= 9 else 0
+                        pioggia = numeri[-2] if len(numeri) >= 2 else 0
+                        neve = numeri[-1] if len(numeri) >= 1 else 0
                         
                         d = {
                             "diga": diga_nome,
-                            "quota_max_slm": numeri[0],
+                            "quota_max_slm": quota_max,
                             "volume_max_lordo_mc": v_max_lordo,
-                            "quota_attuale_slm": numeri[5] if len(numeri) > 5 else numeri[2],
-                            "trend_variazione_cm": numeri[6] if len(numeri) > 6 else 0,
+                            "quota_attuale_slm": quota_attuale,
+                            "trend_variazione_cm": trend,
                             "volume_netto_attuale_mc": v_netto_attuale,
-                            "pioggia_mm": numeri[-2] if len(numeri) > 2 else 0,
-                            "neve_cm": numeri[-1] if len(numeri) > 2 else 0
+                            "pioggia_mm": pioggia,
+                            "neve_cm": neve,
+                            "percentuale_riempimento": round((v_netto_attuale / v_max_lordo * 100), 2) if v_max_lordo > 0 else 0
                         }
-                        d["percentuale_riempimento"] = round((v_netto_attuale / v_max_lordo * 100), 2) if v_max_lordo > 0 else 0
                         nuovi_dati.append(d)
                     except: continue
 
@@ -81,7 +107,7 @@ def scrape_bollettino():
                 storico[data_bollettino] = {"scraped_at": datetime.now().isoformat(), "dati": nuovi_dati}
                 with open(FILE_JSON, 'w') as f:
                     json.dump(storico, f, indent=4)
-                print(f"Aggiornato con {len(nuovi_dati)} dighe.")
+                print(f"Successo: {len(nuovi_dati)} dighe mappate.")
 
     except Exception as e: print(f"Errore: {e}")
 
