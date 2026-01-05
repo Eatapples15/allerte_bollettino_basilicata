@@ -7,74 +7,133 @@ import os
 import re
 from datetime import datetime
 
+# --- CONFIGURAZIONE ---
 FILE_JSON = "storico_invasi.json"
 
 def clean_numeric(value):
-    """Pulisce le stringhe numeriche gestendo spazi, punti e virgole."""
+    """
+    Pulisce i dati numerici dai PDF. 
+    Gestisce asterischi, spazi, punti delle migliaia e virgole decimali.
+    """
     if value is None:
         return 0.0
-    # Rimuove tutto ciò che non è numero, virgola o punto
-    cleaned = re.sub(r'[^\d,.-]', '', str(value).replace(' ', ''))
-    if not cleaned or cleaned == '-':
+    # Rimuove tutto ciò che non è numero, virgola, punto o meno
+    cleaned = str(value).replace(' ', '').replace('----------', '0')
+    cleaned = re.sub(r'[^\d,.-]', '', cleaned)
+    
+    if not cleaned:
         return 0.0
+    
     try:
-        # Gestisce il formato italiano: 1.234.567,89 -> 1234567.89
-        cleaned = cleaned.replace('.', '').replace(',', '.')
+        # Formato IT: 1.234.567,89 -> Formato EN: 1234567.89
+        if ',' in cleaned and '.' in cleaned:
+            cleaned = cleaned.replace('.', '').replace(',', '.')
+        elif ',' in cleaned:
+            cleaned = cleaned.replace(',', '.')
         return float(cleaned)
     except ValueError:
         return 0.0
 
+def get_current_month_url():
+    mesi = {
+        1: "gennaio", 2: "febbraio", 3: "marzo", 4: "aprile",
+        5: "maggio", 6: "giugno", 7: "luglio", 8: "agosto",
+        9: "settembre", 10: "ottobre", 11: "novembre", 12: "dicembre"
+    }
+    ora = datetime.now()
+    return f"https://acquedelsudspa.it/servizi/{mesi[ora.month]}-{ora.year}/"
+
 def scrape_bollettino():
-    # ... (logica URL e download PDF identica a prima) ...
+    url_pagina = get_current_month_url()
+    headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
     
-    with pdfplumber.open(io.BytesIO(pdf_res.content)) as pdf:
-        # Proviamo a usare table_settings per essere più precisi con le linee del Camastra
-        table_settings = {
-            "vertical_strategy": "lines", 
-            "horizontal_strategy": "lines",
-            "snap_tolerance": 3,
-        }
+    try:
+        print(f"Verifica pagina: {url_pagina}")
+        response = requests.get(url_pagina, headers=headers, timeout=20)
+        response.raise_for_status()
         
-        page = pdf.pages[0]
-        table = page.extract_table(table_settings) or page.extract_table()
+        soup = BeautifulSoup(response.text, 'html.parser')
+        links = [a['href'] for a in soup.find_all('a', href=True) if 'Bollettino' in a['href'] and '.pdf' in a['href']]
         
-        if not table:
-            print("Impossibile estrarre la tabella.")
+        if not links:
+            print("Nessun link PDF trovato.")
             return
 
-        nuovi_dati = []
-        for row in table:
-            # Filtriamo le righe vuote o di intestazione
-            if not row or not row[0] or any(x in row[0].upper() for x in ["DIGA", "DESCRIZIONE", "TOTALE"]):
-                continue
+        ultimo_pdf_url = links[-1]
+        # Estrazione data dall'URL (es: Bollettino_05-gennaio-2026.pdf)
+        data_match = re.search(r'(\d{2}-\w+-\d{4})', ultimo_pdf_url)
+        data_bollettino = data_match.group(1) if data_match else datetime.now().strftime("%d-%m-%Y")
+        
+        print(f"Scarico PDF: {ultimo_pdf_url}")
+        pdf_res = requests.get(ultimo_pdf_url, headers=headers)
+        
+        with pdfplumber.open(io.BytesIO(pdf_res.content)) as pdf:
+            # Estrattore tabella con tolleranza per le linee spezzate (tipico del Camastra)
+            table_settings = {
+                "vertical_strategy": "text", 
+                "horizontal_strategy": "text",
+                "snap_tolerance": 4,
+            }
             
-            nome_diga = row[0].split('\n')[0].strip().upper()
+            page = pdf.pages[0]
+            table = page.extract_table(table_settings)
             
-            # LOGICA SPECIFICA PER CAMASTRA
-            # Spesso il volume attuale è in colonna 8 o 9 a seconda del PDF
-            # Cerchiamo il valore più verosimile tra le colonne finali
-            try:
+            if not table:
+                print("Tabella non rilevata.")
+                return
+
+            nuovi_dati = []
+            for row in table:
+                # Salta intestazioni o righe vuote
+                if not row or not row[0] or any(x in row[0].upper() for x in ["DIGA", "DESCRIZIONE", "INVASI"]):
+                    continue
+                
+                # Pulizia nome diga (rimuove note e a capo)
+                nome_diga = row[0].split('\n')[0].strip()
+                
+                # Estrazione volumi: 
+                # Colonna 2: Capacità Max Lorda
+                # Colonna 8 o 9: Volume Lordo Attuale (dipende dalla spaziatura del PDF)
                 cap_max = clean_numeric(row[2])
                 
-                # Se la colonna 8 è 0, proviamo la 9 (a volte i dati slittano)
-                vol_attuale = clean_numeric(row[8])
-                if vol_attuale == 0 and len(row) > 9:
-                    vol_attuale = clean_numeric(row[9])
+                # Logica Camastra/Robustezza: controlla colonne adiacenti se trovi 0
+                vol_lordo = clean_numeric(row[8])
+                if vol_lordo == 0 and len(row) > 9:
+                    vol_lordo = clean_numeric(row[9])
                 
-                # Ulteriore controllo: se è ancora 0 e non dovrebbe esserlo
-                if "CAMASTRA" in nome_diga and vol_attuale == 0:
-                    # Debug: stampa la riga per capire dove si trova il dato
-                    print(f"DEBUG Camastra Row: {row}")
-
-                percentuale = round((vol_attuale / cap_max * 100), 2) if cap_max > 0 else 0
+                # Calcolo percentuale
+                percentuale = round((vol_lordo / cap_max * 100), 2) if cap_max > 0 else 0
 
                 nuovi_dati.append({
                     "diga": nome_diga,
                     "capacita_max_lorda_mc": cap_max,
-                    "volume_lordo_attuale_mc": vol_attuale,
-                    "percentuale_riempimento": percentuale
+                    "volume_lordo_attuale_mc": vol_lordo,
+                    "percentuale_riempimento": percentuale,
+                    "data_bollettino": data_bollettino
                 })
-            except Exception as e:
-                print(f"Errore nella riga {nome_diga}: {e}")
 
-        # ... (logica salvataggio JSON identica a prima) ...
+            # Gestione Storico JSON
+            storico = {}
+            if os.path.exists(FILE_JSON):
+                with open(FILE_JSON, 'r', encoding='utf-8') as f:
+                    try:
+                        storico = json.load(f)
+                    except json.JSONDecodeError:
+                        storico = {}
+            
+            # Aggiorna o aggiungi la data
+            storico[data_bollettino] = {
+                "scraped_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                "dati": nuovi_dati
+            }
+
+            with open(FILE_JSON, 'w', encoding='utf-8') as f:
+                json.dump(storico, f, indent=4, ensure_ascii=False)
+            
+            print(f"Salvataggio completato per il bollettino del {data_bollettino}")
+
+    except Exception as e:
+        print(f"Errore durante lo scraping: {e}")
+
+if __name__ == "__main__":
+    scrape_bollettino()
