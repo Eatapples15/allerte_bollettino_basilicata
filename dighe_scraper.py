@@ -10,6 +10,7 @@ FILE_JSON = "storico_invasi.json"
 
 def clean_numeric(value):
     if not value: return 0.0
+    # Rimuove tutto tranne numeri, virgole e punti
     s = str(value).replace(' ', '').replace('----------', '0').strip()
     s = re.sub(r'[^\d,.-]', '', s)
     try:
@@ -40,6 +41,7 @@ def scrape_bollettino():
             width = page.width
             words = page.extract_words()
             
+            # Database info statiche per confronto e nomi completi
             info_invasi = {
                 "COTUGNO": {"max_v": 480700000, "max_q": 252.0},
                 "PERTUSILLO": {"max_v": 155000000, "max_q": 531.0},
@@ -56,37 +58,57 @@ def scrape_bollettino():
             nuovi_dati = []
 
             for name, info in info_invasi.items():
-                diga_obj = [w for w in words if name in w['text'].upper()]
-                if not diga_obj: continue
+                # Cerchiamo la parola che contiene il nome della diga
+                diga_objs = [w for w in words if name in w['text'].upper()]
+                if not diga_objs: continue
                 
-                target_y = diga_obj[0]['top']
-                # Prendiamo parole a destra (x > 40% pagina) sulla stessa riga
-                row_words = [w for w in words if abs(w['top'] - target_y) < 4 and w['x0'] > width * 0.4]
+                # Prendiamo la prima occorrenza (la riga della tabella)
+                target_y = diga_objs[0]['top']
+                
+                # Estraiamo tutti i numeri sulla destra (dopo il 35% della larghezza)
+                # Aumentiamo la tolleranza verticale a 5px per catturare righe leggermente disallineate
+                row_words = [w for w in words if abs(w['top'] - target_y) < 5 and w['x0'] > width * 0.35]
                 row_words.sort(key=lambda x: x['x0'])
                 
-                numeri = [clean_numeric(w['text']) for w in row_words]
-                # Rimuoviamo eventuali zeri spuri se la lista è troppo lunga
-                numeri = [n for n in numeri if n != 0 or '0' in [w['text'] for w in row_words]]
+                # Lista di tutti i numeri trovati nella riga
+                numeri = []
+                for w in row_words:
+                    val = clean_numeric(w['text'])
+                    # Accettiamo il valore se è un numero valido
+                    if val != 0.0 or '0' in w['text']:
+                        numeri.append(val)
 
                 if len(numeri) >= 4:
                     try:
-                        # --- LOGICA DI ASSEGNAZIONE PER RANGE ---
-                        # 1. Quota attuale: il primo numero tra 50 e 1000
-                        q_attuale = next((n for n in numeri if 50 <= n <= 1000), 0)
+                        # --- ASSEGNAZIONE INTELLIGENTE BASATA SUI VALORI ---
                         
-                        # 2. Meteo: sempre gli ultimi due
+                        # 1. Quota Attuale: Il primo numero che cade nel range logico delle quote
+                        # Escludiamo eventuali piccoli numeri residui del 2024
+                        q_attuale = 0
+                        for n in numeri:
+                            if 50 <= n <= 1000 and n != info["max_q"]:
+                                q_attuale = n
+                                break
+                        
+                        # 2. Meteo: Sono gli ultimi due numeri della riga
                         pioggia = numeri[-2]
                         neve = numeri[-1]
                         
-                        # 3. Volume Netto: il numero più grande tra quelli rimanenti
-                        # Escludiamo quota e meteo
-                        restanti = [n for n in numeri if n != q_attuale and n != pioggia and n != neve]
-                        v_netto = max(restanti) if restanti else 0
+                        # 3. Volume Netto: Il numero più grande tra quelli che rimangono
+                        # (Tipicamente espresso in mc, quindi migliaia o milioni)
+                        possibili_volumi = [n for n in numeri if n > 1000 and n != info["max_v"] and n != q_attuale]
+                        v_netto = possibili_volumi[-1] if possibili_volumi else 0
                         
-                        # 4. Trend: il numero che avanza tra quota e volume (spesso piccolo)
-                        # Di solito è subito dopo q_attuale
-                        idx_q = numeri.index(q_attuale)
-                        trend = numeri[idx_q + 1] if len(numeri) > idx_q + 1 and numeri[idx_q+1] != v_netto else 0
+                        # 4. Trend: È il numero che sta tra la quota attuale e i volumi
+                        # Se non lo troviamo con certezza, lo mettiamo a 0
+                        trend = 0
+                        try:
+                            idx_q = numeri.index(q_attuale)
+                            potential_trend = numeri[idx_q + 1]
+                            if abs(potential_trend) < 500 and potential_trend != v_netto:
+                                trend = potential_trend
+                        except:
+                            trend = 0
 
                         d = {
                             "diga": name,
@@ -97,10 +119,12 @@ def scrape_bollettino():
                             "volume_netto_attuale_mc": v_netto,
                             "pioggia_mm": pioggia,
                             "neve_cm": neve,
-                            "percentuale_riempimento": round((v_netto / info["max_v"] * 100), 2)
+                            "percentuale_riempimento": round((v_netto / info["max_v"] * 100), 2) if v_netto > 0 else 0
                         }
                         nuovi_dati.append(d)
-                    except: continue
+                        print(f"Mappata diga: {name} | Netto: {v_netto}")
+                    except Exception as e:
+                        print(f"Errore su {name}: {e}")
 
             if nuovi_dati:
                 storico = {}
@@ -112,9 +136,10 @@ def scrape_bollettino():
                 storico[data_bollettino] = {"scraped_at": datetime.now().isoformat(), "dati": nuovi_dati}
                 with open(FILE_JSON, 'w') as f:
                     json.dump(storico, f, indent=4)
-                print(f"Aggiornato con successo: {len(nuovi_dati)} dighe.")
+                print(f"Fine. Totale dighe salvate: {len(nuovi_dati)}")
 
-    except Exception as e: print(f"Errore: {e}")
+    except Exception as e:
+        print(f"Errore generale: {e}")
 
 if __name__ == "__main__":
     scrape_bollettino()
