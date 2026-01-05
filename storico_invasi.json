@@ -1,105 +1,17 @@
 {
     "2026-01-05": {
-        "scraped_at": "2026-01-05T10:27:45.775837",
+        "scraped_at": "2026-01-05T12:11:15.585767",
         "dati": [
-            {
-                "diga": "COTUGNO",
-                "quota_max_slm": 252.0,
-                "volume_max_lordo_mc": 480700000,
-                "quota_attuale_slm": 0.0,
-                "trend_variazione_cm": 217.61,
-                "volume_netto_attuale_mc": 0.0,
-                "pioggia_mm": 0.0,
-                "neve_cm": 0.0,
-                "percentuale_riempimento": 0.0
-            },
-            {
-                "diga": "CAMASTRA",
-                "quota_max_slm": 531.6,
-                "volume_max_lordo_mc": 18418128,
-                "quota_attuale_slm": 0.0,
-                "trend_variazione_cm": 524.65,
-                "volume_netto_attuale_mc": 0.0,
-                "pioggia_mm": 0.0,
-                "neve_cm": 0.0,
-                "percentuale_riempimento": 0.0
-            },
-            {
-                "diga": "BASENTELLO",
-                "quota_max_slm": 269.0,
-                "volume_max_lordo_mc": 33039968,
-                "quota_attuale_slm": 632.525,
-                "trend_variazione_cm": 257.6,
-                "volume_netto_attuale_mc": 0.0,
-                "pioggia_mm": 0.0,
-                "neve_cm": 0.0,
-                "percentuale_riempimento": 0.0
-            },
-            {
-                "diga": "CONZA",
-                "quota_max_slm": 434.8,
-                "volume_max_lordo_mc": 61813380,
-                "quota_attuale_slm": 422.34,
-                "trend_variazione_cm": 1.0,
-                "volume_netto_attuale_mc": 0.0,
-                "pioggia_mm": 1.4,
-                "neve_cm": 0.0,
-                "percentuale_riempimento": 0.0
-            },
             {
                 "diga": "SAETTA",
                 "quota_max_slm": 951.24,
                 "volume_max_lordo_mc": 3480000,
-                "quota_attuale_slm": 5.0,
-                "trend_variazione_cm": 56.6,
-                "volume_netto_attuale_mc": 3.0,
-                "pioggia_mm": 5.0,
-                "neve_cm": 0.0,
-                "percentuale_riempimento": 0.0
-            },
-            {
-                "diga": "GIULIANO",
-                "quota_max_slm": 101.0,
-                "volume_max_lordo_mc": 94081021,
-                "quota_attuale_slm": 0.0,
-                "trend_variazione_cm": 93.55,
-                "volume_netto_attuale_mc": 0.0,
-                "pioggia_mm": 0.0,
-                "neve_cm": 0.0,
-                "percentuale_riempimento": 0.0
-            },
-            {
-                "diga": "GANNANO",
-                "quota_max_slm": 99.0,
-                "volume_max_lordo_mc": 2762000,
-                "quota_attuale_slm": 0.0,
-                "trend_variazione_cm": 98.35,
-                "volume_netto_attuale_mc": 0.0,
-                "pioggia_mm": 0.0,
-                "neve_cm": 0.0,
-                "percentuale_riempimento": 0.0
-            },
-            {
-                "diga": "ACERENZA",
-                "quota_max_slm": 432.0,
-                "volume_max_lordo_mc": 8887800,
-                "quota_attuale_slm": 430.08,
-                "trend_variazione_cm": 0.0,
-                "volume_netto_attuale_mc": 0.0,
-                "pioggia_mm": 0.0,
-                "neve_cm": 0.0,
-                "percentuale_riempimento": 0.0
-            },
-            {
-                "diga": "GENZANO",
-                "quota_max_slm": 402.0,
-                "volume_max_lordo_mc": 3100000,
-                "quota_attuale_slm": 0.0,
-                "trend_variazione_cm": 401.3,
-                "volume_netto_attuale_mc": 0.0,
-                "pioggia_mm": 0.0,
-                "neve_cm": 0.0,
-                "percentuale_riempimento": 0.0
+                "quota_attuale_slm": 56.6,
+                "trend_variazione_cm": 0,
+                "volume_netto_attuale_mc": 946.16,
+                "pioggia_mm": 484.6,
+                "neve_cm": 5.0,
+                "percentuale_riempimento": 0.03
             }
         ]
     }
