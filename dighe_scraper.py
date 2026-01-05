@@ -10,11 +10,13 @@ FILE_JSON = "storico_invasi.json"
 
 def clean_numeric(value):
     if not value: return 0.0
+    # Teniamo i punti se servono a ricostruire numeri grandi, ma togliamo asterischi
     s = str(value).replace(' ', '').replace('----------', '0').strip()
     s = re.sub(r'[^\d,.-]', '', s)
     try:
-        if ',' in s and '.' in s: s = s.replace('.', '').replace(',', '.')
-        elif ',' in s: s = s.replace(',', '.')
+        # Gestione speciale: se ci sono più punti (es 60.143.000), li rimuoviamo tutti tranne l'ultimo se funge da decimale
+        if s.count('.') > 1: s = s.replace('.', '')
+        if ',' in s: s = s.replace('.', '').replace(',', '.')
         return float(s)
     except: return 0.0
 
@@ -38,7 +40,7 @@ def scrape_bollettino():
         with pdfplumber.open(io.BytesIO(pdf_res.content)) as pdf:
             page = pdf.pages[0]
             width = page.width
-            words = page.extract_words(horizontal_ltr=True, x_tolerance=3)
+            words = page.extract_words(horizontal_ltr=True, x_tolerance=2, y_tolerance=2)
             
             info_invasi = {
                 "COTUGNO": {"max_v": 480700000, "max_q": 252.0},
@@ -56,53 +58,52 @@ def scrape_bollettino():
             nuovi_dati = []
 
             for name, info in info_invasi.items():
+                # Match flessibile del nome
                 diga_objs = [w for w in words if name in w['text'].upper()]
                 if not diga_objs: continue
                 
                 target_y = diga_objs[0]['top']
-                # Prendiamo tutte le parole a destra
-                row_words = [w for w in words if abs(w['top'] - target_y) < 5 and w['x0'] > width * 0.35]
+                # Prendiamo tutto ciò che sta sulla riga a destra del nome
+                row_words = [w for w in words if abs(w['top'] - target_y) < 6 and w['x0'] > width * 0.15]
                 row_words.sort(key=lambda x: x['x0'])
                 
-                # Uniamo le parole vicine che compongono un unico numero (es. "60." "143." "000")
+                # Ricostruzione token (uniamo pezzi di numeri separati da punti/spazi)
                 tokens = []
                 if row_words:
-                    current_token = row_words[0]['text']
+                    current = row_words[0]['text']
                     for i in range(1, len(row_words)):
-                        # Se la distanza tra parole è minima, le uniamo
-                        if row_words[i]['x0'] - row_words[i-1]['x1'] < 4:
-                            current_token += row_words[i]['text']
+                        # Se sono molto vicini o se il token attuale finisce con un punto, uniamo
+                        if row_words[i]['x0'] - row_words[i-1]['x1'] < 5 or current.endswith('.'):
+                            current += row_words[i]['text']
                         else:
-                            tokens.append(current_token)
-                            current_token = row_words[i]['text']
-                    tokens.append(current_token)
+                            tokens.append(current)
+                            current = row_words[i]['text']
+                    tokens.append(current)
 
                 numeri = [clean_numeric(t) for t in tokens if clean_numeric(t) != 0 or '0' in t]
-                print(f"DEBUG {name}: {numeri}") # Questo ci serve per vedere la sequenza esatta
+                print(f"DEBUG {name} TOKENS: {tokens} -> NUMS: {numeri}")
 
                 if len(numeri) >= 3:
                     try:
-                        # Ricerca Quota Attuale (50-1000)
+                        # Identificazione per Valore/Posizione
+                        # Quota attuale: tra 50 e 1000, non uguale alla max
                         q_attuale = next((n for n in numeri if 50 <= n <= 1000 and n != info["max_q"]), 0)
                         
-                        # Pioggia e Neve (ultimi due)
+                        # Volume netto: il numero più grande > 1000 (dopo aver pulito i punti)
+                        v_netto = max([n for n in numeri if n > 1000 and n != info["max_v"]], default=0)
+                        
+                        # Pioggia e Neve: ultimi due
                         pioggia = numeri[-2] if len(numeri) >= 2 else 0
                         neve = numeri[-1] if len(numeri) >= 1 else 0
                         
-                        # Volume Netto (cerchiamo il numero più grande escludendo i riferimenti statici)
-                        possibili_volumi = [n for n in numeri if n > 1000 and n != info["max_v"]]
-                        v_netto = possibili_volumi[-1] if possibili_volumi else 0
-                        
-                        # Trend (numero tra quota e volume)
+                        # Trend: tra quota e volume
                         trend = 0
                         if q_attuale in numeri:
                             idx = numeri.index(q_attuale)
-                            if len(numeri) > idx + 1:
-                                val = numeri[idx+1]
-                                if val != v_netto and abs(val) < 1000:
-                                    trend = val
+                            if len(numeri) > idx + 1 and numeri[idx+1] != v_netto:
+                                trend = numeri[idx+1]
 
-                        d = {
+                        nuovi_dati.append({
                             "diga": name,
                             "quota_max_slm": info["max_q"],
                             "volume_max_lordo_mc": info["max_v"],
@@ -112,10 +113,8 @@ def scrape_bollettino():
                             "pioggia_mm": pioggia,
                             "neve_cm": neve,
                             "percentuale_riempimento": round((v_netto / info["max_v"] * 100), 2) if v_netto > 0 else 0
-                        }
-                        nuovi_dati.append(d)
-                    except Exception as e:
-                        print(f"Errore su {name}: {e}")
+                        })
+                    except: continue
 
             if nuovi_dati:
                 storico = {}
@@ -123,14 +122,12 @@ def scrape_bollettino():
                     with open(FILE_JSON, 'r') as f:
                         try: storico = json.load(f)
                         except: storico = {}
-                
                 storico[data_bollettino] = {"scraped_at": datetime.now().isoformat(), "dati": nuovi_dati}
                 with open(FILE_JSON, 'w') as f:
                     json.dump(storico, f, indent=4)
-                print(f"Completato. Dighe salvate: {len(nuovi_dati)}")
+                print(f"Aggiornato con {len(nuovi_dati)} dighe.")
 
-    except Exception as e:
-        print(f"Errore: {e}")
+    except Exception as e: print(f"Errore: {e}")
 
 if __name__ == "__main__":
     scrape_bollettino()
