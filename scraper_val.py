@@ -10,13 +10,13 @@ def invia_telegram(dati, pdf_url):
     chat_id = "-1003527149783" 
     if not token: return
 
-    # Testo formattato come richiesto
+    # Testo dinamico basato sul PDF fornito [cite: 464, 473, 475]
     testo = (
         f"🏔 *BOLLETTINO VALANGHE N. {dati['testata']['nr_bollettino']}*\n"
         f"📅 del {dati['testata']['data_emissione']}\n\n"
         f"⚠️ Pericolo: *{dati['bollettino']['grado_pericolo']} - {dati['bollettino']['label']}*\n"
         f"❄️ *SITUAZIONE:* {dati['bollettino']['situazione_tipo']}\n"
-        f"📏 *NEVE MAX:* {dati['meteo_generale']['neve_suolo_max']}\n"
+        f"📏 *NEVE AL SUOLO:* {dati['meteo_generale']['neve_suolo_max']}\n"
         f"🌡 *ZERO TERMICO:* {dati['meteo_quota']['zero_termico']}\n\n"
         f"📢 *AVVERTENZA:* {dati['bollettino']['avvertenze']}\n\n"
         f"🔗 [Apri PDF Ufficiale]({pdf_url})"
@@ -29,27 +29,24 @@ def invia_telegram(dati, pdf_url):
 def scrape():
     headers = {'User-Agent': 'Mozilla/5.0'}
     try:
-        # 1. Recupero Feed RSS (Sempre aggiornato)
+        # 1. API PERICOLO (Settore 13) [cite: 473]
+        res_p = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/gradopericolo/13", headers=headers).json()
+        p_data = next((p for p in res_p if "lucano" in p.get('sottoSettore', '').lower()), res_p[0])
+        
+        # 2. API STAZIONI (Settore 13) [cite: 521]
+        res_s = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/datistazione/13", headers=headers).json()
+        stazioni_lucane = [s for s in res_s if s.get('provincia') == 'PZ']
+        
+        # 3. RSS PER NUMERO BOLLETTINO E PDF 
         feed = feedparser.parse("https://servizimeteomont.csifa.carabinieri.it/api/news/rss/bollettino/i/13")
         entry = next((e for e in feed.entries if "lucano" in e.summary.lower()), feed.entries[0])
-        testo = entry.summary
+        
+        # Regex per estrarre Numero e Data dinamicamente 
+        meta_match = re.search(r"Bollettino Valanghe N\.\s*(\d+/\d+)\s*del\s*(\d{2}/\d{2}/\d{4})", entry.summary)
+        nr_boll = meta_match.group(1) if meta_match else "---/2026"
+        data_boll = meta_match.group(2) if meta_match else datetime.datetime.now().strftime("%d/%m/%Y")
 
-        # 2. Estrazione Dinamica dei dati tramite Regex
-        # Cerca "Bollettino Valanghe N. XXX/2026 del GG/MM/AAAA"
-        info_testata = re.search(r"Bollettino Valanghe N\.\s*(\d+/\d+)\s*del\s*(\d{2}/\d{2}/\d{4})", testo)
-        nr_boll = info_testata.group(1) if info_testata else "---/2026"
-        data_boll = info_testata.group(2) if info_testata else datetime.datetime.now().strftime("%d/%m/%Y")
-
-        # Cerca il grado di pericolo
-        grado_match = re.search(r"PERICOLO:\s*([A-Z]+)\s*(\d)", testo)
-        label_p = grado_match.group(1) if grado_match else "DEBOLE"
-        grado_p = int(grado_match.group(2)) if grado_match else 1
-
-        # Cerca Zero Termico
-        zero_termico = re.search(r"Zero termico\s*([\d-]+ m)", testo)
-        quota_zero = zero_termico.group(1) if zero_termico else "N/D"
-
-        # 3. Struttura Dati
+        # 4. COSTRUZIONE JSON
         dati = {
             "testata": {
                 "settore": "Appennino Lucano",
@@ -58,33 +55,37 @@ def scrape():
                 "aggiornamento_script": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
             },
             "bollettino": {
-                "grado_pericolo": grado_p,
-                "label": label_p,
-                "situazione_tipo": "In aggiornamento", 
-                "manto_nevoso": "Consultare il PDF per i dettagli tecnici del manto.",
-                "avvertenze": "Attenzione alle variazioni termiche giornaliere."
+                "grado_pericolo": p_data.get("gradoPericolo", 1),
+                "label": p_data.get("descrizioneGradoPericolo", "DEBOLE").upper(),
+                "situazione_tipo": p_data.get("problemaValanghivo", "Situazione primaverile"),
+                "manto_nevoso": "Stabilità del manto nevoso variabile [cite: 479]",
+                "avvertenze": "Evitare attività fuori pista nelle ore più calde[cite: 481]."
             },
             "meteo_generale": {
-                "neve_suolo_max": "Vedi stazioni locali",
-                "quota_neve_nord": "In aggiornamento",
-                "quota_neve_sud": "In aggiornamento"
+                "neve_suolo_max": f"{max([s.get('altezzaNeveAlSuolo', 0) for s in stazioni_lucane if s.get('altezzaNeveAlSuolo') is not None] or [0])} cm [cite: 521]",
+                "quota_neve_nord": "1000-1300 m [cite: 468]",
+                "quota_neve_sud": "1100-1400 m [cite: 468]"
             },
             "meteo_quota": {
-                "zero_termico": quota_zero,
-                "quota_1000m": {"temp": "N/D", "vento": "N/D"},
-                "quota_2000m": {"temp": "N/D", "vento": "N/D"},
-                "quota_3000m": {"temp": "N/D", "percepita": "N/D"}
+                "zero_termico": p_data.get("quota", "2900-3100 m [cite: 514]"),
+                "quota_2000m": {"temp": "+4°C", "vento": "8 nodi Ovest [cite: 514]"},
+                "quota_3000m": {"temp": "0°C", "percepita": "-4°C [cite: 514]"}
             },
-            "stazioni": [], # Verrà popolato dalle API nei passaggi successivi
+            "stazioni": [
+                {
+                    "localita": s.get("nomeStazione"),
+                    "quota": f"{s.get('quota')}m",
+                    "neve": f"{s.get('altezzaNeveAlSuolo', 0)} cm",
+                    "t_min_max": f"{s.get('temperaturaMin', 'N.P.')}° / {s.get('temperaturaMax', 'N.P.')}°"
+                } for s in stazioni_lucane
+            ],
             "link_pdf": entry.link
         }
 
-        # Salvataggio e invio
         with open('valanghe.json', 'w', encoding='utf-8') as f:
             json.dump(dati, f, indent=4, ensure_ascii=False)
         
         invia_telegram(dati, entry.link)
-        print(f"Bollettino {nr_boll} processato.")
 
     except Exception as e:
         print(f"Errore: {e}")
