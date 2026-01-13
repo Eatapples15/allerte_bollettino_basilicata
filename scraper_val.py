@@ -12,7 +12,7 @@ def calcola_wind_chill(t, v_kmh):
 
 def invia_telegram(dati, pdf_url):
     token = os.getenv('TELEGRAM_TOKEN')
-    chat_id = os.getenv('TELEGRAM_CHAT_ID')
+    chat_id = os.getenv('-1003527149783')
     if not token or not chat_id: return
 
     # Testo semplice per il riassunto
