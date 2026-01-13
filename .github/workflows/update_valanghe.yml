@@ -1,26 +1,29 @@
-name: Update Valanghe Basilicata
-
+name: Bollettino Giornaliero
 on:
   schedule:
-    - cron: '0 13 * * *' # Ore 14:00 italiane
+    - cron: '0 13 * * *' # 14:00 italiane
   workflow_dispatch:
 
 jobs:
-  run-scraper:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
           python-version: '3.9'
-      - name: Install dependencies
+      - name: Install Dependencies
         run: pip install requests feedparser
       - name: Run Scraper
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
         run: python scraper_val.py
-      - name: Commit changes
+      - name: Save JSON
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add valanghe.json
-          git commit -m "Update dati completi Appennino Lucano" || exit 0
+          git commit -m "Aggiornamento dati" || exit 0
           git push
