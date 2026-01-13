@@ -1,39 +1,21 @@
 {
     "testata": {
         "settore": "Appennino Lucano",
-        "bollettino_nr": "211/2026",
-        "data_emissione": "13/01/2026",
-        "validita": "48 ore"
+        "stazione": "PASSO LE FORCHE",
+        "data_emissione": "13/01/2026"
     },
-    "situazione_valanghe": {
+    "bollettino": {
         "grado_pericolo": 1,
+        "label": "Debole",
         "situazione_tipo": "Situazione primaverile",
-        "manto_nevoso": "Buona stabilità su alcuni punti per tutte le esposizioni",
-        "valanghe_osservate": "Nessuna valanga",
-        "avvertenze": "Evitare attività fuori pista nelle ore più calde su pendii ripidi al sole"
+        "avvertenze": "Evitare attività fuori pista nelle ore più calde su pendii ripidi al sole.",
+        "manto_nevoso": "Buona stabilità su alcuni punti per tutte le esposizioni."
     },
-    "parametri_neve_quota": {
-        "nord": "1000-1300 mslm",
-        "sud": "1100-1400 mslm",
-        "zero_termico_max": "2900-3100 m"
+    "meteo": {
+        "temp_reale": "0°C",
+        "temp_percepita": "0°C",
+        "neve_suolo": "0 cm",
+        "vento": "0 km/h"
     },
-    "stazioni_locali": [],
-    "previsione_meteo_quota": {
-        "1000m": {
-            "temp": "+7°C",
-            "vento": "2 nodi Ovest"
-        },
-        "2000m": {
-            "temp": "+4°C",
-            "vento": "8 nodi Ovest"
-        },
-        "3000m": {
-            "temp": "+0°C",
-            "percepita": "-4°C"
-        }
-    },
-    "metadata": {
-        "ultima_sincronizzazione": "13/01/2026 12:26",
-        "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-07"
-    }
+    "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-07"
 }
