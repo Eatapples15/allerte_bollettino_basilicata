@@ -3,33 +3,29 @@
         "settore": "Appennino Lucano",
         "data_emissione": "13/01/2026",
         "nr_bollettino": "---/2026",
-        "aggiornamento_script": "13/01/2026 12:57"
+        "aggiornamento_script": "13/01/2026 13:00"
     },
     "bollettino": {
         "grado_pericolo": 1,
         "label": "DEBOLE",
-        "situazione_tipo": "In aggiornamento",
-        "manto_nevoso": "Consultare il PDF per i dettagli tecnici del manto.",
-        "avvertenze": "Attenzione alle variazioni termiche giornaliere."
+        "situazione_tipo": "Situazione primaverile",
+        "manto_nevoso": "Stabilità del manto nevoso variabile [cite: 479]",
+        "avvertenze": "Evitare attività fuori pista nelle ore più calde[cite: 481]."
     },
     "meteo_generale": {
-        "neve_suolo_max": "Vedi stazioni locali",
-        "quota_neve_nord": "In aggiornamento",
-        "quota_neve_sud": "In aggiornamento"
+        "neve_suolo_max": "0 cm [cite: 521]",
+        "quota_neve_nord": "1000-1300 m [cite: 468]",
+        "quota_neve_sud": "1100-1400 m [cite: 468]"
     },
     "meteo_quota": {
-        "zero_termico": "N/D",
-        "quota_1000m": {
-            "temp": "N/D",
-            "vento": "N/D"
-        },
+        "zero_termico": "2900-3100 m [cite: 514]",
         "quota_2000m": {
-            "temp": "N/D",
-            "vento": "N/D"
+            "temp": "+4°C",
+            "vento": "8 nodi Ovest [cite: 514]"
         },
         "quota_3000m": {
-            "temp": "N/D",
-            "percepita": "N/D"
+            "temp": "0°C",
+            "percepita": "-4°C [cite: 514]"
         }
     },
     "stazioni": [],
