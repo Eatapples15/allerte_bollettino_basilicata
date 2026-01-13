@@ -11,7 +11,7 @@ def invia_telegram(dati, pdf_url):
 
     testo = (
         f"🏔 *BOLLETTINO VALANGHE: APPENNINO LUCANO*\n"
-        f"📅 Data: {dati['testata']['data_emissione']}\n"
+        f"📅 Data: {dati['testata']['data_emissione']}\n\n"
         f"⚠️ Pericolo: *{dati['bollettino']['grado_pericolo']} - {dati['bollettino']['label']}*\n\n"
         f"❄️ *SITUAZIONE:* {dati['bollettino']['situazione_tipo']}\n"
         f"📏 *NEVE AL SUOLO:* {dati['meteo_generale']['neve_suolo_max']}\n"
