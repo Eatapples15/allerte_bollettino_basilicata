@@ -1,21 +1,56 @@
 {
     "testata": {
         "settore": "Appennino Lucano",
-        "stazione": "PASSO LE FORCHE",
-        "data_emissione": "13/01/2026"
+        "data_emissione": "13/01/2026",
+        "nr_bollettino": "211/2026",
+        "aggiornamento_script": "13/01/2026 12:44"
     },
     "bollettino": {
         "grado_pericolo": 1,
-        "label": "Debole",
+        "label": "DEBOLE",
         "situazione_tipo": "Situazione primaverile",
-        "avvertenze": "Evitare attività fuori pista nelle ore più calde su pendii ripidi al sole.",
-        "manto_nevoso": "Buona stabilità su alcuni punti per tutte le esposizioni."
+        "manto_nevoso": "La stabilità del manto nevoso è buona su alcuni punti per tutte le esposizioni.",
+        "avvertenze": "Evitare le attività fuori pista nelle ore più calde della giornata su pendii ripidi al sole."
     },
-    "meteo": {
-        "temp_reale": "0°C",
-        "temp_percepita": "0°C",
-        "neve_suolo": "0 cm",
-        "vento": "0 km/h"
+    "meteo_generale": {
+        "neve_suolo_max": "22 cm a 1560m",
+        "quota_neve_nord": "1000-1300 m",
+        "quota_neve_sud": "1100-1400 m"
     },
+    "meteo_quota": {
+        "zero_termico": "2900-3100 m",
+        "quota_1000m": {
+            "temp": "+7°C",
+            "vento": "2 nodi Ovest"
+        },
+        "quota_2000m": {
+            "temp": "+4°C",
+            "vento": "8 nodi Ovest"
+        },
+        "quota_3000m": {
+            "temp": "0°C",
+            "percepita": "-4°C"
+        }
+    },
+    "stazioni": [
+        {
+            "localita": "Piano Imperatore",
+            "quota": "1560m",
+            "neve": "22 cm",
+            "t_min_max": "-7°C / +1°C"
+        },
+        {
+            "localita": "Laudemio",
+            "quota": "1532m",
+            "neve": "18 cm",
+            "t_min_max": "-7°C / -1°C"
+        },
+        {
+            "localita": "Pedarreto",
+            "quota": "1380m",
+            "neve": "13 cm",
+            "t_min_max": "N.P."
+        }
+    ],
     "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-07"
 }
