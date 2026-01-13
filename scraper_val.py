@@ -21,7 +21,7 @@ def invia_telegram(dati, pdf_url):
 
     url_doc = f"https://api.telegram.org/bot{token}/sendDocument"
     requests.post(url_doc, data={'chat_id': chat_id, 'caption': testo, 'parse_mode': 'Markdown'}, 
-                  files={'document': ('Bollettino_Appennino_Lucano.pdf', requests.get(pdf_url).content)})
+                  files={'document': ('Bollettino_Valanghe_Appennino_Lucano.pdf', requests.get(pdf_url).content)})
 
 def scrape():
     headers = {'User-Agent': 'Mozilla/5.0'}
