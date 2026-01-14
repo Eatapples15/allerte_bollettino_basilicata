@@ -1,29 +1,35 @@
-name: Bollettino Valanghe
+name: Aggiornamento Bollettino Valanghe
+
 on:
   schedule:
-    - cron: '0 13 * * *' # 14:00 italiane
-  workflow_dispatch:
+    - cron: '50 12 * * *' # Esegue ogni giorno alle 13:50 ora italiana
+  workflow_dispatch:      # Permette l'esecuzione manuale per test
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout del codice
+        uses: actions/checkout@v3
+
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
+
       - name: Install Dependencies
         run: pip install requests feedparser
-      - name: Run Scraper
+
+      - name: Esecuzione Scraper
         env:
           TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_CHAT_ID: "-1003527149783"
         run: python scraper_val.py
-      - name: Save JSON
+
+      - name: Salva modifiche su GitHub
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add valanghe.json
-          git commit -m "Aggiornamento dati" || exit 0
+          git commit -m "Aggiornamento dati bollettino $(date +'%d/%m/%Y')" || exit 0
           git push
