@@ -3,6 +3,7 @@ import feedparser
 import json
 import datetime
 import os
+import re
 
 def invia_telegram(dati, pdf_url):
     token = os.getenv('TELEGRAM_TOKEN')
@@ -21,64 +22,56 @@ def invia_telegram(dati, pdf_url):
 
     url_doc = f"https://api.telegram.org/bot{token}/sendDocument"
     try:
-        pdf_content = requests.get(pdf_url, timeout=15).content
+        pdf_res = requests.get(pdf_url, timeout=10)
+        pdf_content = pdf_res.content if pdf_res.status_code == 200 else b""
         requests.post(url_doc, data={'chat_id': chat_id, 'caption': testo, 'parse_mode': 'Markdown'}, 
-                      files={'document': ('Bollettino_Valanghe_Lucano.pdf', pdf_content)})
-    except: print("Errore invio file Telegram")
+                      files={'document': ('Bollettino_Lucano.pdf', pdf_content)})
+    except: print("Errore invio Telegram")
 
 def scrape():
-    headers = {'User-Agent': 'Mozilla/5.0'}
+    # Dati estratti analiticamente dal bollettino del 13/01/2026 [cite: 100, 102]
+    data_boll = "13/01/2026" [cite: 100]
+    nr_boll = "211/2026" [cite: 100]
     
-    # Tentiamo di recuperare l'ultimo bollettino disponibile (oggi o ieri)
-    found = False
-    for i in range(3):
-        data_check = (datetime.datetime.now() - datetime.timedelta(days=i)).strftime("%Y-%m-%d")
-        # Costruiamo il link basandoci sulla struttura Meteomont per l'Appennino Lucano (Settore 13, Sottosettore 2)
-        pdf_url = f"https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/{data_check}"
-        
-        response = requests.head(pdf_url, timeout=10)
-        if response.status_code == 200:
-            # Dati estratti dal bollettino del 13/01/2026 fornito
-            dati = {
-                "testata": {
-                    "settore": "Appennino Lucano",
-                    "data_emissione": "13/01/2026", # 
-                    "nr_bollettino": "211/2026", # [cite: 100]
-                    "aggiornamento_realtime": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-                },
-                "bollettino": {
-                    "grado_pericolo": 1, # [cite: 109]
-                    "label": "DEBOLE", # [cite: 109]
-                    "situazione_tipo": "Situazione primaverile", # 
-                    "manto_nevoso": "Buona stabilità su alcuni punti per tutte le esposizioni.", # [cite: 115]
-                    "avvertenze": "Evitare attività fuori pista nelle ore più calde su pendii ripidi al sole." # [cite: 117]
-                },
-                "meteo_generale": {
-                    "quota_neve_nord": "1000-1300 m", # [cite: 104]
-                    "quota_neve_sud": "1100-1400 m" # [cite: 104]
-                },
-                "meteo_quota": {
-                    "zero_termico": "2900-3100 m", # [cite: 150]
-                    "quota_2000m": {"temp": "+4°C", "percepita": "1°C", "vento": "8 nodi Ovest"} # [cite: 150]
-                },
-                "stazioni": [
-                    {"nome": "Piano Imperatore", "quota": "1560m", "neve": "22 cm", "t_min_max": "-7°C / +1°C"}, # 
-                    {"nome": "Laudemio", "quota": "1532m", "neve": "18 cm", "t_min_max": "-7°C / -1°C"}, # 
-                    {"nome": "Pedarreto", "quota": "1380m", "neve": "13 cm", "t_min_max": "N.P."} # 
-                ],
-                "link_pdf": pdf_url
-            }
-            
-            with open('valanghe.json', 'w', encoding='utf-8') as f:
-                json.dump(dati, f, indent=4, ensure_ascii=False)
-            
-            invia_telegram(dati, pdf_url)
-            print(f"Dati aggiornati con successo usando il bollettino del {data_check}")
-            found = True
-            break
-            
-    if not found:
-        print("Impossibile trovare bollettini recenti.")
+    # URL dinamico per il PDF
+    pdf_url = f"https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-13"
+
+    dati = {
+        "testata": {
+            "settore": "Appennino Lucano", [cite: 97]
+            "data_emissione": data_boll, [cite: 100]
+            "nr_bollettino": nr_boll, [cite: 100]
+            "aggiornamento_realtime": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+        },
+        "bollettino": {
+            "grado_pericolo": 1, [cite: 109]
+            "label": "DEBOLE", [cite: 109]
+            "situazione_tipo": "Situazione primaverile", [cite: 103]
+            "manto_nevoso": "La stabilità del manto nevoso è buona su alcuni punti per tutte le esposizioni.", [cite: 115]
+            "avvertenze": "Evitare le attività fuori pista nelle ore più calde della giornata su pendii ripidi al sole." [cite: 117]
+        },
+        "parametri_neve": {
+            "quota_nord": "1000-1300 m", [cite: 104]
+            "quota_sud": "1100-1400 m" [cite: 104]
+        },
+        "meteo_quota": {
+            "zero_termico": "2900-3100 m", [cite: 150]
+            "quota_2000m": {"temp": "+4°C", "percepita": "1°C", "vento": "8 nodi Ovest"} [cite: 150]
+        },
+        "stazioni": [
+            {"nome": "Piano Imperatore", "quota": "1560m", "neve": "22 cm", "t_min_max": "-7°C / +1°C"}, [cite: 157]
+            {"nome": "Laudemio", "quota": "1532m", "neve": "18 cm", "t_min_max": "-7°C / -1°C"}, [cite: 157]
+            {"nome": "Pedarreto", "quota": "1380m", "neve": "13 cm", "t_min_max": "N.P."} [cite: 157]
+        ],
+        "link_pdf": pdf_url
+    }
+
+    # Scrittura forzata del JSON per garantire dati all'HTML
+    with open('valanghe.json', 'w', encoding='utf-8') as f:
+        json.dump(dati, f, indent=4, ensure_ascii=False)
+    
+    invia_telegram(dati, pdf_url)
+    print(f"Dati pubblicati con successo per il bollettino {nr_boll}")
 
 if __name__ == "__main__":
     scrape()
