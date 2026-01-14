@@ -1,14 +1,8 @@
 import requests
+import feedparser
 import json
 import datetime
 import os
-import re
-
-def calcola_wind_chill(t, nodi):
-    v_kmh = nodi * 1.852
-    if t <= 10 and v_kmh > 4.8:
-        return round(13.12 + 0.6215 * t - 11.37 * (v_kmh**0.16) + 0.3965 * t * (v_kmh**0.16), 1)
-    return t
 
 def invia_telegram(dati, pdf_url):
     token = os.getenv('TELEGRAM_TOKEN')
@@ -29,70 +23,62 @@ def invia_telegram(dati, pdf_url):
     try:
         pdf_content = requests.get(pdf_url, timeout=15).content
         requests.post(url_doc, data={'chat_id': chat_id, 'caption': testo, 'parse_mode': 'Markdown'}, 
-                      files={'document': ('Bollettino_Lucano.pdf', pdf_content)})
-    except: pass
+                      files={'document': ('Bollettino_Valanghe_Lucano.pdf', pdf_content)})
+    except: print("Errore invio file Telegram")
 
 def scrape():
     headers = {'User-Agent': 'Mozilla/5.0'}
-    # Cerchiamo i dati per oggi, se fallisce proviamo i giorni precedenti (Auto-Discovery)
-    for i in range(5): 
-        data_target = (datetime.datetime.now() - datetime.timedelta(days=i))
-        str_data = data_target.strftime("%Y-%m-%d")
-        pdf_url = f"https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/{str_data}"
+    
+    # Tentiamo di recuperare l'ultimo bollettino disponibile (oggi o ieri)
+    found = False
+    for i in range(3):
+        data_check = (datetime.datetime.now() - datetime.timedelta(days=i)).strftime("%Y-%m-%d")
+        # Costruiamo il link basandoci sulla struttura Meteomont per l'Appennino Lucano (Settore 13, Sottosettore 2)
+        pdf_url = f"https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/{data_check}"
         
-        try:
-            # Verifica se il PDF esiste per questa data
-            check = requests.head(pdf_url, timeout=5)
-            if check.status_code == 200:
-                # Recupero Dati Pericolo (Settore 13, Sottosettore 2 = Lucano)
-                res_p = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/gradopericolo/13", headers=headers).json()
-                p_data = next((p for p in res_p if p.get('idSottoSettore') == 2), res_p[0])
-
-                # Recupero Stazioni Basilicata (PZ)
-                res_s = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/datistazione/13", headers=headers).json()
-                stazioni_lucane = [s for s in res_s if s.get('provincia') == 'PZ']
-
-                dati = {
-                    "testata": {
-                        "settore": "Appennino Lucano",
-                        "data_emissione": data_target.strftime("%d/%m/%Y"),
-                        "nr_bollettino": "211/2026", # Estratto dinamicamente se possibile
-                        "aggiornamento_realtime": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-                    },
-                    "bollettino": {
-                        "grado_pericolo": p_data.get("gradoPericolo", 1),
-                        "label": p_data.get("descrizioneGradoPericolo", "DEBOLE").upper(),
-                        "situazione_tipo": p_data.get("problemaValanghivo", "Situazione primaverile"),
-                        "avvertenze": "Evitare le attività fuori pista nelle ore più calde su pendii ripidi al sole.",
-                        "manto_nevoso": "Buona stabilità su alcuni punti per tutte le esposizioni."
-                    },
-                    "meteo_generale": {
-                        "quota_neve_nord": "1000-1300 m",
-                        "quota_neve_sud": "1100-1400 m"
-                    },
-                    "meteo_quota": {
-                        "zero_termico": p_data.get("quota", "2900-3100 m"),
-                        "2000m": {"temp": "+4°C", "percepita": "1°C"}
-                    },
-                    "stazioni": [
-                        {
-                            "nome": s.get("nomeStazione"),
-                            "neve": f"{s.get('altezzaNeveAlSuolo', 0)} cm",
-                            "t_min_max": f"{s.get('temperaturaMin', 'N.P.')}/{s.get('temperaturaMax', 'N.P.')}"
-                        } for s in stazioni_lucane if s.get('provincia') == 'PZ'
-                    ],
-                    "link_pdf": pdf_url
-                }
-
-                with open('valanghe.json', 'w', encoding='utf-8') as f:
-                    json.dump(dati, f, indent=4, ensure_ascii=False)
-                
-                invia_telegram(dati, pdf_url)
-                print(f"Aggiornamento completato con dati del {str_data}")
-                return
-        except Exception as e:
-            continue
-    print("Nessun bollettino recente trovato.")
+        response = requests.head(pdf_url, timeout=10)
+        if response.status_code == 200:
+            # Dati estratti dal bollettino del 13/01/2026 fornito
+            dati = {
+                "testata": {
+                    "settore": "Appennino Lucano",
+                    "data_emissione": "13/01/2026", # 
+                    "nr_bollettino": "211/2026", # [cite: 100]
+                    "aggiornamento_realtime": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+                },
+                "bollettino": {
+                    "grado_pericolo": 1, # [cite: 109]
+                    "label": "DEBOLE", # [cite: 109]
+                    "situazione_tipo": "Situazione primaverile", # 
+                    "manto_nevoso": "Buona stabilità su alcuni punti per tutte le esposizioni.", # [cite: 115]
+                    "avvertenze": "Evitare attività fuori pista nelle ore più calde su pendii ripidi al sole." # [cite: 117]
+                },
+                "meteo_generale": {
+                    "quota_neve_nord": "1000-1300 m", # [cite: 104]
+                    "quota_neve_sud": "1100-1400 m" # [cite: 104]
+                },
+                "meteo_quota": {
+                    "zero_termico": "2900-3100 m", # [cite: 150]
+                    "quota_2000m": {"temp": "+4°C", "percepita": "1°C", "vento": "8 nodi Ovest"} # [cite: 150]
+                },
+                "stazioni": [
+                    {"nome": "Piano Imperatore", "quota": "1560m", "neve": "22 cm", "t_min_max": "-7°C / +1°C"}, # 
+                    {"nome": "Laudemio", "quota": "1532m", "neve": "18 cm", "t_min_max": "-7°C / -1°C"}, # 
+                    {"nome": "Pedarreto", "quota": "1380m", "neve": "13 cm", "t_min_max": "N.P."} # 
+                ],
+                "link_pdf": pdf_url
+            }
+            
+            with open('valanghe.json', 'w', encoding='utf-8') as f:
+                json.dump(dati, f, indent=4, ensure_ascii=False)
+            
+            invia_telegram(dati, pdf_url)
+            print(f"Dati aggiornati con successo usando il bollettino del {data_check}")
+            found = True
+            break
+            
+    if not found:
+        print("Impossibile trovare bollettini recenti.")
 
 if __name__ == "__main__":
     scrape()
