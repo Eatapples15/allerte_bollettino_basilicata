@@ -1,32 +1,18 @@
 {
     "testata": {
         "settore": "Appennino Lucano",
-        "data_emissione": "13/01/2026",
-        "nr_bollettino": "---/2026",
-        "aggiornamento_script": "13/01/2026 13:35"
+        "data_emissione": "14/01/2026",
+        "nr_bollettino": "N/D",
+        "aggiornamento_realtime": "14/01/2026 08:03"
     },
     "bollettino": {
-        "grado_pericolo": 1,
-        "label": "DEBOLE",
-        "situazione_tipo": "Situazione primaverile",
-        "manto_nevoso": "Stabilità del manto nevoso variabile [cite: 479]",
-        "avvertenze": "Evitare attività fuori pista nelle ore più calde[cite: 481]."
-    },
-    "meteo_generale": {
-        "neve_suolo_max": "0 cm [cite: 521]",
-        "quota_neve_nord": "1000-1300 m [cite: 468]",
-        "quota_neve_sud": "1100-1400 m [cite: 468]"
+        "grado_pericolo": 0,
+        "label": "N/D",
+        "situazione_tipo": "In aggiornamento",
+        "avvertenze": "Consultare il PDF per le avvertenze specifiche di oggi."
     },
     "meteo_quota": {
-        "zero_termico": "2900-3100 m [cite: 514]",
-        "quota_2000m": {
-            "temp": "+4°C",
-            "vento": "8 nodi Ovest [cite: 514]"
-        },
-        "quota_3000m": {
-            "temp": "0°C",
-            "percepita": "-4°C [cite: 514]"
-        }
+        "zero_termico": "N/D"
     },
     "stazioni": [],
     "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-07"
