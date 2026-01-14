@@ -1,19 +1,57 @@
 {
     "testata": {
         "settore": "Appennino Lucano",
-        "data_emissione": "14/01/2026",
-        "nr_bollettino": "N/D",
-        "aggiornamento_realtime": "14/01/2026 08:03"
+        "data_emissione": "13/01/2026",
+        "nr_bollettino": "211/2026",
+        "aggiornamento_realtime": "14/01/2026 08:18"
     },
     "bollettino": {
-        "grado_pericolo": 0,
-        "label": "N/D",
-        "situazione_tipo": "In aggiornamento",
-        "avvertenze": "Consultare il PDF per le avvertenze specifiche di oggi."
+        "grado_pericolo": 1,
+        "label": "DEBOLE",
+        "situazione_tipo": "Situazione primaverile",
+        "manto_nevoso": "La stabilità del manto nevoso è buona su alcuni punti per tutte le esposizioni.",
+        "avvertenze": "Evitare le attività fuori pista nelle ore più calde della giornata su pendii ripidi al sole.",
+        "valanghe_osservate": "Nessuna valanga"
+    },
+    "parametri_neve": {
+        "quota_nord": "1000-1300 m",
+        "quota_sud": "1100-1400 m"
     },
     "meteo_quota": {
-        "zero_termico": "N/D"
+        "zero_termico": "2900-3100 m",
+        "1000m": {
+            "temp": "+7°C",
+            "vento": "2 nodi Ovest"
+        },
+        "2000m": {
+            "temp": "+4°C",
+            "vento": "8 nodi Ovest",
+            "percepita": "1°C"
+        },
+        "3000m": {
+            "temp": "0°C",
+            "percepita": "-4°C"
+        }
     },
-    "stazioni": [],
-    "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-07"
+    "stazioni": [
+        {
+            "nome": "Piano Imperatore",
+            "quota": "1560m",
+            "neve": "22 cm",
+            "t_min_max": "-7°C / +1°C"
+        },
+        {
+            "nome": "Laudemio",
+            "quota": "1532m",
+            "neve": "18 cm",
+            "t_min_max": "-7°C / -1°C"
+        },
+        {
+            "nome": "Pedarreto",
+            "quota": "1380m",
+            "neve": "13 cm",
+            "t_min_max": "N.P."
+        }
+    ],
+    "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-13"
 }
