@@ -25,7 +25,7 @@ def invia_telegram(dati, pdf_url):
         pdf_res = requests.get(pdf_url, timeout=15)
         pdf_content = pdf_res.content if pdf_res.status_code == 200 else b""
         requests.post(url_doc, data={'chat_id': chat_id, 'caption': testo, 'parse_mode': 'Markdown'}, 
-                      files={'document': ('Bollettino_Lucano.pdf', pdf_content)})
+                      files={'document': ('Bollettino_Valanghe_Appennino_Lucano.pdf', pdf_content)})
     except: pass
 
 def scrape():
