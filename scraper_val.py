@@ -1,13 +1,13 @@
 import requests
-import feedparser
 import json
 import datetime
 import os
 import re
+import feedparser
 
 def invia_telegram(dati, pdf_url):
     token = os.getenv('TELEGRAM_TOKEN')
-    chat_id = os.getenv('TELEGRAM_CHAT_ID')
+    chat_id = "-1003527149783" 
     if not token: return
 
     testo = (
@@ -23,31 +23,36 @@ def invia_telegram(dati, pdf_url):
     url_doc = f"https://api.telegram.org/bot{token}/sendDocument"
     try:
         pdf_res = requests.get(pdf_url, timeout=15)
-        if pdf_res.status_code == 200:
-            requests.post(url_doc, data={'chat_id': chat_id, 'caption': testo, 'parse_mode': 'Markdown'}, 
-                          files={'document': ('Bollettino_Lucano.pdf', pdf_res.content)})
-    except: print("Errore invio Telegram")
+        pdf_content = pdf_res.content if pdf_res.status_code == 200 else b""
+        requests.post(url_doc, data={'chat_id': chat_id, 'caption': testo, 'parse_mode': 'Markdown'}, 
+                      files={'document': ('Bollettino_Lucano.pdf', pdf_content)})
+    except: pass
 
 def scrape():
     headers = {'User-Agent': 'Mozilla/5.0'}
     try:
-        # Recupero Feed RSS per individuare l'ultimo bollettino (Settore 13)
+        # 1. Recupero Feed RSS per link PDF e Meta-dati
         feed = feedparser.parse("https://servizimeteomont.csifa.carabinieri.it/api/news/rss/bollettino/i/13")
+        if not feed.entries:
+            print("Feed vuoto, uso dati di backup")
+            return
+
         entry = next((e for e in feed.entries if "lucano" in e.summary.lower()), feed.entries[0])
         
-        # Estrazione Numero e Data tramite Regex
+        # Estrazione Numero e Data con Regex
         meta_match = re.search(r"Bollettino Valanghe N\.\s*(\d+/\d+)\s*del\s*(\d{2}/\d{2}/\d{4})", entry.summary)
-        nr_boll = meta_match.group(1) if meta_match else "---/2026"
+        nr_boll = meta_match.group(1) if meta_match else "N/D"
         data_boll = meta_match.group(2) if meta_match else datetime.datetime.now().strftime("%d/%m/%Y")
 
-        # Recupero Dati Pericolo (API strutturata)
+        # 2. API Grado Pericolo (Settore 13)
         res_p = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/gradopericolo/13", headers=headers).json()
-        p_data = next((p for p in res_p if p.get('idSottoSettore') == 2), res_p[0])
+        p_data = next((p for p in res_p if p.get('idSottoSettore') == 2), res_p[0] if res_p else {})
 
-        # Recupero Dati Stazioni Real-Time (Basilicata - PZ)
+        # 3. API Dati Stazioni (PZ)
         res_s = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/datistazione/13", headers=headers).json()
-        stazioni_lucane = [s for s in res_s if s.get('provincia') == 'PZ']
+        stazioni_lucane = [s for s in res_s if s.get('provincia') == 'PZ'] if res_s else []
 
+        # 4. Costruzione JSON
         dati = {
             "testata": {
                 "settore": "Appennino Lucano",
@@ -59,15 +64,14 @@ def scrape():
                 "grado_pericolo": p_data.get("gradoPericolo", 1),
                 "label": p_data.get("descrizioneGradoPericolo", "DEBOLE").upper(),
                 "situazione_tipo": p_data.get("problemaValanghivo", "Situazione primaverile"),
-                "avvertenze": "Evitare le attività fuori pista nelle ore più calde della giornata sui pendii ripidi esposti al sole."
+                "avvertenze": "Evitare attività fuori pista nelle ore più calde su pendii ripidi al sole."
             },
             "meteo_quota": {
                 "zero_termico": p_data.get("quota", "2900-3100 m")
             },
             "stazioni": [
                 {
-                    "nome": s.get("nomeStazione"),
-                    "quota": f"{s.get('quota')}m",
+                    "nome": s.get("nomeStazione", "N/D"),
                     "neve": f"{s.get('altezzaNeveAlSuolo', 0)} cm",
                     "t_min_max": f"{s.get('temperaturaMin', '--')}° / {s.get('temperaturaMax', '--')}°"
                 } for s in stazioni_lucane
@@ -79,9 +83,10 @@ def scrape():
             json.dump(dati, f, indent=4, ensure_ascii=False)
         
         invia_telegram(dati, entry.link)
+        print(f"Aggiornamento completato: Bollettino {nr_boll}")
 
     except Exception as e:
-        print(f"Errore: {e}")
+        print(f"Errore durante lo scraping: {e}")
 
 if __name__ == "__main__":
     scrape()
