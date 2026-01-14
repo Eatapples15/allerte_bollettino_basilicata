@@ -1,20 +1,16 @@
 {
     "testata": {
         "settore": "Appennino Lucano",
-        "data_emissione": "Data non disponibile",
-        "nr_bollettino": "N/D",
-        "aggiornamento_realtime": "14/01/2026 09:20"
+        "data": "14/01/2026",
+        "numero": "N.D.",
+        "aggiornamento": "09:24"
     },
-    "bollettino": {
-        "grado_pericolo": "N/D",
-        "label": "N/D",
-        "situazione_tipo": "Non specificata",
-        "manto_nevoso": "Vedi PDF",
-        "avvertenze": "Vedi PDF"
-    },
-    "meteo_quota": {
-        "zero_termico": "Dato non disponibile"
+    "pericolo": {
+        "grado": "?",
+        "descrizione": "N.D.",
+        "problema": "Consultare il PDF",
+        "quota": "Vedi PDF"
     },
     "stazioni": [],
-    "link_pdf": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-07"
+    "pdf_link": "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-14"
 }
