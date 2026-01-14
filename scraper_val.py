@@ -31,50 +31,45 @@ def invia_telegram(dati, pdf_url):
 def scrape():
     headers = {'User-Agent': 'Mozilla/5.0'}
     try:
-        # 1. SCOPERTA BOLLETTINO tramite RSS
+        # 1. RSS: Scoperta link PDF e metadati testuali
         feed = feedparser.parse("https://servizimeteomont.csifa.carabinieri.it/api/news/rss/bollettino/i/13")
-        
-        # Controllo sicurezza: se il feed è vuoto, lo script non crasha
-        if not feed.entries:
-            print("Feed RSS momentaneamente non disponibile.")
-            return
-
+        if not feed.entries: return
         entry = next((e for e in feed.entries if "lucano" in e.summary.lower()), feed.entries[0])
         testo_boll = entry.summary
         
-        # Estrazione dinamica N. e Data (es. Bollettino N. 211/2026 del 13/01/2026)
+        # Regex per N. e Data (scopre i dati dal testo del giorno)
         meta = re.search(r"Bollettino Valanghe N\.\s*(\d+/\d+)\s*del\s*(\d{2}/\d{2}/\d{4})", testo_boll)
-        nr_boll = meta.group(1) if meta else "N/D"
-        data_boll = meta.group(2) if meta else datetime.datetime.now().strftime("%d/%m/%Y")
-
-        # 2. API GRADO PERICOLO
+        
+        # 2. API GRADO PERICOLO (Dati strutturati)
         res_p = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/gradopericolo/13", headers=headers, timeout=10).json()
         p_data = next((p for p in res_p if p.get('idSottoSettore') == 2), res_p[0] if res_p else {})
 
-        # 3. API STAZIONI (Rilevamenti in Basilicata/PZ)
+        # 3. API STAZIONI (Rilevamenti reali in provincia di Potenza)
         res_s = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/datistazione/13", headers=headers, timeout=10).json()
         stazioni_lucane = [s for s in res_s if s.get('provincia') == 'PZ'] if res_s else []
 
-        # 4. INTEGRAZIONE TESTUALE (Regex per scoprire dettagli nel sommario)
-        situazione = re.search(r"SITUAZIONE TIPO:\s*([^.]+)", testo_boll)
-        manto = re.search(r"MANTO NEVOSO:\s*([^.]+)", testo_boll)
+        # 4. PARSING TESTUALE (Estrae i blocchi specifici dal testo del bollettino)
+        # Cerchiamo i termini esatti usati nel bollettino (SITUAZIONE TIPO, MANTO, AVVERTENZE)
+        sit_tipo = re.search(r"SITUAZIONE TIPO:\s*([^.]+)", testo_boll)
+        manto_txt = re.search(r"MANTO NEVOSO:\s*([^.]+)", testo_boll)
+        avvertenze_txt = re.search(r"AVVERTENZE:\s*([^.]+)", testo_boll)
         
         dati = {
             "testata": {
                 "settore": "Appennino Lucano",
-                "data_emissione": data_boll,
-                "nr_bollettino": nr_boll,
+                "data_emissione": meta.group(2) if meta else "Data non disponibile",
+                "nr_bollettino": meta.group(1) if meta else "N/D",
                 "aggiornamento_realtime": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
             },
             "bollettino": {
-                "grado_pericolo": p_data.get("gradoPericolo", 1),
-                "label": p_data.get("descrizioneGradoPericolo", "DEBOLE").upper(),
-                "situazione_tipo": situazione.group(1).strip() if situazione else "Situazione primaverile",
-                "manto_nevoso": manto.group(1).strip() if manto else "Stabilità buona su alcuni punti.",
-                "avvertenze": "Evitare attività fuori pista nelle ore più calde su pendii ripidi al sole."
+                "grado_pericolo": p_data.get("gradoPericolo", "N/D"),
+                "label": p_data.get("descrizioneGradoPericolo", "N/D").upper(),
+                "situazione_tipo": sit_tipo.group(1).strip() if sit_tipo else "Non specificata",
+                "manto_nevoso": manto_txt.group(1).strip() if manto_txt else "Vedi PDF",
+                "avvertenze": avvertenze_txt.group(1).strip() if avvertenze_txt else "Vedi PDF"
             },
             "meteo_quota": {
-                "zero_termico": p_data.get("quota", "2900-3100 m")
+                "zero_termico": p_data.get("quota", "Dato non disponibile")
             },
             "stazioni": [
                 {
@@ -91,10 +86,9 @@ def scrape():
             json.dump(dati, f, indent=4, ensure_ascii=False)
         
         invia_telegram(dati, entry.link)
-        print(f"Scraping completato per Bollettino {nr_boll}")
 
     except Exception as e:
-        print(f"Errore durante lo scraping: {e}")
+        print(f"Errore: {e}")
 
 if __name__ == "__main__":
     scrape()
