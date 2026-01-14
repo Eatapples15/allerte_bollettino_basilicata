@@ -1,14 +1,14 @@
 import requests
+import feedparser
 import json
 import datetime
 import os
+import re
 
 def invia_telegram(dati, pdf_url):
     token = os.getenv('TELEGRAM_TOKEN')
-    chat_id = "-1003527149783" 
-    if not token: 
-        print("Errore: TELEGRAM_TOKEN non configurato.")
-        return
+    chat_id = "-1003527149783"
+    if not token: return
 
     testo = (
         f"🏔 *BOLLETTINO VALANGHE N. {dati['testata']['nr_bollettino']}*\n"
@@ -26,56 +26,62 @@ def invia_telegram(dati, pdf_url):
         pdf_content = pdf_res.content if pdf_res.status_code == 200 else b""
         requests.post(url_doc, data={'chat_id': chat_id, 'caption': testo, 'parse_mode': 'Markdown'}, 
                       files={'document': ('Bollettino_Lucano.pdf', pdf_content)})
-    except Exception as e: 
-        print(f"Errore invio Telegram: {e}")
+    except: pass
 
 def scrape():
-    # Dati estratti analiticamente dal bollettino N. 211/2026
-    data_boll = "13/01/2026"
-    nr_boll = "211/2026"
-    
-    # URL ufficiale del bollettino per l'Appennino Lucano (Settore 13, Sottosettore 2)
-    pdf_url = "https://servizimeteomont.csifa.carabinieri.it/api/meteomontweb/bollettino/getbollettinocl/I/13/2/cl/2026-01-13"
+    headers = {'User-Agent': 'Mozilla/5.0'}
+    try:
+        # 1. Recupero Feed RSS per identificare l'ultimo bollettino (Settore 13)
+        feed = feedparser.parse("https://servizimeteomont.csifa.carabinieri.it/api/news/rss/bollettino/i/13")
+        entry = next((e for e in feed.entries if "lucano" in e.summary.lower()), feed.entries[0])
+        
+        # Estrazione Numero e Data tramite Regex dal testo dell'RSS
+        meta_match = re.search(r"Bollettino Valanghe N\.\s*(\d+/\d+)\s*del\s*(\d{2}/\d{2}/\d{4})", entry.summary)
+        nr_boll = meta_match.group(1) if meta_match else "---/2026"
+        data_boll = meta_match.group(2) if meta_match else datetime.datetime.now().strftime("%d/%m/%Y")
 
-    dati = {
-        "testata": {
-            "settore": "Appennino Lucano",
-            "data_emissione": data_boll,
-            "nr_bollettino": nr_boll,
-            "aggiornamento_realtime": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
-        },
-        "bollettino": {
-            "grado_pericolo": 1,
-            "label": "DEBOLE",
-            "situazione_tipo": "Situazione primaverile",
-            "manto_nevoso": "La stabilità del manto nevoso è buona su alcuni punti per tutte le esposizioni.",
-            "avvertenze": "Evitare le attività fuori pista nelle ore più calde della giornata su pendii ripidi al sole.",
-            "valanghe_osservate": "Nessuna valanga"
-        },
-        "parametri_neve": {
-            "quota_nord": "1000-1300 m",
-            "quota_sud": "1100-1400 m"
-        },
-        "meteo_quota": {
-            "zero_termico": "2900-3100 m",
-            "1000m": {"temp": "+7°C", "vento": "2 nodi Ovest"},
-            "2000m": {"temp": "+4°C", "vento": "8 nodi Ovest", "percepita": "1°C"},
-            "3000m": {"temp": "0°C", "percepita": "-4°C"}
-        },
-        "stazioni": [
-            {"nome": "Piano Imperatore", "quota": "1560m", "neve": "22 cm", "t_min_max": "-7°C / +1°C"},
-            {"nome": "Laudemio", "quota": "1532m", "neve": "18 cm", "t_min_max": "-7°C / -1°C"},
-            {"nome": "Pedarreto", "quota": "1380m", "neve": "13 cm", "t_min_max": "N.P."}
-        ],
-        "link_pdf": pdf_url
-    }
+        # 2. Recupero Dati Pericolo (SottoSettore 2 = Lucano)
+        res_p = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/gradopericolo/13", headers=headers).json()
+        p_data = next((p for p in res_p if p.get('idSottoSettore') == 2), res_p[0])
 
-    # Salvataggio del JSON per l'HTML
-    with open('valanghe.json', 'w', encoding='utf-8') as f:
-        json.dump(dati, f, indent=4, ensure_ascii=False)
-    
-    invia_telegram(dati, pdf_url)
-    print(f"Dati pubblicati con successo per il bollettino {nr_boll}")
+        # 3. Recupero Dati Stazioni Real-Time (PZ)
+        res_s = requests.get("https://servizimeteomont.csifa.carabinieri.it/api/news/json/datistazione/13", headers=headers).json()
+        stazioni_lucane = [s for s in res_s if s.get('provincia') == 'PZ']
+
+        # 4. Costruzione JSON
+        dati = {
+            "testata": {
+                "settore": "Appennino Lucano",
+                "data_emissione": data_boll,
+                "nr_bollettino": nr_boll,
+                "aggiornamento_realtime": datetime.datetime.now().strftime("%d/%m/%Y %H:%M")
+            },
+            "bollettino": {
+                "grado_pericolo": p_data.get("gradoPericolo", 1),
+                "label": p_data.get("descrizioneGradoPericolo", "DEBOLE").upper(),
+                "situazione_tipo": p_data.get("problemaValanghivo", "Situazione primaverile"),
+                "avvertenze": "Evitare le attività fuori pista nelle ore più calde su pendii ripidi al sole."
+            },
+            "meteo_quota": {
+                "zero_termico": p_data.get("quota", "2900-3100 m")
+            },
+            "stazioni": [
+                {
+                    "nome": s.get("nomeStazione"),
+                    "neve": f"{s.get('altezzaNeveAlSuolo', 0)} cm",
+                    "t_min_max": f"{s.get('temperaturaMin', '--')}° / {s.get('temperaturaMax', '--')}°"
+                } for s in stazioni_lucane
+            ],
+            "link_pdf": entry.link
+        }
+
+        with open('valanghe.json', 'w', encoding='utf-8') as f:
+            json.dump(dati, f, indent=4, ensure_ascii=False)
+        
+        invia_telegram(dati, entry.link)
+
+    except Exception as e:
+        print(f"Errore durante lo scraping: {e}")
 
 if __name__ == "__main__":
     scrape()
