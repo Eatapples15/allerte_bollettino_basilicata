@@ -9,8 +9,8 @@
         "BASI A2": {
             "oggi": "green",
             "rischio_oggi": "Assenza di fenomeni significativi",
-            "domani": "green",
-            "rischio_domani": "Assenza di fenomeni significativi"
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
         },
         "BASI B": {
             "oggi": "green",
@@ -21,30 +21,30 @@
         "BASI C": {
             "oggi": "green",
             "rischio_oggi": "Assenza di fenomeni significativi",
-            "domani": "green",
-            "rischio_domani": "Assenza di fenomeni significativi"
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
         },
         "BASI D": {
             "oggi": "green",
             "rischio_oggi": "Assenza di fenomeni significativi",
-            "domani": "green",
-            "rischio_domani": "Assenza di fenomeni significativi"
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
         },
         "BASI E1": {
-            "oggi": "yellow",
-            "rischio_oggi": "Temporali",
+            "oggi": "green",
+            "rischio_oggi": "Assenza di fenomeni significativi",
             "domani": "yellow",
             "rischio_domani": "Temporali"
         },
         "BASI E2": {
-            "oggi": "yellow",
-            "rischio_oggi": "Temporali",
+            "oggi": "green",
+            "rischio_oggi": "Assenza di fenomeni significativi",
             "domani": "yellow",
             "rischio_domani": "Temporali"
         }
     },
-    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_17_01_2026.pdf",
-    "data_bollettino": "17/01/2026",
-    "validita_inizio": "ore 14:00 del 17/01/2026",
-    "validita_fine": "ore 23:59 del 18/01/2026"
+    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_18_01_2026.pdf",
+    "data_bollettino": "18/01/2026",
+    "validita_inizio": "ore 14:00 del 18/01/2026",
+    "validita_fine": "ore 23:59 del 19/01/2026"
 }
