@@ -3,6 +3,7 @@ on:
   push:
     paths:
       - 'dati_bollettino.json'
+  workflow_dispatch: # <--- Questa riga permette l'avvio manuale
 
 jobs:
   build:
@@ -24,5 +25,6 @@ jobs:
           git config --global user.name 'GitHub Action Bot'
           git config --global user.email 'action@github.com'
           git add bollettino_comunale_live.geojson
-          git commit -m "Auto-update bollettino comuni" || exit 0
+          # Il comando seguente evita errori se non ci sono cambiamenti
+          git commit -m "Forza aggiornamento bollettino" || exit 0
           git push
