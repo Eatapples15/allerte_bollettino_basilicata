@@ -15,6 +15,6 @@ jobs:
         run: |
           git config --global user.name 'Bot Sala Operativa'
           git config --global user.email 'bot@noreply.github.com'
-          git add bollettino_comunale_live.geojson zone_allerta_live.geojson
+          git add bollettino_comunale_live.geojson bollettino_zone_live.geojson
           git commit -m "Aggiornamento mappa allerta" || exit 0
           git push
