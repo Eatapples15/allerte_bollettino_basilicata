@@ -19,39 +19,63 @@ def clean_string(s):
     return re.sub(r'[^A-Z0-9]', '', s.upper())
 
 def merge_all():
-    if not os.path.exists(DATA_FILE): return
+    if not os.path.exists(DATA_FILE): 
+        print("Errore: dati_bollettino.json non trovato")
+        return
+    
     with open(DATA_FILE, 'r', encoding='utf-8') as f:
         alert_data = json.load(f)
     zone_alerts = alert_data.get('zone', {})
 
-    # --- PARTE 1: COMUNI ---
+    # --- 1. PROCESSO COMUNI ---
     if os.path.exists(GEO_COMUNI):
         with open(GEO_COMUNI, 'r', encoding='utf-8') as f:
             geo_comuni_data = json.load(f)
+        
         clean_map = {clean_string(k): v for k, v in MUNICIPALITY_MAP.items()}
+        
         for feature in geo_comuni_data['features']:
             nome = feature['properties'].get('name', '')
             zona_id = clean_map.get(clean_string(nome))
+            
             if zona_id:
                 info = zone_alerts.get(zona_id)
                 col = info.get('oggi', 'green').lower() if info else 'green'
-                feature['properties'].update({'allerta_oggi': col, 'colore_web': COLOR_MAP.get(col, "#00ff00"), 'zona_nome': zona_id})
+                feature['properties'].update({
+                    'allerta_oggi': col,
+                    'colore_web': COLOR_MAP.get(col, "#00ff00"),
+                    'zona_nome': zona_id,
+                    'rischio': info.get('rischio_oggi', '') if info else ''
+                })
+        
         with open(OUT_COMUNI, 'w', encoding='utf-8') as f:
             json.dump(geo_comuni_data, f, ensure_ascii=False, indent=2)
+        print(f"File {OUT_COMUNI} creato.")
 
-    # --- PARTE 2: ZONE ---
+    # --- 2. PROCESSO ZONE ---
     try:
-        res = requests.get(ZONE_GEO_URL).json()
+        print("Scaricamento zone DPC...")
+        res = requests.get(ZONE_GEO_URL, timeout=10).json()
         basi_zones = [f for f in res['features'] if f['properties']['Sigla'].startswith('BASI')]
+        
         for feature in basi_zones:
-            id_zona = feature['properties']['Nome_Zona'].replace("-", " ")
-            info = zone_alerts.get(id_zona)
+            # Il DPC usa BASI-A1, noi BASI A1
+            id_zona_dpc = feature['properties']['Nome_Zona'].replace("-", " ")
+            info = zone_alerts.get(id_zona_dpc)
+            
             col = info.get('oggi', 'green').lower() if info else 'green'
-            feature['properties'].update({'allerta_oggi': col, 'colore_web': COLOR_MAP.get(col, "#00ff00"), 'descrizione': info.get('rischio_oggi', '') if info else ''})
+            feature['properties'].update({
+                'allerta_oggi': col,
+                'colore_web': COLOR_MAP.get(col, "#00ff00"),
+                'descrizione': info.get('rischio_oggi', '') if info else ''
+            })
+            
         with open(OUT_ZONE, 'w', encoding='utf-8') as f:
             json.dump({"type": "FeatureCollection", "features": basi_zones}, f, ensure_ascii=False, indent=2)
+        print(f"File {OUT_ZONE} creato.")
+        
     except Exception as e:
-        print(f"Errore zone: {e}")
+        print(f"Errore durante la creazione delle zone: {e}")
 
 if __name__ == "__main__":
     merge_all()
