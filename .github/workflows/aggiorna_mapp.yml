@@ -1,0 +1,20 @@
+name: Fusione Dati Bollettino
+on:
+  push: # Si attiva ogni volta che carichi nuovi dati
+  schedule:
+    - cron: '0 * * * *' # Oppure ogni ora
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Esegui Script Fusione
+        run: python3 merge_script.py
+      - name: Commit e Push
+        run: |
+          git config --global user.name 'Bot Sala Operativa'
+          git config --global user.email 'bot@noreply.github.com'
+          git add bollettino_comunale_live.geojson
+          git commit -m "Aggiornamento mappa allerta" || exit 0
+          git push
