@@ -1,15 +1,14 @@
-name: Fusione Dati Bollettino
+name: Aggiorna Mappa Allerta
 on:
   push:
     paths:
       - 'dati_bollettino.json'
-  workflow_dispatch: # Permette di avviarlo manualmente per test
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v3
 
       - name: Setup Python
@@ -17,18 +16,13 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Installa dipendenze
-        run: pip install requests # <--- Fondamentale per le zone
-
-      - name: Esegui Script Unificato
-        run: python merge_all.py
+      - name: Esegui Script
+        run: python merge_script.py
 
       - name: Commit e Push
         run: |
           git config --global user.name 'GitHub Action Bot'
           git config --global user.email 'action@github.com'
-          # Aggiungiamo solo i file che esistono effettivamente
-          git add bollettino_comunale_live.geojson || echo "File comuni non trovato"
-          git add bollettino_zone_live.geojson || echo "File zone non trovato"
-          git commit -m "Aggiornamento mappe comuni e zone" || exit 0
+          git add bollettino_comunale_live.geojson
+          git commit -m "Auto-update bollettino comuni" || exit 0
           git push
