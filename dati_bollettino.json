@@ -3,8 +3,8 @@
         "BASI A1": {
             "oggi": "green",
             "rischio_oggi": "Assenza di fenomeni significativi",
-            "domani": "green",
-            "rischio_domani": "Assenza di fenomeni significativi"
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
         },
         "BASI A2": {
             "oggi": "green",
@@ -15,8 +15,8 @@
         "BASI B": {
             "oggi": "green",
             "rischio_oggi": "Assenza di fenomeni significativi",
-            "domani": "green",
-            "rischio_domani": "Assenza di fenomeni significativi"
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
         },
         "BASI C": {
             "oggi": "green",
@@ -25,26 +25,26 @@
             "rischio_domani": "Temporali"
         },
         "BASI D": {
-            "oggi": "yellow",
-            "rischio_oggi": "Idrogeologico + Temporali",
+            "oggi": "green",
+            "rischio_oggi": "Assenza di fenomeni significativi",
             "domani": "yellow",
             "rischio_domani": "Idrogeologico + Temporali"
         },
         "BASI E1": {
             "oggi": "green",
             "rischio_oggi": "Assenza di fenomeni significativi",
-            "domani": "green",
-            "rischio_domani": "Assenza di fenomeni significativi"
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
         },
         "BASI E2": {
             "oggi": "green",
             "rischio_oggi": "Assenza di fenomeni significativi",
-            "domani": "green",
-            "rischio_domani": "Assenza di fenomeni significativi"
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
         }
     },
-    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_04_02_2026.pdf",
-    "data_bollettino": "04/02/2026",
-    "validita_inizio": "ore 14:00 del 04/02/2026",
-    "validita_fine": "ore 23:59 del 05/02/2026"
+    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_05_02_2026.pdf",
+    "data_bollettino": "05/02/2026",
+    "validita_inizio": "ore 14:00 del 05/02/2026",
+    "validita_fine": "ore 23:59 del 06/02/2026"
 }
