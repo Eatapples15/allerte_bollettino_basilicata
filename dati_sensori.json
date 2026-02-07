@@ -1,20 +1,2634 @@
 {
-    "ultimo_aggiornamento": "07/02/2026 14:34",
+    "ultimo_aggiornamento": "07/02/2026 14:58",
     "sensori": {
         "pluviometria": {
-            "dati": []
+            "dati": [
+                {
+                    "id": "653100",
+                    "nome": "ABRIOLA A SELLATA PIERFAONE",
+                    "valore": "0.4 mm",
+                    "serie": [
+                        "0.4 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.4 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "652900",
+                    "nome": "AGRI A ROCCANOVA",
+                    "valore": "0.8 mm",
+                    "serie": [
+                        "0.8 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.8 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "179900",
+                    "nome": "ALBANO DI LUCANIA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "699400",
+                    "nome": "ANZI",
+                    "valore": "0.2 mm",
+                    "serie": [
+                        "0.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.2 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "947000",
+                    "nome": "ATELLA ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "512400",
+                    "nome": "AVIGLIANO",
+                    "valore": "3.2 mm",
+                    "serie": [
+                        "3.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.8 mm",
+                        "3.2 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "419800",
+                    "nome": "BALVANO",
+                    "valore": "8.2 mm",
+                    "serie": [
+                        "8.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.2 mm",
+                        "8.2 mm"
+                    ],
+                    "data": "SELE"
+                },
+                {
+                    "id": "215900",
+                    "nome": "BASENTO FREATIMETRO",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "240400",
+                    "nome": "BASENTO SS 106",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "272700",
+                    "nome": "BELLA S.ANTONIO CASALINI",
+                    "valore": "1.0 mm",
+                    "serie": [
+                        "1.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "1.0 mm"
+                    ],
+                    "data": "TANAGRO"
+                },
+                {
+                    "id": "639000",
+                    "nome": "BRADANO A S. LUCIA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "652700",
+                    "nome": "BRADANO SERRAMARINA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "417900",
+                    "nome": "BRADANO SS106",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "419900",
+                    "nome": "BRIENZA",
+                    "valore": "0.6 mm",
+                    "serie": [
+                        "0.6 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.6 mm"
+                    ],
+                    "data": "TANAGRO"
+                },
+                {
+                    "id": "331200",
+                    "nome": "CASTELSARACENO",
+                    "valore": "2.8 mm",
+                    "serie": [
+                        "2.8 mm",
+                        "0.6 mm",
+                        "0.6 mm",
+                        "0.6 mm",
+                        "0.6 mm",
+                        "2.8 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "275600",
+                    "nome": "CASTROCUCCO",
+                    "valore": "6.8 mm",
+                    "serie": [
+                        "6.8 mm",
+                        "2.2 mm",
+                        "2.2 mm",
+                        "2.2 mm",
+                        "2.2 mm",
+                        "5.8 mm"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "204000",
+                    "nome": "CAVONE SS106",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "176900",
+                    "nome": "CRACO PESCHIERA",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "275500",
+                    "nome": "EPISCOPIA-PIZZUTELLO",
+                    "valore": "6.8 mm",
+                    "serie": [
+                        "6.8 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "7.0 mm"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.MELANDRO S.ANGELO LE FRATTE",
+                    "valore": "1.2 mm",
+                    "serie": [
+                        "1.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "1.2 mm"
+                    ],
+                    "data": "SELE"
+                },
+                {
+                    "id": "177100",
+                    "nome": "FERRANDINA SP",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "531500",
+                    "nome": "FORENZA",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "947500",
+                    "nome": "FRANCAVILLA IN SINNI ARPAB",
+                    "valore": "2.2 mm",
+                    "serie": [
+                        "2.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "2.2 mm"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "948800",
+                    "nome": "GENZANO DI LUCANIA ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "482200",
+                    "nome": "GORGOGLIONE",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "240700",
+                    "nome": "GRASSANO SP",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "947600",
+                    "nome": "GROTTOLE ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "275400",
+                    "nome": "GRUMENTO-PONTE LA MARMORA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "699200",
+                    "nome": "GUARDIA PERTICARA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "55200",
+                    "nome": "IRSINA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "55100",
+                    "nome": "LAGONEGRO",
+                    "valore": "30.6 mm",
+                    "serie": [
+                        "30.6 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "35.9 mm"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "531800",
+                    "nome": "LAGOPESOLE",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "276400",
+                    "nome": "LAINO BORGO",
+                    "valore": "5.4 mm",
+                    "serie": [
+                        "5.4 mm",
+                        "1.0 mm",
+                        "1.0 mm",
+                        "1.0 mm",
+                        "1.0 mm",
+                        "4.2 mm"
+                    ],
+                    "data": "LAO"
+                },
+                {
+                    "id": "279200",
+                    "nome": "LAURENZANA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "418100",
+                    "nome": "LAVELLO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "528600",
+                    "nome": "LAVELLO ETG",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "947900",
+                    "nome": "MARATEA ARPAB",
+                    "valore": "3.8 mm",
+                    "serie": [
+                        "3.8 mm",
+                        "2.4 mm",
+                        "2.4 mm",
+                        "2.4 mm",
+                        "2.4 mm",
+                        "3.8 mm"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "331900",
+                    "nome": "MARATEA MASSA",
+                    "valore": "5.8 mm",
+                    "serie": [
+                        "5.8 mm",
+                        "2.6 mm",
+                        "2.6 mm",
+                        "2.6 mm",
+                        "2.8 mm",
+                        "5.8 mm"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "277300",
+                    "nome": "MARSICO NUOVO",
+                    "valore": "0.6 mm",
+                    "serie": [
+                        "0.6 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.6 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "948000",
+                    "nome": "MARSICOVETERE ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "948100",
+                    "nome": "MASCHITO ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "217800",
+                    "nome": "MASSERIA CARDILLO",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-",
+                        "-"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "55000",
+                    "nome": "MATERA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "532500",
+                    "nome": "MELFI",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "948300",
+                    "nome": "MELFI ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "948400",
+                    "nome": "MIGLIONICO ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "948500",
+                    "nome": "MONTALBANO JONICO ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "532700",
+                    "nome": "MONTE VULTURE",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.2 mm",
+                        "0.2 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "532800",
+                    "nome": "MONTEMILONE",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "948600",
+                    "nome": "MONTEMURRO ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "481200",
+                    "nome": "MONTESCAGLIOSO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "525000",
+                    "nome": "MONTICCHIO BAGNI",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "513100",
+                    "nome": "MURO LUCANO",
+                    "valore": "0.6 mm",
+                    "serie": [
+                        "0.6 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.6 mm"
+                    ],
+                    "data": "TANAGRO"
+                },
+                {
+                    "id": "54900",
+                    "nome": "NOEPOLI",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "652800",
+                    "nome": "OFANTO A MONTICCHIO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "948700",
+                    "nome": "OLIVETO LUCANO ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "418000",
+                    "nome": "OPPIDO LUCANO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_CANCELLARA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_CORLETO PERTICARA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_SELLATA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_TOLVE",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "418300",
+                    "nome": "PALAZZO S.GERVASIO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "538000",
+                    "nome": "PESCOPAGANO",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "419700",
+                    "nome": "PICERNO",
+                    "valore": "1.8 mm",
+                    "serie": [
+                        "1.8 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "1.8 mm"
+                    ],
+                    "data": "TANAGRO"
+                },
+                {
+                    "id": "948900",
+                    "nome": "PIETRAPERTOSA ARPAB",
+                    "valore": "0.2 mm",
+                    "serie": [
+                        "0.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.2 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "858200",
+                    "nome": "POMARICO FRANA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "83800",
+                    "nome": "POTENZA",
+                    "valore": "0.6 mm",
+                    "serie": [
+                        "0.6 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.6 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "387900",
+                    "nome": "POTENZA Q.A.",
+                    "valore": "1.2 mm",
+                    "serie": [
+                        "1.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "1.2 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "533300",
+                    "nome": "RIPACANDIDA",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "332500",
+                    "nome": "ROCCANOVA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "699100",
+                    "nome": "ROTONDA",
+                    "valore": "10.2 mm",
+                    "serie": [
+                        "10.2 mm",
+                        "0.8 mm",
+                        "0.8 mm",
+                        "0.8 mm",
+                        "0.8 mm",
+                        "10.2 mm"
+                    ],
+                    "data": "LAO"
+                },
+                {
+                    "id": "949300",
+                    "nome": "ROTONDELLA ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.FELE",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.2 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.GIULIANO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.MAURO FORTE",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.NICOLA",
+                    "valore": "1.2 mm",
+                    "serie": [
+                        "1.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.6 mm",
+                        "1.2 mm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "699000",
+                    "nome": "SALANDRA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "949400",
+                    "nome": "SAN GIORGIO LUCANO ARPAB",
+                    "valore": "0.2 mm",
+                    "serie": [
+                        "0.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.2 mm"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "949500",
+                    "nome": "SAN MARTINO DAGRI ARPAB",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "949200",
+                    "nome": "SAN SEVERINO LUCANO ARPAB",
+                    "valore": "19.2 mm",
+                    "serie": [
+                        "19.2 mm",
+                        "0.2 mm",
+                        "0.2 mm",
+                        "0.2 mm",
+                        "0.2 mm",
+                        "19.2 mm"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "949700",
+                    "nome": "SATRIANO DI LUCANIA ARPAB",
+                    "valore": "1.0 mm",
+                    "serie": [
+                        "1.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "1.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "653000",
+                    "nome": "SINNI A VALSINNI",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "203900",
+                    "nome": "SINNI SS106",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "767300",
+                    "nome": "SPINOSO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "54800",
+                    "nome": "STIGLIANO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "233200",
+                    "nome": "TERRA MONTONATA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "276500",
+                    "nome": "TERRANOVA DI POLLINO",
+                    "valore": "5.2 mm",
+                    "serie": [
+                        "5.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "5.2 mm"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "420000",
+                    "nome": "TITO",
+                    "valore": "2.2 mm",
+                    "serie": [
+                        "2.2 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "2.2 mm"
+                    ],
+                    "data": "TANAGRO"
+                },
+                {
+                    "id": "177000",
+                    "nome": "TORRE ACCIO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "298400",
+                    "nome": "TORTORA",
+                    "valore": "2.4 mm",
+                    "serie": [
+                        "2.4 mm",
+                        "1.0 mm",
+                        "1.0 mm",
+                        "1.0 mm",
+                        "1.0 mm",
+                        "1.2 mm"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "54700",
+                    "nome": "TRAMUTOLA",
+                    "valore": "1.0 mm",
+                    "serie": [
+                        "1.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "1.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "698900",
+                    "nome": "TRICARICO",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "276900",
+                    "nome": "TURSI",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "699300",
+                    "nome": "VAGLIO DI BASILICATA",
+                    "valore": "0.4 mm",
+                    "serie": [
+                        "0.4 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.4 mm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "418200",
+                    "nome": "VENOSA",
+                    "valore": "0.0 mm",
+                    "serie": [
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "529400",
+                    "nome": "VENOSA ETG",
+                    "valore": "-",
+                    "serie": [
+                        "-",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "182800",
+                    "nome": "VIETRI SP",
+                    "valore": "4.6 mm",
+                    "serie": [
+                        "4.6 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "0.0 mm",
+                        "4.6 mm"
+                    ],
+                    "data": "SELE"
+                }
+            ]
         },
         "idrometria": {
-            "dati": []
+            "dati": [
+                {
+                    "id": "652900",
+                    "nome": "AGRI A ROCCANOVA",
+                    "valore": "0.15 m",
+                    "serie": [
+                        "0.15 m"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "639400",
+                    "nome": "AGRI A VALLE GANNANO",
+                    "valore": "-",
+                    "serie": [
+                        "-"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "647100",
+                    "nome": "AGRI SS 106",
+                    "valore": "0.08 m",
+                    "serie": [
+                        "0.08 m"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "240400",
+                    "nome": "BASENTO SS 106",
+                    "valore": "2.75 m",
+                    "serie": [
+                        "2.75 m"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "741800",
+                    "nome": "BRADANO A MARINELLA",
+                    "valore": "-",
+                    "serie": [
+                        "-"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "639000",
+                    "nome": "BRADANO A S. LUCIA",
+                    "valore": "0.35 m",
+                    "serie": [
+                        "0.35 m"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "652700",
+                    "nome": "BRADANO SERRAMARINA",
+                    "valore": "1.59 m",
+                    "serie": [
+                        "1.59 m"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "417900",
+                    "nome": "BRADANO SS106",
+                    "valore": "0.65 m",
+                    "serie": [
+                        "0.65 m"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "179800",
+                    "nome": "CAMPOMAGGIORE",
+                    "valore": "1.09 m",
+                    "serie": [
+                        "1.09 m"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "275600",
+                    "nome": "CASTROCUCCO",
+                    "valore": "1.60 m",
+                    "serie": [
+                        "1.60 m"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "204000",
+                    "nome": "CAVONE SS106",
+                    "valore": "1.31 m",
+                    "serie": [
+                        "1.31 m"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "176900",
+                    "nome": "CRACO PESCHIERA",
+                    "valore": "0.20 m",
+                    "serie": [
+                        "0.20 m"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "907100",
+                    "nome": "D_PERTUSILLO GRUMENTINO",
+                    "valore": "0.55 m",
+                    "serie": [
+                        "0.55 m"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "275500",
+                    "nome": "EPISCOPIA-PIZZUTELLO",
+                    "valore": "1.44 m",
+                    "serie": [
+                        "1.44 m"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.MELANDRO S.ANGELO LE FRATTE",
+                    "valore": "0.29 m",
+                    "serie": [
+                        "0.29 m"
+                    ],
+                    "data": "SELE"
+                },
+                {
+                    "id": "531300",
+                    "nome": "FIUME OFANTO A MONTEVERDE",
+                    "valore": "-0.02 m",
+                    "serie": [
+                        "-0.02 m"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "240600",
+                    "nome": "GRASSANO SCALO",
+                    "valore": "1.65 m",
+                    "serie": [
+                        "1.65 m"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "275400",
+                    "nome": "GRUMENTO-PONTE LA MARMORA",
+                    "valore": "0.83 m",
+                    "serie": [
+                        "0.83 m"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "906300",
+                    "nome": "I_COGLIANDRINO",
+                    "valore": "1.47 m",
+                    "serie": [
+                        "1.47 m"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "906100",
+                    "nome": "I_LAGONEGRO",
+                    "valore": "1.83 m",
+                    "serie": [
+                        "1.83 m"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "905400",
+                    "nome": "I_MAGLIA",
+                    "valore": "1.34 m",
+                    "serie": [
+                        "1.34 m"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "905500",
+                    "nome": "I_MARSICO NUOVO",
+                    "valore": "-",
+                    "serie": [
+                        "-"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "927700",
+                    "nome": "I_PISTICCI SCALO ARPAB",
+                    "valore": "3.65 m",
+                    "serie": [
+                        "3.65 m"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "905800",
+                    "nome": "I_PONTE MALLARDO",
+                    "valore": "0.26 m",
+                    "serie": [
+                        "0.26 m"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "905700",
+                    "nome": "I_SCIAURA",
+                    "valore": "0.20 m",
+                    "serie": [
+                        "0.20 m"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "905900",
+                    "nome": "I_TORRENTE BASENTELLO",
+                    "valore": "0.33 m",
+                    "serie": [
+                        "0.33 m"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "906600",
+                    "nome": "I_TORRENTE SERRAPOTAMO",
+                    "valore": "0.29 m",
+                    "serie": [
+                        "0.29 m"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "276400",
+                    "nome": "LAINO BORGO",
+                    "valore": "0.91 m",
+                    "serie": [
+                        "0.91 m"
+                    ],
+                    "data": "LAO"
+                },
+                {
+                    "id": "481200",
+                    "nome": "MONTESCAGLIOSO",
+                    "valore": "0.85 m",
+                    "serie": [
+                        "0.85 m"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "652800",
+                    "nome": "OFANTO A MONTICCHIO",
+                    "valore": "1.39 m",
+                    "serie": [
+                        "1.39 m"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "387900",
+                    "nome": "POTENZA Q.A.",
+                    "valore": "0.14 m",
+                    "serie": [
+                        "0.14 m"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "481100",
+                    "nome": "S.DEMETRIO",
+                    "valore": "0.34 m",
+                    "serie": [
+                        "0.34 m"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "179700",
+                    "nome": "S.GIULIANO",
+                    "valore": "1.16 m",
+                    "serie": [
+                        "1.16 m"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "653000",
+                    "nome": "SINNI A VALSINNI",
+                    "valore": "-0.01 m",
+                    "serie": [
+                        "-0.01 m"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "203900",
+                    "nome": "SINNI SS106",
+                    "valore": "0.71 m",
+                    "serie": [
+                        "0.71 m"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "177000",
+                    "nome": "TORRE ACCIO",
+                    "valore": "2.80 m",
+                    "serie": [
+                        "2.80 m"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "534500",
+                    "nome": "TORRENTE ATELLA",
+                    "valore": "1.45 m",
+                    "serie": [
+                        "1.45 m"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "539600",
+                    "nome": "TORRENTE VENOSA",
+                    "valore": "1.03 m",
+                    "serie": [
+                        "1.03 m"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "298400",
+                    "nome": "TORTORA",
+                    "valore": "-0.27 m",
+                    "serie": [
+                        "-0.27 m"
+                    ],
+                    "data": "NOCE"
+                }
+            ]
         },
         "termometria": {
-            "dati": []
+            "dati": [
+                {
+                    "id": "653100",
+                    "nome": "ABRIOLA A SELLATA PIERFAONE",
+                    "valore": "4.1 °C",
+                    "serie": [
+                        "4.1 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "179900",
+                    "nome": "ALBANO DI LUCANIA",
+                    "valore": "10.8 °C",
+                    "serie": [
+                        "10.8 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "699400",
+                    "nome": "ANZI",
+                    "valore": "8.5 °C",
+                    "serie": [
+                        "8.5 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "947000",
+                    "nome": "ATELLA ARPAB",
+                    "valore": "13.2 °C",
+                    "serie": [
+                        "13.2 °C"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "419800",
+                    "nome": "BALVANO",
+                    "valore": "12.5 °C",
+                    "serie": [
+                        "12.5 °C"
+                    ],
+                    "data": "SELE"
+                },
+                {
+                    "id": "215900",
+                    "nome": "BASENTO FREATIMETRO",
+                    "valore": "-",
+                    "serie": [
+                        "-"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "272700",
+                    "nome": "BELLA S.ANTONIO CASALINI",
+                    "valore": "10.2 °C",
+                    "serie": [
+                        "10.2 °C"
+                    ],
+                    "data": "TANAGRO"
+                },
+                {
+                    "id": "230600",
+                    "nome": "BRADANO FREATIMETRO",
+                    "valore": "15.9 °C",
+                    "serie": [
+                        "15.9 °C"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "417900",
+                    "nome": "BRADANO SS106",
+                    "valore": "16.2 °C",
+                    "serie": [
+                        "16.2 °C"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "419900",
+                    "nome": "BRIENZA",
+                    "valore": "10.0 °C",
+                    "serie": [
+                        "10.0 °C"
+                    ],
+                    "data": "TANAGRO"
+                },
+                {
+                    "id": "331200",
+                    "nome": "CASTELSARACENO",
+                    "valore": "6.9 °C",
+                    "serie": [
+                        "6.9 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "275500",
+                    "nome": "EPISCOPIA-PIZZUTELLO",
+                    "valore": "12.0 °C",
+                    "serie": [
+                        "12.0 °C"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "698800",
+                    "nome": "F.MELANDRO S.ANGELO LE FRATTE",
+                    "valore": "13.0 °C",
+                    "serie": [
+                        "13.0 °C"
+                    ],
+                    "data": "SELE"
+                },
+                {
+                    "id": "177100",
+                    "nome": "FERRANDINA SP",
+                    "valore": "13.4 °C",
+                    "serie": [
+                        "13.4 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "531500",
+                    "nome": "FORENZA",
+                    "valore": "-",
+                    "serie": [
+                        "-"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "947500",
+                    "nome": "FRANCAVILLA IN SINNI ARPAB",
+                    "valore": "13.1 °C",
+                    "serie": [
+                        "13.1 °C"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "948800",
+                    "nome": "GENZANO DI LUCANIA ARPAB",
+                    "valore": "13.1 °C",
+                    "serie": [
+                        "13.1 °C"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "531700",
+                    "nome": "GINOSA",
+                    "valore": "-",
+                    "serie": [
+                        "-"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "529000",
+                    "nome": "GINOSA MARINA",
+                    "valore": "-",
+                    "serie": [
+                        "-"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "482200",
+                    "nome": "GORGOGLIONE",
+                    "valore": "8.3 °C",
+                    "serie": [
+                        "8.3 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "240700",
+                    "nome": "GRASSANO SP",
+                    "valore": "13.9 °C",
+                    "serie": [
+                        "13.9 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "947600",
+                    "nome": "GROTTOLE ARPAB",
+                    "valore": "16.0 °C",
+                    "serie": [
+                        "16.0 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "699200",
+                    "nome": "GUARDIA PERTICARA",
+                    "valore": "11.0 °C",
+                    "serie": [
+                        "11.0 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "55200",
+                    "nome": "IRSINA",
+                    "valore": "13.2 °C",
+                    "serie": [
+                        "13.2 °C"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "55100",
+                    "nome": "LAGONEGRO",
+                    "valore": "8.2 °C",
+                    "serie": [
+                        "8.2 °C"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "531800",
+                    "nome": "LAGOPESOLE",
+                    "valore": "-",
+                    "serie": [
+                        "-"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "528600",
+                    "nome": "LAVELLO ETG",
+                    "valore": "15.6 °C",
+                    "serie": [
+                        "15.6 °C"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "947900",
+                    "nome": "MARATEA ARPAB",
+                    "valore": "13.0 °C",
+                    "serie": [
+                        "13.0 °C"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "331900",
+                    "nome": "MARATEA MASSA",
+                    "valore": "9.4 °C",
+                    "serie": [
+                        "9.4 °C"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "277300",
+                    "nome": "MARSICO NUOVO",
+                    "valore": "10.4 °C",
+                    "serie": [
+                        "10.4 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "948000",
+                    "nome": "MARSICOVETERE ARPAB",
+                    "valore": "7.2 °C",
+                    "serie": [
+                        "7.2 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "948100",
+                    "nome": "MASCHITO ARPAB",
+                    "valore": "12.0 °C",
+                    "serie": [
+                        "12.0 °C"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "55000",
+                    "nome": "MATERA",
+                    "valore": "13.5 °C",
+                    "serie": [
+                        "13.5 °C"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "532500",
+                    "nome": "MELFI",
+                    "valore": "12.8 °C",
+                    "serie": [
+                        "12.8 °C"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "948300",
+                    "nome": "MELFI ARPAB",
+                    "valore": "13.9 °C",
+                    "serie": [
+                        "13.9 °C"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "948400",
+                    "nome": "MIGLIONICO ARPAB",
+                    "valore": "14.3 °C",
+                    "serie": [
+                        "14.3 °C"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "948500",
+                    "nome": "MONTALBANO JONICO ARPAB",
+                    "valore": "15.9 °C",
+                    "serie": [
+                        "15.9 °C"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "948600",
+                    "nome": "MONTEMURRO ARPAB",
+                    "valore": "11.1 °C",
+                    "serie": [
+                        "11.1 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "525000",
+                    "nome": "MONTICCHIO BAGNI",
+                    "valore": "11.8 °C",
+                    "serie": [
+                        "11.8 °C"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "54900",
+                    "nome": "NOEPOLI",
+                    "valore": "11.6 °C",
+                    "serie": [
+                        "11.6 °C"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "948700",
+                    "nome": "OLIVETO LUCANO ARPAB",
+                    "valore": "14.4 °C",
+                    "serie": [
+                        "14.4 °C"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "418000",
+                    "nome": "OPPIDO LUCANO",
+                    "valore": "12.0 °C",
+                    "serie": [
+                        "12.0 °C"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "907900",
+                    "nome": "P_CANCELLARA",
+                    "valore": "12.4 °C",
+                    "serie": [
+                        "12.4 °C"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_CORLETO PERTICARA",
+                    "valore": "10.2 °C",
+                    "serie": [
+                        "10.2 °C"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_SELLATA",
+                    "valore": "4.8 °C",
+                    "serie": [
+                        "4.8 °C"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_TOLVE",
+                    "valore": "13.4 °C",
+                    "serie": [
+                        "13.4 °C"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "418300",
+                    "nome": "PALAZZO S.GERVASIO",
+                    "valore": "14.6 °C",
+                    "serie": [
+                        "14.6 °C"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "538000",
+                    "nome": "PESCOPAGANO",
+                    "valore": "9.5 °C",
+                    "serie": [
+                        "9.5 °C"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "419700",
+                    "nome": "PICERNO",
+                    "valore": "11.9 °C",
+                    "serie": [
+                        "11.9 °C"
+                    ],
+                    "data": "TANAGRO"
+                },
+                {
+                    "id": "948900",
+                    "nome": "PIETRAPERTOSA ARPAB",
+                    "valore": "10.7 °C",
+                    "serie": [
+                        "10.7 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "858200",
+                    "nome": "POMARICO FRANA",
+                    "valore": "14.7 °C",
+                    "serie": [
+                        "14.7 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "83800",
+                    "nome": "POTENZA",
+                    "valore": "11.4 °C",
+                    "serie": [
+                        "11.4 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "387900",
+                    "nome": "POTENZA Q.A.",
+                    "valore": "12.4 °C",
+                    "serie": [
+                        "12.4 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "332500",
+                    "nome": "ROCCANOVA",
+                    "valore": "11.4 °C",
+                    "serie": [
+                        "11.4 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "699100",
+                    "nome": "ROTONDA",
+                    "valore": "9.4 °C",
+                    "serie": [
+                        "9.4 °C"
+                    ],
+                    "data": "LAO"
+                },
+                {
+                    "id": "949300",
+                    "nome": "ROTONDELLA ARPAB",
+                    "valore": "12.9 °C",
+                    "serie": [
+                        "12.9 °C"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "538100",
+                    "nome": "S.FELE",
+                    "valore": "-",
+                    "serie": [
+                        "-"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "417800",
+                    "nome": "S.MAURO FORTE",
+                    "valore": "14.0 °C",
+                    "serie": [
+                        "14.0 °C"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.NICOLA",
+                    "valore": "11.6 °C",
+                    "serie": [
+                        "11.6 °C"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "699000",
+                    "nome": "SALANDRA",
+                    "valore": "13.6 °C",
+                    "serie": [
+                        "13.6 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "949400",
+                    "nome": "SAN GIORGIO LUCANO ARPAB",
+                    "valore": "14.0 °C",
+                    "serie": [
+                        "14.0 °C"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "949500",
+                    "nome": "SAN MARTINO DAGRI ARPAB",
+                    "valore": "10.9 °C",
+                    "serie": [
+                        "10.9 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "949200",
+                    "nome": "SAN SEVERINO LUCANO ARPAB",
+                    "valore": "7.1 °C",
+                    "serie": [
+                        "7.1 °C"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "949700",
+                    "nome": "SATRIANO DI LUCANIA ARPAB",
+                    "valore": "11.9 °C",
+                    "serie": [
+                        "11.9 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "767300",
+                    "nome": "SPINOSO",
+                    "valore": "10.2 °C",
+                    "serie": [
+                        "10.2 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "54800",
+                    "nome": "STIGLIANO",
+                    "valore": "10.8 °C",
+                    "serie": [
+                        "10.8 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "233200",
+                    "nome": "TERRA MONTONATA",
+                    "valore": "16.9 °C",
+                    "serie": [
+                        "16.9 °C"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "276500",
+                    "nome": "TERRANOVA DI POLLINO",
+                    "valore": "7.3 °C",
+                    "serie": [
+                        "7.3 °C"
+                    ],
+                    "data": "SINNI"
+                },
+                {
+                    "id": "420000",
+                    "nome": "TITO",
+                    "valore": "10.8 °C",
+                    "serie": [
+                        "10.8 °C"
+                    ],
+                    "data": "TANAGRO"
+                },
+                {
+                    "id": "177000",
+                    "nome": "TORRE ACCIO",
+                    "valore": "17.2 °C",
+                    "serie": [
+                        "17.2 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "54700",
+                    "nome": "TRAMUTOLA",
+                    "valore": "11.0 °C",
+                    "serie": [
+                        "11.0 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "698900",
+                    "nome": "TRICARICO",
+                    "valore": "11.8 °C",
+                    "serie": [
+                        "11.8 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "276900",
+                    "nome": "TURSI",
+                    "valore": "14.7 °C",
+                    "serie": [
+                        "14.7 °C"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "699300",
+                    "nome": "VAGLIO DI BASILICATA",
+                    "valore": "10.0 °C",
+                    "serie": [
+                        "10.0 °C"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "418200",
+                    "nome": "VENOSA",
+                    "valore": "14.4 °C",
+                    "serie": [
+                        "14.4 °C"
+                    ],
+                    "data": "OFANTO"
+                }
+            ]
         },
         "anemometria": {
-            "dati": []
+            "dati": [
+                {
+                    "id": "331200",
+                    "nome": "CASTELSARACENO",
+                    "valore": "254 °",
+                    "serie": [
+                        "254 °",
+                        "3.6 m/s",
+                        "3.9 m/s",
+                        "257 °",
+                        "8.7 m/s",
+                        "234 °"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "482200",
+                    "nome": "GORGOGLIONE",
+                    "valore": "236 °",
+                    "serie": [
+                        "236 °",
+                        "3.9 m/s",
+                        "4.3 m/s",
+                        "237 °",
+                        "8.5 m/s",
+                        "212 °"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "418100",
+                    "nome": "LAVELLO",
+                    "valore": "204 °",
+                    "serie": [
+                        "204 °",
+                        "2.9 m/s",
+                        "2.9 m/s",
+                        "205 °",
+                        "7.6 m/s",
+                        "287 °"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "331900",
+                    "nome": "MARATEA MASSA",
+                    "valore": "192 °",
+                    "serie": [
+                        "192 °",
+                        "3.8 m/s",
+                        "4.0 m/s",
+                        "193 °",
+                        "4.8 m/s",
+                        "220 °"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "948400",
+                    "nome": "MIGLIONICO ARPAB",
+                    "valore": "175 °",
+                    "serie": [
+                        "175 °",
+                        "5.9 m/s",
+                        "6.1 m/s",
+                        "174 °",
+                        "11.1 m/s",
+                        "83 °"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "418000",
+                    "nome": "OPPIDO LUCANO",
+                    "valore": "195 °",
+                    "serie": [
+                        "195 °",
+                        "5.2 m/s",
+                        "5.6 m/s",
+                        "193 °",
+                        "14.5 m/s",
+                        "233 °"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "949700",
+                    "nome": "SATRIANO DI LUCANIA ARPAB",
+                    "valore": "292 °",
+                    "serie": [
+                        "292 °",
+                        "0.5 m/s",
+                        "0.6 m/s",
+                        "292 °",
+                        "2.7 m/s",
+                        "131 °"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "233200",
+                    "nome": "TERRA MONTONATA",
+                    "valore": "90 °",
+                    "serie": [
+                        "90 °",
+                        "3.5 m/s",
+                        "3.6 m/s",
+                        "89 °",
+                        "5.0 m/s",
+                        "76 °"
+                    ],
+                    "data": "CAVONE"
+                },
+                {
+                    "id": "699300",
+                    "nome": "VAGLIO DI BASILICATA",
+                    "valore": "134 °",
+                    "serie": [
+                        "134 °",
+                        "1.0 m/s",
+                        "1.4 m/s",
+                        "130 °",
+                        "6.6 m/s",
+                        "214 °"
+                    ],
+                    "data": "BASENTO"
+                }
+            ]
         },
         "nivometria": {
-            "dati": []
+            "dati": [
+                {
+                    "id": "653100",
+                    "nome": "ABRIOLA A SELLATA PIERFAONE",
+                    "valore": "-6 cm",
+                    "serie": [
+                        "-6 cm"
+                    ],
+                    "data": "BASENTO"
+                },
+                {
+                    "id": "482200",
+                    "nome": "GORGOGLIONE",
+                    "valore": "1 cm",
+                    "serie": [
+                        "1 cm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "55100",
+                    "nome": "LAGONEGRO",
+                    "valore": "0 cm",
+                    "serie": [
+                        "0 cm"
+                    ],
+                    "data": "NOCE"
+                },
+                {
+                    "id": "418000",
+                    "nome": "OPPIDO LUCANO",
+                    "valore": "0 cm",
+                    "serie": [
+                        "0 cm"
+                    ],
+                    "data": "OFANTO"
+                },
+                {
+                    "id": "907700",
+                    "nome": "P_CORLETO PERTICARA",
+                    "valore": "1 cm",
+                    "serie": [
+                        "1 cm"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "932200",
+                    "nome": "P_RUVO DEL MONTE",
+                    "valore": "-4 cm",
+                    "serie": [
+                        "-4 cm"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "907800",
+                    "nome": "P_SELLATA",
+                    "valore": "1 cm",
+                    "serie": [
+                        "1 cm"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "908000",
+                    "nome": "P_TOLVE",
+                    "valore": "0 cm",
+                    "serie": [
+                        "0 cm"
+                    ],
+                    "data": ""
+                },
+                {
+                    "id": "83900",
+                    "nome": "S.NICOLA",
+                    "valore": "0 cm",
+                    "serie": [
+                        "0 cm"
+                    ],
+                    "data": "BRADANO"
+                },
+                {
+                    "id": "54800",
+                    "nome": "STIGLIANO",
+                    "valore": "0 cm",
+                    "serie": [
+                        "0 cm"
+                    ],
+                    "data": "AGRI"
+                },
+                {
+                    "id": "276500",
+                    "nome": "TERRANOVA DI POLLINO",
+                    "valore": "0 cm",
+                    "serie": [
+                        "0 cm"
+                    ],
+                    "data": "SINNI"
+                }
+            ]
         }
     }
 }
