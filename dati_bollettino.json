@@ -25,10 +25,10 @@
             "rischio_domani": "Assenza di fenomeni significativi"
         },
         "BASI D": {
-            "oggi": "yellow",
-            "rischio_oggi": "Temporali",
-            "domani": "green",
-            "rischio_domani": "Assenza di fenomeni significativi"
+            "oggi": "green",
+            "rischio_oggi": "Assenza di fenomeni significativi",
+            "domani": "yellow",
+            "rischio_domani": "Temporali"
         },
         "BASI E1": {
             "oggi": "green",
@@ -43,8 +43,8 @@
             "rischio_domani": "Assenza di fenomeni significativi"
         }
     },
-    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_07_02_2026.pdf",
-    "data_bollettino": "07/02/2026",
-    "validita_inizio": "ore 14:00 del 07/02/2026",
-    "validita_fine": "ore 23:59 del 08/02/2026"
+    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_08_02_2026.pdf",
+    "data_bollettino": "08/02/2026",
+    "validita_inizio": "ore 14:00 del 08/02/2026",
+    "validita_fine": "ore 23:59 del 09/02/2026"
 }
