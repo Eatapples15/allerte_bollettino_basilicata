@@ -1,10 +1,10 @@
 {
     "zone": {
         "BASI A1": {
-            "oggi": "green",
-            "rischio_oggi": "Assenza di fenomeni significativi",
-            "domani": "yellow",
-            "rischio_domani": "Temporali"
+            "oggi": "yellow",
+            "rischio_oggi": "Temporali",
+            "domani": "green",
+            "rischio_domani": "Assenza di fenomeni significativi"
         },
         "BASI A2": {
             "oggi": "green",
@@ -13,10 +13,10 @@
             "rischio_domani": "Assenza di fenomeni significativi"
         },
         "BASI B": {
-            "oggi": "green",
-            "rischio_oggi": "Assenza di fenomeni significativi",
-            "domani": "yellow",
-            "rischio_domani": "Temporali"
+            "oggi": "yellow",
+            "rischio_oggi": "Temporali",
+            "domani": "green",
+            "rischio_domani": "Assenza di fenomeni significativi"
         },
         "BASI C": {
             "oggi": "green",
@@ -43,8 +43,8 @@
             "rischio_domani": "Assenza di fenomeni significativi"
         }
     },
-    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_12_03_2026.pdf",
-    "data_bollettino": "12/03/2026",
-    "validita_inizio": "ore 14:00 del 12/03/2026",
-    "validita_fine": "ore 23:59 del 13/03/2026"
+    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_13_03_2026.pdf",
+    "data_bollettino": "13/03/2026",
+    "validita_inizio": "ore 14:00 del 13/03/2026",
+    "validita_fine": "ore 23:59 del 14/03/2026"
 }
