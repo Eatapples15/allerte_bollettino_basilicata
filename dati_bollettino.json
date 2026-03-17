@@ -3,30 +3,30 @@
         "BASI A1": {
             "oggi": "yellow",
             "rischio_oggi": "Idrogeologico + Temporali",
-            "domani": "orange",
-            "rischio_domani": "Idrogeologico"
+            "domani": "yellow",
+            "rischio_domani": "Idrogeologico + Temporali"
         },
         "BASI A2": {
             "oggi": "yellow",
-            "rischio_oggi": "Temporali",
+            "rischio_oggi": "Idrogeologico + Temporali",
             "domani": "yellow",
             "rischio_domani": "Idrogeologico + Temporali"
         },
         "BASI B": {
             "oggi": "yellow",
             "rischio_oggi": "Idrogeologico + Temporali",
-            "domani": "orange",
-            "rischio_domani": "Idrogeologico"
+            "domani": "yellow",
+            "rischio_domani": "Idrogeologico + Temporali"
         },
         "BASI C": {
             "oggi": "yellow",
-            "rischio_oggi": "Temporali",
-            "domani": "orange",
-            "rischio_domani": "Idrogeologico"
+            "rischio_oggi": "Idrogeologico + Temporali",
+            "domani": "yellow",
+            "rischio_domani": "Idrogeologico + Temporali"
         },
         "BASI D": {
             "oggi": "yellow",
-            "rischio_oggi": "Temporali",
+            "rischio_oggi": "Idrogeologico + Temporali",
             "domani": "yellow",
             "rischio_domani": "Idrogeologico + Temporali"
         },
@@ -43,8 +43,8 @@
             "rischio_domani": "Idrogeologico + Temporali + Idraulico"
         }
     },
-    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_16_03_2026.pdf",
-    "data_bollettino": "16/03/2026",
-    "validita_inizio": "ore 14:00 del 16/03/2026",
-    "validita_fine": "ore 23:59 del 17/03/2026"
+    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_17_03_2026.pdf",
+    "data_bollettino": "17/03/2026",
+    "validita_inizio": "ore 14:00 del 17/03/2026",
+    "validita_fine": "ore 23:59 del 18/03/2026"
 }
