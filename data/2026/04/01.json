@@ -1,0 +1,47 @@
+{
+  "date": "01/04/2026",
+  "zones": {
+    "BASI A1": {
+      "oggi": "yellow",
+      "rischio_oggi": "Idrogeologico + Temporali + Idraulico",
+      "domani": "yellow",
+      "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+    },
+    "BASI A2": {
+      "oggi": "yellow",
+      "rischio_oggi": "Temporali + Idraulico",
+      "domani": "yellow",
+      "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+    },
+    "BASI B": {
+      "oggi": "yellow",
+      "rischio_oggi": "Idrogeologico + Temporali + Idraulico",
+      "domani": "yellow",
+      "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+    },
+    "BASI C": {
+      "oggi": "yellow",
+      "rischio_oggi": "Idrogeologico + Temporali + Idraulico",
+      "domani": "yellow",
+      "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+    },
+    "BASI D": {
+      "oggi": "yellow",
+      "rischio_oggi": "Temporali",
+      "domani": "yellow",
+      "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+    },
+    "BASI E1": {
+      "oggi": "orange",
+      "rischio_oggi": "Idraulico",
+      "domani": "orange",
+      "rischio_domani": "Idraulico"
+    },
+    "BASI E2": {
+      "oggi": "yellow",
+      "rischio_oggi": "Temporali + Idraulico",
+      "domani": "yellow",
+      "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+    }
+  }
+}
