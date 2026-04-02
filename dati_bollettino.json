@@ -1,34 +1,34 @@
 {
     "zone": {
         "BASI A1": {
-            "oggi": "yellow",
-            "rischio_oggi": "Idrogeologico + Temporali + Idraulico",
-            "domani": "yellow",
-            "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+            "oggi": "orange",
+            "rischio_oggi": "Idraulico",
+            "domani": "orange",
+            "rischio_domani": "Idraulico"
         },
         "BASI A2": {
             "oggi": "yellow",
             "rischio_oggi": "Temporali + Idraulico",
             "domani": "yellow",
-            "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+            "rischio_domani": "Idraulico"
         },
         "BASI B": {
             "oggi": "orange",
-            "rischio_oggi": "Idrogeologico + Temporali + Idraulico",
+            "rischio_oggi": "Idrogeologico + Idraulico",
             "domani": "orange",
-            "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+            "rischio_domani": "Idrogeologico + Idraulico"
         },
         "BASI C": {
-            "oggi": "yellow",
-            "rischio_oggi": "Idrogeologico + Temporali + Idraulico",
-            "domani": "yellow",
-            "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+            "oggi": "orange",
+            "rischio_oggi": "Idrogeologico + Idraulico",
+            "domani": "orange",
+            "rischio_domani": "Idrogeologico + Idraulico"
         },
         "BASI D": {
             "oggi": "yellow",
             "rischio_oggi": "Temporali",
-            "domani": "yellow",
-            "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+            "domani": "green",
+            "rischio_domani": "Assenza di fenomeni significativi"
         },
         "BASI E1": {
             "oggi": "orange",
@@ -38,13 +38,13 @@
         },
         "BASI E2": {
             "oggi": "orange",
-            "rischio_oggi": "Temporali + Idraulico",
+            "rischio_oggi": "Idraulico",
             "domani": "orange",
-            "rischio_domani": "Idrogeologico + Temporali + Idraulico"
+            "rischio_domani": "Idraulico"
         }
     },
-    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_01_04_2026.pdf",
-    "data_bollettino": "01/04/2026",
-    "validita_inizio": "ore 14:00 del 01/04/2026",
-    "validita_fine": "ore 23:59 del 02/04/2026"
+    "url_bollettino": "https://centrofunzionale.regione.basilicata.it/ew/ew_pdf/a/Bollettino_Criticita_Regione_Basilicata_02_04_2026.pdf",
+    "data_bollettino": "02/04/2026",
+    "validita_inizio": "ore 14:00 del 02/04/2026",
+    "validita_fine": "ore 23:59 del 03/04/2026"
 }
