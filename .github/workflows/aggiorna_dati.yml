@@ -1,0 +1,25 @@
+name: Aggiornamento Orario Dati Invasi
+on:
+  schedule:
+    - cron: '0 * * * *' # Esegue ogni ora
+  workflow_dispatch: # Permette di avviarlo manualmente per test
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del codice
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Installa dipendenze
+        run: pip install psycopg2-binary requests
+
+      - name: Esegui Sincronizzazione
+        env:
+          NEON_DB_URL: ${{ secrets.NEON_DB_URL }}
+        run: python sync_github_to_neon.py
