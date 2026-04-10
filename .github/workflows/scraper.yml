@@ -2,40 +2,38 @@ name: Aggiornamento Dati ARPAB
 
 on:
   schedule:
-    - cron: '0 * * * *'
-  workflow_dispatch:
+    - cron: '0 * * * *'  # Esegue ogni ora
+  workflow_dispatch:      # Permette avvio manuale
 
 jobs:
-  build:
+  scrape:
     runs-on: ubuntu-latest
-    
-    # Aggiungiamo i permessi di scrittura esplicitamente nel workflow
     permissions:
       contents: write
-      
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Configura Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-    - name: Installa Playwright e dipendenze
-      run: |
-        pip install playwright
-        # Installa il browser Chromium e le librerie di sistema necessarie su Linux
-        playwright install chromium --with-deps
+      - name: Installazione Playwright
+        run: |
+          pip install playwright
+          playwright install chromium --with-deps
 
-    - name: Esecuzione Scraper
-      run: python scraper_arpab.py
+      - name: Esecuzione Scraper
+        run: python scraper_arpab.py
 
-    - name: Commit and Push dei dati
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git add data/arpab_all_stations.json
-        # Il comando commit fallisce se non ci sono modifiche, quindi usiamo || echo
-        git commit -m "Aggiornamento dati ARPAB: $(date)" || echo "Nessun cambiamento rilevato"
-        git push
+      - name: Commit e Push dei risultati
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Crea la cartella data se non esiste per prevenire errori git
+          mkdir -p data
+          git add data/
+          git commit -m "Auto-update ARPAB sensors: $(date)" || echo "Nessun cambiamento da caricare"
+          git push
