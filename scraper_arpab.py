@@ -1,116 +1,80 @@
-import requests
 import json
 import os
 import time
 from datetime import datetime
+from playwright.sync_api import sync_playwright
 
-class ArpabFullScraper:
-    def __init__(self):
-        self.base_url = "https://arpabaegis.arpab.it/Datascape/v3"
-        self.session = requests.Session()
+def run_scraper():
+    print(f"Avvio scraper con Playwright: {datetime.now()}")
+    
+    with sync_playwright() as p:
+        # Avviamo il browser (Chromium)
+        browser = p.chromium.launch(headless=True)
+        context = browser.new_context(
+            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
+        )
+        page = context.new_page()
+
+        # 1. Navighiamo sulla pagina principale per ottenere i permessi/cookie
+        print("Apertura portale ARPAB...")
+        page.goto("https://arpabaegis.arpab.it/Datascape/v3/view/index.html?ui_culture=it", wait_until="networkidle")
+        time.sleep(5) # Attendiamo il caricamento completo della mappa
+
+        # 2. Eseguiamo la chiamata API direttamente dal contesto del browser
+        # Questo bypassa il 401 perché usa i token e i cookie già validati dal sito
+        print("Recupero lista stazioni via browser context...")
         
-        # Header ultra-realistici
-        self.headers = {
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
-            'Accept': 'application/json, text/javascript, */*; q=0.01',
-            'Accept-Language': 'it-IT,it;q=0.9,en-US;q=0.8,en;q=0.7',
-            'Referer': 'https://arpabaegis.arpab.it/Datascape/v3/view/index.html?ui_culture=it',
-            'Origin': 'https://arpabaegis.arpab.it',
-            'Connection': 'keep-alive',
-            'Sec-Fetch-Dest': 'empty',
-            'Sec-Fetch-Mode': 'cors',
-            'Sec-Fetch-Site': 'same-origin',
-        }
-        self.output_dir = "data"
-        self.output_file = os.path.join(self.output_dir, "arpab_all_stations.json")
-
-    def init_session(self):
-        """Simula l'ingresso nel portale per raccogliere i cookie di sicurezza."""
+        stations_script = """
+            async () => {
+                const response = await fetch("https://arpabaegis.arpab.it/Datascape/v3/stations?category=1&ui_culture=it");
+                return await response.json();
+            }
+        """
+        
         try:
-            # Carichiamo la pagina che ospita la mappa
-            main_page = "https://arpabaegis.arpab.it/Datascape/v3/view/index.html?ui_culture=it"
-            response = self.session.get(main_page, headers=self.headers, timeout=20)
-            
-            # Piccolo trucco: il server potrebbe aver bisogno di un istante per registrare la sessione
-            time.sleep(2)
-            
-            # Copiamo i cookie ottenuti nella sessione per le chiamate successive
-            self.session.cookies.update(response.cookies)
-            return True
+            stations_list = page.evaluate(stations_script)
+            print(f"Successo! Trovate {len(stations_list)} stazioni.")
         except Exception as e:
-            print(f"Errore inizializzazione: {e}")
-            return False
-
-    def get_all_stations(self):
-        url = f"{self.base_url}/stations"
-        # Aggiungiamo il timestamp casuale che usano loro per evitare cache
-        params = {
-            'category': '1',
-            'ui_culture': 'it',
-            '_': int(time.time() * 1000)
-        }
-        try:
-            response = self.session.get(url, params=params, headers=self.headers, timeout=30)
-            
-            if response.status_code == 401:
-                print("DEBUG: Il server richiede ancora un'autorizzazione specifica.")
-                return []
-                
-            response.raise_for_status()
-            return response.json()
-        except Exception as e:
-            print(f"Errore critico lista stazioni: {e}")
-            return []
-
-    def get_station_details(self, station_id):
-        url = f"{self.base_url}/elements"
-        params = {
-            'station_id': station_id,
-            'category': '1',
-            'ui_culture': 'it',
-            'field': ['ElementName', 'Time', 'Value', 'Decimals', 'MeasUnit', 'Trend', 'StateId', 'IsQueryable'],
-            '_': int(time.time() * 1000)
-        }
-        try:
-            response = self.session.get(url, params=params, headers=self.headers, timeout=20)
-            if response.status_code == 200:
-                return response.json()
-        except:
-            pass
-        return None
-
-    def run(self):
-        if not self.init_session():
+            print(f"Errore durante l'estrazione: {e}")
+            browser.close()
             return
 
-        stations_list = self.get_all_stations()
-        if not stations_list:
-            print("Accesso negato o lista vuota. Tentativo di fallback...")
-            return
-
-        print(f"Successo! Recupero dati per {len(stations_list)} stazioni.")
-        
-        all_results = {
+        all_data = {
             "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "stations": []
         }
 
+        # 3. Cicliamo sulle stazioni per prendere i sensori
         for st in stations_list:
             s_id = st.get('StationId')
             s_name = st.get('StationName', 'Unknown')
-            print(f"Scarico: {s_name}...")
+            print(f"Scaricamento dettagli per: {s_name}")
+
+            elements_script = f"""
+                async () => {{
+                    const url = "https://arpabaegis.arpab.it/Datascape/v3/elements?station_id={s_id}&category=1&ui_culture=it&field=ElementName&field=Time&field=Value&field=Decimals&field=MeasUnit&field=Trend&field=StateId&field=IsQueryable";
+                    const response = await fetch(url);
+                    return await response.json();
+                }}
+            """
+            try:
+                details = page.evaluate(elements_script)
+                all_data["stations"].append({
+                    "info": st,
+                    "sensors": details
+                })
+            except:
+                continue
             
-            details = self.get_station_details(s_id)
-            all_results["stations"].append({
-                "info": st,
-                "data": details if details else []
-            })
             time.sleep(0.5)
 
-        os.makedirs(self.output_dir, exist_ok=True)
-        with open(self.output_file, "w", encoding="utf-8") as f:
-            json.dump(all_results, f, indent=4, ensure_ascii=False)
-        print("Salvataggio completato.")
+        # 4. Salvataggio
+        os.makedirs("data", exist_ok=True)
+        with open("data/arpab_all_stations.json", "w", encoding="utf-8") as f:
+            json.dump(all_data, f, indent=4, ensure_ascii=False)
+        
+        print("Salvataggio completato correttamente.")
+        browser.close()
 
 if __name__ == "__main__":
-    ArpabFullScraper().run()
+    run_scraper()
