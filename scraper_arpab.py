@@ -4,74 +4,79 @@ import time
 from datetime import datetime
 from playwright.sync_api import sync_playwright
 
-def run_scraper():
-    print(f"Avvio scraper: {datetime.now()}")
-    
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        # Usiamo un profilo browser completo
-        context = browser.new_context(
-            viewport={'width': 1920, 'height': 1080},
-            user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36'
-        )
-        page = context.new_page()
+class ArpabStealthScraper:
+    def __init__(self):
+        self.output_dir = "data"
+        self.json_path = os.path.join(self.output_dir, "arpab_all_stations.json")
+        self.log_path = os.path.join(self.output_dir, "last_run_status.txt")
+        self.captured_data = {"stations_list": [], "details": []}
 
-        # Contenitori per i dati intercettati
-        captured_data = {
-            "stations": [],
-            "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        }
+    def run(self):
+        print(f"🚀 Avvio Scraper Stealth: {datetime.now()}")
+        
+        with sync_playwright() as p:
+            # Configurazione Browser
+            browser = p.chromium.launch(headless=True)
+            context = browser.new_context(
+                user_agent='Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+                viewport={'width': 1280, 'height': 720}
+            )
+            page = context.new_page()
 
-        # Funzione per intercettare le risposte del server
-        def handle_response(response):
-            if "Datascape/v3/stations" in response.url and response.status == 200:
+            # Listener per intercettare il traffico di rete
+            def handle_response(response):
                 try:
-                    stations = response.json()
-                    captured_data["stations_list"] = stations
-                    print(f"Intercettate {len(stations)} stazioni dalla rete.")
+                    if "stations" in response.url and response.status == 200:
+                        self.captured_data["stations_list"] = response.json()
+                        print(f"✅ Intercettate {len(self.captured_data['stations_list'])} stazioni.")
+                    if "elements" in response.url and response.status == 200:
+                        self.captured_data["details"].append(response.json())
                 except:
                     pass
 
-        page.on("response", handle_response)
+            page.on("response", handle_response)
 
-        print("Caricamento portale e intercettazione dati...")
-        # Navighiamo direttamente alla mappa
-        page.goto("https://arpabaegis.arpab.it/Datascape/v3/view/index.html?ui_culture=it", wait_until="networkidle")
-        
-        # Diamo tempo al sito di popolare la mappa (questo attiva le chiamate API)
-        time.sleep(10)
-
-        # Se l'intercettazione automatica non basta, forziamo il recupero via browser
-        # ma gestendo l'errore se la risposta non è JSON
-        if "stations_list" in captured_data:
-            for st in captured_data["stations_list"]:
-                s_id = st.get('StationId')
-                s_name = st.get('StationName', 'Ignoto')
-                print(f"Recupero dati per {s_name}...")
+            try:
+                # 1. Carica il portale (timeout esteso a 60s per lentezza PA)
+                print("📡 Accesso al portale ARPAB...")
+                page.goto("https://arpabaegis.arpab.it/Datascape/v3/view/index.html?ui_culture=it", 
+                          wait_until="networkidle", timeout=60000)
                 
-                # Chiamata agli elementi del sensore
-                res = page.evaluate(f"""
-                    fetch("https://arpabaegis.arpab.it/Datascape/v3/elements?station_id={s_id}&category=1&ui_culture=it&field=ElementName&field=Time&field=Value&field=Decimals&field=MeasUnit&field=Trend&field=StateId&field=IsQueryable")
-                    .then(r => r.ok ? r.json() : null)
-                """)
-                
-                if res:
-                    captured_data["stations"].append({
-                        "info": st,
-                        "sensors": res
-                    })
-                time.sleep(0.5)
+                # 2. Interazione simulata per attivare gli script
+                page.mouse.wheel(0, 500)
+                time.sleep(15) 
 
-        # Pulizia e salvataggio
-        if captured_data["stations"]:
-            os.makedirs("data", exist_ok=True)
-            with open("data/arpab_all_stations.json", "w", encoding="utf-8") as f:
-                json.dump(captured_data, f, indent=4, ensure_ascii=False)
-            print(f"Operazione completata! Salvate {len(captured_data['stations'])} stazioni.")
-        else:
-            print("Errore: non è stato possibile recuperare i dati. Il server blocca ancora la richiesta.")
+                # 3. Se mancano i dettagli, forziamo le chiamate API dal contesto browser
+                if self.captured_data["stations_list"] and not self.captured_data["details"]:
+                    print("🔄 Recupero forzato sensori (API Context)...")
+                    for st in self.captured_data["stations_list"][:15]: # Limite prime 15 per evitare ban
+                        s_id = st.get('StationId')
+                        url = f"https://arpabaegis.arpab.it/Datascape/v3/elements?station_id={s_id}&category=1&ui_culture=it&field=ElementName&field=Time&field=Value&field=Decimals&field=MeasUnit&field=Trend&field=StateId&field=IsQueryable"
+                        res = page.evaluate(f'fetch("{url}").then(r => r.ok ? r.json() : null)')
+                        if res:
+                            self.captured_data["details"].append({"station": st, "sensors": res})
+                        time.sleep(1)
 
-        browser.close()
+            except Exception as e:
+                print(f"❌ Errore durante l'esecuzione: {e}")
+
+            # 4. Salvataggio finale e gestione cartelle
+            os.makedirs(self.output_dir, exist_ok=True)
+            
+            if self.captured_data["details"]:
+                output = {
+                    "last_updated": datetime.now().isoformat(),
+                    "data": self.captured_data["details"]
+                }
+                with open(self.json_path, "w", encoding="utf-8") as f:
+                    json.dump(output, f, indent=4, ensure_ascii=False)
+                print(f"💾 File salvato con successo: {self.json_path}")
+            else:
+                with open(self.log_path, "w") as f:
+                    f.write(f"Fallito il {datetime.now()}. Il server ha bloccato la richiesta (401/403).")
+                print("⚠️ Dati non recuperati. Scritto file di log.")
+
+            browser.close()
 
 if __name__ == "__main__":
-    run_scraper()
+    ArpabStealthScraper().run()
