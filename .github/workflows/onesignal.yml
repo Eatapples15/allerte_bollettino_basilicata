@@ -6,6 +6,7 @@ on:
       - main # Assicurati che il tuo ramo principale si chiami main (o cambialo in master se necessario)
     paths:
       - 'dati_bollettino.json' # L'azione parte SOLO se questo file viene aggiornato
+  workflow_dispatch: # Permette di avviare l'azione manualmente dal pannello Actions
 
 jobs:
   send-push:
