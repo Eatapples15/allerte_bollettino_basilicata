@@ -22,18 +22,16 @@ jobs:
           echo "DATA=$DATA_EMISSIONE" >> $GITHUB_ENV
 
       - name: Invia Notifica tramite OneSignal
-        env:
-          ONESIGNAL_APP_ID: "62bb3a88-4267-4b6c-b209-5262c35284f8"
-          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
         run: |
           curl --request POST \
                --url https://onesignal.com/api/v1/notifications \
-               --header "Authorization: Basic $ONESIGNAL_REST_API_KEY" \
+               --header "Authorization: Basic ${{ secrets.ONESIGNAL_REST_API_KEY }}" \
                --header "Content-Type: application/json" \
                --data '{
-                 "app_id": "'"$ONESIGNAL_APP_ID"'",
+                 "app_id": "62bb3a88-4267-4b6c-b209-5262c35284f8",
                  "included_segments": ["Subscribed Users"],
+                 "target_channel": "push",
                  "headings": {"it": "Allerta Basilicata", "en": "Allerta Basilicata"},
-                 "contents": {"it": "È disponibile il nuovo bollettino di criticità regionale del '"$DATA"'. Clicca per i dettagli.", "en": "Nuovo bollettino disponibile."},
-                 "url": "https://eatapples15.github.io/allerte_bollettino_basilicata/bollettino/index.html?view=map"
+                 "contents": {"it": "È disponibile il nuovo bollettino di criticità regionale del ${{ env.DATA }}. Clicca per i dettagli.", "en": "Nuovo bollettino disponibile."},
+                 "url": "https://www.formazionesicurezza.org/protezionecivile/bollettino/index.html?view=map"
                }'
