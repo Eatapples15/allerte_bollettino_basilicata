@@ -20,7 +20,7 @@ jobs:
         run: |
           # Legge la data dal tuo JSON per inserirla nel testo della notifica
           DATA_EMISSIONE=$(jq -r '.data_bollettino' dati_bollettino.json)
-          echo "DATA=$DATA_EMISSIONE" >> $GITHUB_ENV
+          echo "DATA=${DATA_EMISSIONE:-oggi}" >> $GITHUB_ENV
 
       - name: Invia Notifica tramite OneSignal
         run: |
@@ -30,9 +30,12 @@ jobs:
                --header "Content-Type: application/json" \
                --data '{
                  "app_id": "62bb3a88-4267-4b6c-b209-5262c35284f8",
-                 "included_segments": ["Subscribed Users"],
+                 "included_segments": ["Total Subscriptions"],
                  "target_channel": "push",
                  "headings": {"it": "Allerta Basilicata", "en": "Allerta Basilicata"},
                  "contents": {"it": "È disponibile il nuovo bollettino di criticità regionale del ${{ env.DATA }}. Clicca per i dettagli.", "en": "Nuovo bollettino disponibile."},
-                 "url": "https://www.formazionesicurezza.org/protezionecivile/bollettino/index.html?view=map"
+                 "url": "https://www.formazionesicurezza.org/protezionecivile/bollettino/index.html?view=map",
+                 "chrome_web_icon": "https://www.formazionesicurezza.org/protezionecivile/bollettino/logo.png",
+                 "chrome_web_badge": "https://www.formazionesicurezza.org/protezionecivile/bollettino/logo.png",
+                 "priority": 10
                }'
