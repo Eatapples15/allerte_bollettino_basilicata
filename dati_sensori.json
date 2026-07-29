@@ -1,5 +1,5 @@
 {
-    "ultimo_aggiornamento": "29/07/2026 21:34",
+    "ultimo_aggiornamento": "29/07/2026 22:37",
     "sensori": {
         "pluviometria": {
             "dati": []
@@ -11,148 +11,7 @@
             "dati": []
         },
         "anemometria": {
-            "dati": [
-                {
-                    "id": "331200",
-                    "nome": "CASTELSARACENO",
-                    "valore": "75 °",
-                    "serie": [
-                        "75 °",
-                        "3.4 m/s",
-                        "3.6 m/s",
-                        "75 °",
-                        "6.8 m/s",
-                        "76 °"
-                    ],
-                    "data": "AGRI"
-                },
-                {
-                    "id": "482200",
-                    "nome": "GORGOGLIONE",
-                    "valore": "148 °",
-                    "serie": [
-                        "148 °",
-                        "2.5 m/s",
-                        "2.5 m/s",
-                        "148 °",
-                        "3.0 m/s",
-                        "146 °"
-                    ],
-                    "data": "AGRI"
-                },
-                {
-                    "id": "418100",
-                    "nome": "LAVELLO",
-                    "valore": "320 °",
-                    "serie": [
-                        "320 °",
-                        "0.7 m/s",
-                        "0.7 m/s",
-                        "319 °",
-                        "1.7 m/s",
-                        "213 °"
-                    ],
-                    "data": "OFANTO"
-                },
-                {
-                    "id": "331900",
-                    "nome": "MARATEA MASSA",
-                    "valore": "79 °",
-                    "serie": [
-                        "79 °",
-                        "1.5 m/s",
-                        "1.6 m/s",
-                        "83 °",
-                        "3.1 m/s",
-                        "57 °"
-                    ],
-                    "data": "NOCE"
-                },
-                {
-                    "id": "948400",
-                    "nome": "MIGLIONICO ARPAB",
-                    "valore": "180 °",
-                    "serie": [
-                        "180 °",
-                        "2.7 m/s",
-                        "2.7 m/s",
-                        "180 °",
-                        "4.0 m/s",
-                        "189 °"
-                    ],
-                    "data": "BRADANO"
-                },
-                {
-                    "id": "418000",
-                    "nome": "OPPIDO LUCANO",
-                    "valore": "147 °",
-                    "serie": [
-                        "147 °",
-                        "3.3 m/s",
-                        "3.3 m/s",
-                        "147 °",
-                        "4.1 m/s",
-                        "128 °"
-                    ],
-                    "data": "OFANTO"
-                },
-                {
-                    "id": "699000",
-                    "nome": "SALANDRA",
-                    "valore": "180 °",
-                    "serie": [
-                        "180 °",
-                        "1.2 m/s",
-                        "1.2 m/s",
-                        "180 °",
-                        "-",
-                        "17 °"
-                    ],
-                    "data": "BASENTO"
-                },
-                {
-                    "id": "949700",
-                    "nome": "SATRIANO DI LUCANIA ARPAB",
-                    "valore": "121 °",
-                    "serie": [
-                        "121 °",
-                        "0.0 m/s",
-                        "0.0 m/s",
-                        "120 °",
-                        "1.3 m/s",
-                        "111 °"
-                    ],
-                    "data": "AGRI"
-                },
-                {
-                    "id": "233200",
-                    "nome": "TERRA MONTONATA",
-                    "valore": "262 °",
-                    "serie": [
-                        "262 °",
-                        "0.7 m/s",
-                        "0.8 m/s",
-                        "255 °",
-                        "1.7 m/s",
-                        "155 °"
-                    ],
-                    "data": "CAVONE"
-                },
-                {
-                    "id": "699300",
-                    "nome": "VAGLIO DI BASILICATA",
-                    "valore": "153 °",
-                    "serie": [
-                        "153 °",
-                        "0.8 m/s",
-                        "0.8 m/s",
-                        "153 °",
-                        "3.3 m/s",
-                        "73 °"
-                    ],
-                    "data": "BASENTO"
-                }
-            ]
+            "dati": []
         },
         "nivometria": {
             "dati": [
@@ -204,18 +63,18 @@
                 {
                     "id": "932200",
                     "nome": "P_RUVO DEL MONTE",
-                    "valore": "-7 cm",
+                    "valore": "-6 cm",
                     "serie": [
-                        "-7 cm"
+                        "-6 cm"
                     ],
                     "data": ""
                 },
                 {
                     "id": "907800",
                     "nome": "P_SELLATA",
-                    "valore": "38 cm",
+                    "valore": "39 cm",
                     "serie": [
-                        "38 cm"
+                        "39 cm"
                     ],
                     "data": ""
                 },
