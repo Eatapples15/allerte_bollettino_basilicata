@@ -1,41 +1,47 @@
-name: Invia Notifica Nuovo Bollettino
+name: Invia Allerte Zona (Bollettino)
+
+# Prima questo workflow mandava un'unica notifica generica "nuovo
+# bollettino disponibile" a tutti gli iscritti ad ogni modifica del
+# file. Ora legge il bollettino, individua le zone davvero in allerta
+# (oggi o domani diverso da verde) e notifica solo i cittadini iscritti
+# ai comuni di quelle zone, con il livello e il rischio reali. Non
+# rimanda la stessa notifica se lo stato della zona non e' cambiato
+# dall'ultima volta (vedi scripts/invia_allerte_zona.js).
 
 on:
   push:
     branches:
-      - main # Assicurati che il tuo ramo principale si chiami main (o cambialo in master se necessario)
+      - main # Cambia in "master" se il ramo principale del repo si chiama cosi'
     paths:
-      - 'dati_bollettino.json' # L'azione parte SOLO se questo file viene aggiornato
-  workflow_dispatch: # Permette di avviare l'azione manualmente dal pannello Actions
+      - 'dati_bollettino.json' # Parte solo se questo file viene aggiornato
+  workflow_dispatch: # Permette di avviarlo manualmente dal pannello Actions
+
+permissions:
+  contents: write # Serve per ricommittare lo stato delle zone dopo l'invio
 
 jobs:
-  send-push:
+  invia-allerte:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout del codice
         uses: actions/checkout@v4
 
-      - name: Estrai la data dal JSON
-        id: parse_json
-        run: |
-          # Legge la data dal tuo JSON per inserirla nel testo della notifica
-          DATA_EMISSIONE=$(jq -r '.data_bollettino' dati_bollettino.json)
-          echo "DATA=${DATA_EMISSIONE:-oggi}" >> $GITHUB_ENV
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      - name: Invia Notifica tramite OneSignal
+      - name: Invia notifiche push mirate per zona
+        env:
+          ONESIGNAL_REST_API_KEY: ${{ secrets.ONESIGNAL_REST_API_KEY }}
+          BOLLETTINO_PATH: ${{ github.workspace }}/dati_bollettino.json
+          STATE_PATH: ${{ github.workspace }}/automazioni_state/ultimo_stato_zone.json
+        run: node scripts/invia_allerte_zona.js
+
+      - name: Salva lo stato delle zone notificate
         run: |
-          curl --request POST \
-               --url https://onesignal.com/api/v1/notifications \
-               --header "Authorization: Basic ${{ secrets.ONESIGNAL_REST_API_KEY }}" \
-               --header "Content-Type: application/json" \
-               --data '{
-                 "app_id": "62bb3a88-4267-4b6c-b209-5262c35284f8",
-                 "included_segments": ["Total Subscriptions"],
-                 "target_channel": "push",
-                 "headings": {"it": "Allerta Basilicata", "en": "Allerta Basilicata"},
-                 "contents": {"it": "È disponibile il nuovo bollettino di criticità regionale del ${{ env.DATA }}. Clicca per i dettagli.", "en": "Nuovo bollettino disponibile."},
-                 "url": "https://www.formazionesicurezza.org/protezionecivile/bollettino/index.html?view=map",
-                 "chrome_web_icon": "https://www.formazionesicurezza.org/protezionecivile/bollettino/logo.png",
-                 "chrome_web_badge": "https://www.formazionesicurezza.org/protezionecivile/bollettino/logo.png",
-                 "priority": 10
-               }'
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add automazioni_state/ultimo_stato_zone.json
+          git diff --staged --quiet || git commit -m "Aggiorna stato zone notificate [skip ci]"
+          git push
