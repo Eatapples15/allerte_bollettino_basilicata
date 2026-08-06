@@ -114,9 +114,16 @@ async function main() {
     const comuniZona = leggiJson(COMUNI_ZONE_PATH);
     const statoPrecedente = leggiJson(STATE_PATH, {});
 
+    // Un comune puo' essere a cavallo di piu' zone (es. FERRANDINA: BASI B e
+    // BASI E2, valore array in comuni_zone.json) - lo si registra su
+    // entrambe, cosi' i suoi cittadini restano avvisati qualunque zona vada
+    // in allerta invece di dipendere da una sola.
     const comuniPerZona = {};
     for (const [comune, zona] of Object.entries(comuniZona)) {
-        (comuniPerZona[zona] = comuniPerZona[zona] || []).push(comune);
+        const zoneComune = Array.isArray(zona) ? zona : [zona];
+        for (const z of zoneComune) {
+            (comuniPerZona[z] = comuniPerZona[z] || []).push(comune);
+        }
     }
 
     const nuovoStato = { ...statoPrecedente };
