@@ -38,10 +38,22 @@ jobs:
           STATE_PATH: ${{ github.workspace }}/automazioni_state/ultimo_stato_zone.json
         run: node scripts/invia_allerte_zona.js
 
-      - name: Salva lo stato delle zone notificate
+      - name: Installa xml-crypto (per la firma del feed CAP)
+        run: npm install xml-crypto
+
+      - name: Genera il feed CAP 1.2
+        env:
+          BOLLETTINO_PATH: ${{ github.workspace }}/dati_bollettino.json
+          CAP_STATE_PATH: ${{ github.workspace }}/automazioni_state/cap_stato_zone.json
+          CAP_OUTPUT_DIR: ${{ github.workspace }}/cap
+          CAP_SIGNING_PRIVATE_KEY: ${{ secrets.CAP_SIGNING_PRIVATE_KEY }}
+          CAP_SIGNING_CERT: ${{ secrets.CAP_SIGNING_CERT }}
+        run: node scripts/genera_cap.js
+
+      - name: Salva lo stato delle zone notificate e il feed CAP
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add automazioni_state/ultimo_stato_zone.json
-          git diff --staged --quiet || git commit -m "Aggiorna stato zone notificate [skip ci]"
+          git add automazioni_state/ultimo_stato_zone.json automazioni_state/cap_stato_zone.json cap/
+          git diff --staged --quiet || git commit -m "Aggiorna stato zone notificate e feed CAP [skip ci]"
           git push
