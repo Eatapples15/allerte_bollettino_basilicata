@@ -1,0 +1,6 @@
+{
+  "_nota": "Mappatura best-effort testo-rischio (rischio_oggi/rischio_domani del bollettino) -> parametro CAP 'awareness_type' in stile MeteoAlarm, formato \"<codice>; <nome-hazard>\". E' stato verificato solo il FORMATO del valore su esempi reali (incendio boschivo, pioggia), NON l'elenco ufficiale completo dei codici EUMETNET/MeteoAlarm: aggiungi una voce solo quando sei certo del codice giusto. Se una chiave manca qui, genera_cap.js omette semplicemente il parametro awareness_type per quell'informazione invece di rischiare un codice sbagliato: meglio assente che falso.",
+  "incendio": "8; forest-fire",
+  "incendio boschivo": "8; forest-fire",
+  "pioggia": "10; rain"
+}
