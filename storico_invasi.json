@@ -18234,5 +18234,87 @@
                 "percentuale_riempimento": 0.03
             }
         ]
+    },
+    "2026-09-02": {
+        "scraped_at": "2026-09-02T14:09:25.759368",
+        "dati": [
+            {
+                "diga": "COTUGNO",
+                "quota_max_slm": 252.0,
+                "volume_max_lordo_mc": 480700000,
+                "quota_attuale_slm": 229.26,
+                "trend_variazione_cm": -12.0,
+                "volume_netto_attuale_mc": 141026000.0,
+                "pioggia_mm": 0.0,
+                "neve_cm": 0.0,
+                "percentuale_riempimento": 29.34
+            },
+            {
+                "diga": "CAMASTRA",
+                "quota_max_slm": 531.6,
+                "volume_max_lordo_mc": 18418128,
+                "quota_attuale_slm": 524.32,
+                "trend_variazione_cm": 0,
+                "volume_netto_attuale_mc": 9079314.0,
+                "pioggia_mm": 0.0,
+                "neve_cm": 0.0,
+                "percentuale_riempimento": 49.3
+            },
+            {
+                "diga": "BASENTELLO",
+                "quota_max_slm": 269.0,
+                "volume_max_lordo_mc": 33039968,
+                "quota_attuale_slm": 259.06,
+                "trend_variazione_cm": -4.0,
+                "volume_netto_attuale_mc": 3090047.0,
+                "pioggia_mm": 0.0,
+                "neve_cm": 0.0,
+                "percentuale_riempimento": 9.35
+            },
+            {
+                "diga": "CONZA",
+                "quota_max_slm": 434.8,
+                "volume_max_lordo_mc": 61813380,
+                "quota_attuale_slm": 425.42,
+                "trend_variazione_cm": -10.0,
+                "volume_netto_attuale_mc": 21782756.0,
+                "pioggia_mm": 0.0,
+                "neve_cm": 0.0,
+                "percentuale_riempimento": 35.24
+            },
+            {
+                "diga": "SAETTA",
+                "quota_max_slm": 951.24,
+                "volume_max_lordo_mc": 3480000,
+                "quota_attuale_slm": 539.455,
+                "trend_variazione_cm": 0,
+                "volume_netto_attuale_mc": 539.455,
+                "pioggia_mm": 0.0,
+                "neve_cm": 0.0,
+                "percentuale_riempimento": 0.02
+            },
+            {
+                "diga": "ACERENZA",
+                "quota_max_slm": 432.0,
+                "volume_max_lordo_mc": 8887800,
+                "quota_attuale_slm": 428.94,
+                "trend_variazione_cm": -2.0,
+                "volume_netto_attuale_mc": 3101064.0,
+                "pioggia_mm": 0.0,
+                "neve_cm": 0.0,
+                "percentuale_riempimento": 34.89
+            },
+            {
+                "diga": "GENZANO",
+                "quota_max_slm": 402.0,
+                "volume_max_lordo_mc": 3100000,
+                "quota_attuale_slm": 400.28,
+                "trend_variazione_cm": -1.0,
+                "volume_netto_attuale_mc": 953.0,
+                "pioggia_mm": 0.0,
+                "neve_cm": 0.0,
+                "percentuale_riempimento": 0.03
+            }
+        ]
     }
 }
