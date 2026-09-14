@@ -2,9 +2,9 @@ name: Aggiornamento Sensori Live
 
 on:
   schedule:
-    # Esegue ogni 20 minuti (es. :00, :20, :40)
-    - cron: '*/20 * * * *'
-  
+  # Esegue ogni 30 minuti (es. :00, :30)
+  - cron: '*/30 * * * *'
+
   # Permette di avviarlo manualmente dal tab "Actions"
   workflow_dispatch:
 
@@ -39,10 +39,10 @@ jobs:
         run: |
           git config --global user.name "Sensori Bot"
           git config --global user.email "bot@users.noreply.github.com"
-          
+
           # Aggiungiamo il file JSON generato
           git add dati_sensori.json
-          
+
           # Se il file è cambiato rispetto a prima, fai il commit e push
           # Se è uguale (nessun dato nuovo), non fa nulla ed esce senza errori
           git diff --quiet && git diff --staged --quiet || (git commit -m "Aggiornamento Dati Sensori Live" && git push)
