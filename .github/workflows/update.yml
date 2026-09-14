@@ -2,7 +2,8 @@ name: Aggiornamento Bollettino PDF
 
 on:
   schedule:
-    - cron: '30 10-17 * * *'
+    - cron: '*/15 8-11 * * *'   # Ridondanza fascia critica pre-14:00 IT, ogni 15'
+    - cron: '30 12-17 * * *'    # Resto della giornata
   workflow_dispatch:
     inputs:
       force_send:
@@ -49,7 +50,7 @@ jobs:
           git stash || echo "Nulla da mettere in stash"
           git pull origin main --rebase
           git stash pop || echo "Nulla da ripristinare"
-          
+
           # Aggiunta sicura dei file (non crasha se mancano)
           if [ -f dati_bollettino.json ]; then git add dati_bollettino.json; fi
           if [ -f last_notified.txt ]; then git add last_notified.txt; fi
