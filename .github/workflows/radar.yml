@@ -2,7 +2,7 @@ name: Aggiornamento Radar DPC
 
 on:
   schedule:
-    - cron: '*/15 * * * *' # Esegue ogni 15 minuti
+    - cron: '*/30 * * * *' # Esegue ogni 30 minuti
   workflow_dispatch: # Permette l'avvio manuale per test
 
 permissions:
